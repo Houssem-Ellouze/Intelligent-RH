@@ -1,0 +1,891 @@
+// =============================================
+//  Rapport Onboarding — Styles
+//  Aesthetic: Editorial / Document premium
+// =============================================
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:host {
+  --ink: #1a1a2e;
+  --ink-light: #4a4a6a;
+  --ink-muted: #8888aa;
+  --paper: #fafaf8;
+  --paper-alt: #f3f2ef;
+  --border: #e5e4df;
+  --accent: #2d5be3;
+  --accent-light: #eef2ff;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --info: #0891b2;
+  --info-light: #cffafe;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,0.10);
+
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background: #e8e7e2;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+// =============================================
+//  Wrapper principal
+// =============================================
+.rapport-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), #7c3aed, #db2777);
+  }
+}
+
+// =============================================
+//  Header
+// =============================================
+.rapport-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2.5rem 3rem 2rem;
+  background: var(--paper);
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+
+    svg { width: 26px; height: 26px; }
+  }
+
+  .brand-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    margin: 0.2rem 0 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .meta-date, .meta-ref {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .meta-label {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .meta-value {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-light);
+  }
+}
+
+// Status badges
+   .rapport-status-badge {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.4rem;
+     padding: 0.3rem 0.8rem;
+     border-radius: 999px;
+     font-size: 0.78rem;
+     font-weight: 600;
+     letter-spacing: 0.02em;
+
+     .status-dot {
+       width: 7px;
+       height: 7px;
+       border-radius: 50%;
+       background: currentColor;
+     }
+
+     &.badge-success { background: var(--success-light); color: var(--success); }
+     &.badge-warning { background: var(--warning-light); color: var(--warning); }
+     &.badge-info    { background: var(--info-light);    color: var(--info);    }
+   }
+
+// =============================================
+//  Divider
+// =============================================
+.header-divider {
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+  margin-bottom: 0;
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    transform: rotate(45deg);
+    margin: 0 0.75rem;
+    flex-shrink: 0;
+  }
+}
+
+// =============================================
+//  Sections communes
+// =============================================
+section {
+  padding: 2.5rem 3rem;
+  border-bottom: 1px solid var(--border);
+
+  &:last-of-type { border-bottom: none; }
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+
+  .label-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .label-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+}
+
+// =============================================
+//  Section 01 — Identité
+// =============================================
+.identity-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.identity-avatar {
+  position: relative;
+
+  .avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+  }
+
+  .avatar-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.02em;
+  }
+
+  .avatar-status {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--paper);
+    font-size: 0.65rem;
+
+    &.badge-success { background: var(--success); color: white; }
+    &.badge-warning { background: var(--warning); color: white; }
+    &.badge-info    { background: var(--info);    color: white; }
+  }
+}
+
+.identity-details {
+  .collab-fullname {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.25rem;
+  }
+
+  .collab-role {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--paper-alt);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .detail-icon { font-size: 0.9rem; }
+
+  .detail-label {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex: 1;
+  }
+
+  .detail-value {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+
+    &.text-success { color: var(--success); }
+    &.text-warning { color: var(--warning); }
+    &.text-info    { color: var(--info);    }
+  }
+}
+
+// Score circle
+   .identity-score {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 0.5rem;
+
+     .score-ring {
+       position: relative;
+       width: 110px;
+       height: 110px;
+     }
+
+     .score-svg {
+       width: 100%;
+       height: 100%;
+       transform: rotate(-90deg);
+     }
+
+     .score-track {
+       fill: none;
+       stroke: var(--border);
+       stroke-width: 8;
+     }
+
+     .score-fill {
+       fill: none;
+       stroke: var(--accent);
+       stroke-width: 8;
+       stroke-linecap: round;
+       transition: stroke-dashoffset 1s ease;
+     }
+
+     .score-center {
+       position: absolute;
+       inset: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 0.1rem;
+     }
+
+     .score-value {
+       font-family: 'Playfair Display', serif;
+       font-size: 1.8rem;
+       font-weight: 700;
+       color: var(--ink);
+       line-height: 1;
+     }
+
+     .score-unit {
+       font-size: 0.9rem;
+       color: var(--ink-muted);
+       align-self: flex-end;
+       margin-bottom: 0.3rem;
+     }
+
+     .score-label {
+       font-size: 0.72rem;
+       color: var(--ink-muted);
+       text-align: center;
+       text-transform: uppercase;
+       letter-spacing: 0.04em;
+       margin: 0;
+     }
+   }
+
+// =============================================
+//  Section 02 — Timeline
+// =============================================
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  gap: 0 1.5rem;
+  position: relative;
+
+  .timeline-connector {
+    grid-column: 1;
+    grid-row: 2;
+    width: 2px;
+    min-height: 1.5rem;
+    background: var(--border);
+    margin: 0 auto;
+    transition: background 0.3s;
+
+    &.filled { background: var(--accent); }
+  }
+
+  .timeline-node {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+
+    .node-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border: 2px solid var(--border);
+      background: var(--paper);
+      color: var(--ink-muted);
+      transition: all 0.3s;
+      z-index: 1;
+    }
+  }
+
+  .timeline-content {
+    grid-column: 2;
+    grid-row: 1;
+    padding-bottom: 1.75rem;
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .step-description {
+      font-size: 0.83rem;
+      color: var(--ink-light);
+      margin: 0 0 0.5rem;
+      line-height: 1.5;
+    }
+
+    .step-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+    }
+  }
+
+// States
+&.completed {
+  .node-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .step-title { color: var(--ink); }
+}
+
+  &.active {
+    .node-icon {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-light);
+    }
+  }
+
+  &.pending {
+    .node-icon { opacity: 0.4; }
+    .step-title, .step-description { opacity: 0.5; }
+  }
+}
+
+// Step badges
+   .step-badge, .phase-badge {
+     padding: 0.15rem 0.6rem;
+     border-radius: 999px;
+     font-size: 0.7rem;
+     font-weight: 600;
+     letter-spacing: 0.03em;
+
+     &.badge-done    { background: var(--success-light); color: var(--success); }
+     &.badge-active  { background: var(--accent-light);  color: var(--accent);  }
+     &.badge-pending { background: var(--paper-alt);     color: var(--ink-muted); border: 1px solid var(--border); }
+   }
+
+// =============================================
+//  Section 03 — Métriques
+// =============================================
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .metric-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .metric-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .metric-label {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .metric-trend {
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+
+    &.trend-up   { color: var(--success); }
+    &.trend-down { color: var(--warning); }
+  }
+}
+
+// =============================================
+//  Section 04 — Progress breakdown
+// =============================================
+.progress-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.phase-item {
+  display: grid;
+  grid-template-columns: 200px 1fr 100px;
+  align-items: center;
+  gap: 1rem;
+
+  .phase-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .phase-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &.color-blue   { background: var(--accent); }
+    &.color-purple { background: #7c3aed; }
+    &.color-cyan   { background: var(--info); }
+    &.color-green  { background: var(--success); }
+  }
+
+  .phase-name {
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .phase-percent {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink-light);
+  }
+
+  .phase-bar-track {
+    height: 6px;
+    background: var(--paper-alt);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .phase-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 1s ease;
+
+    &.color-blue   { background: linear-gradient(90deg, var(--accent), #818cf8); }
+    &.color-purple { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+    &.color-cyan   { background: linear-gradient(90deg, var(--info), #22d3ee); }
+    &.color-green  { background: linear-gradient(90deg, var(--success), #4ade80); }
+  }
+
+  .phase-status {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+// =============================================
+//  Section 05 — Signature
+// =============================================
+.signature-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+
+  .signature-area {
+    .signature-caption {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.75rem;
+    }
+  }
+
+  .signature-image-wrapper {
+    padding: 1rem 1.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: inline-block;
+    min-width: 220px;
+    min-height: 80px;
+
+    .signature-img {
+      max-height: 80px;
+      max-width: 220px;
+    }
+  }
+
+  .signature-certified {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--success);
+    margin-top: 0.75rem;
+    font-weight: 500;
+  }
+
+  .signature-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: var(--paper-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    min-width: 220px;
+  }
+
+  .sig-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .sig-label {
+    font-size: 0.68rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sig-value {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--ink);
+
+    &.certified { color: var(--success); }
+  }
+}
+
+// =============================================
+//  Footer
+// =============================================
+.rapport-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background: var(--paper-alt);
+  border-top: 1px solid var(--border);
+
+  .footer-company {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .footer-sub {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin: 0.1rem 0 0;
+  }
+
+  .footer-seal {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+
+    i { font-size: 1rem; }
+  }
+
+  .footer-page, .footer-ref {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin: 0;
+    text-align: right;
+  }
+
+  .footer-ref { font-weight: 600; color: var(--ink-light); }
+}
+
+// =============================================
+//  Export actions
+// =============================================
+.export-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1rem;
+  max-width: 860px;
+  margin: 0 auto;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-export-pdf {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(45, 91, 227, 0.35);
+
+    &:hover:not(:disabled) {
+      background: #1e4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(45, 91, 227, 0.4);
+    }
+
+    &:disabled { opacity: 0.7; cursor: not-allowed; }
+  }
+
+  .btn-print {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+
+    &:hover {
+      background: var(--paper-alt);
+      border-color: var(--ink-muted);
+    }
+  }
+
+  .btn-close-rapport {
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1.5px solid var(--border);
+
+    &:hover {
+      color: #dc2626;
+      border-color: #fca5a5;
+      background: #fff1f1;
+    }
+  }
+}
+
+// Spin animation
+   .spin {
+     animation: spin 0.8s linear infinite;
+   }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// =============================================
+//  Print styles
+// =============================================
+@media print {
+  :host {
+    background: white;
+    padding: 0;
+  }
+
+  .rapport-wrapper {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+
+  .timeline-item { break-inside: avoid; }
+}
+
+// =============================================
+//  Responsive
+// =============================================
+@media (max-width: 700px) {
+  section { padding: 2rem 1.5rem; }
+
+  .rapport-header { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+
+  .identity-grid {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .identity-score { grid-column: 1 / -1; flex-direction: row; gap: 1rem; }
+
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+
+  .phase-item { grid-template-columns: 1fr; }
+
+  .header-divider { padding: 0 1.5rem; }
+}

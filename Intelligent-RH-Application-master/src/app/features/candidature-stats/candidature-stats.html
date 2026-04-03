@@ -1,0 +1,45 @@
+<div class="dashboard-container">
+  <h2 class="dashboard-title">📊 Dashboard Candidatures</h2>
+
+  <p><strong>Total candidatures :</strong> {{ stats?.totalCandidatures || 0 }}</p>
+
+  <div class="chart-grid">
+    <!-- Bar Chart : candidatures par mois -->
+    <div class="chart-card">
+      <h5>Candidatures par mois</h5>
+      <canvas id="candidaturesPerMonthChart"></canvas>
+    </div>
+
+    <!-- Line Chart : moyenne entretiens par mois -->
+    <div class="chart-card">
+      <h5>Moyenne des entretiens par mois</h5>
+      <canvas id="averageEntretiensPerMonthChart"></canvas>
+    </div>
+
+    <!-- Pie Chart : candidatures par état -->
+    <div class="chart-card">
+      <h5>Répartition par état</h5>
+      <canvas id="candidaturesByEtatChart"></canvas>
+    </div>
+
+    <!-- Bar Chart : candidatures par domaine -->
+    <div class="chart-card">
+      <h5>Candidatures par domaine</h5>
+      <canvas id="candidaturesByDomaineChart"></canvas>
+    </div>
+
+    <!-- Bar Chart : candidatures par offre -->
+    <div class="chart-card">
+      <h5>Candidatures par offre</h5>
+      <canvas id="candidaturesPerOffreChart"></canvas>
+    </div>
+
+    <!-- Line Chart : moyenne entretiens par offre -->
+    <div class="chart-card">
+      <h5>Moyenne des entretiens par offre</h5>
+      <canvas id="averageEntretiensPerOffreChart"></canvas>
+    </div>
+  </div>
+
+  <p class="error-message">{{ errorMessage }}</p>
+</div>

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-contract-onboarding-service
+  namespace: intelligent-rh
+spec:
+  ports:
+    - port: 8083
+  selector:
+    app: admin-onboarding
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-contract-onboarding-service
+  namespace: intelligent-rh
+spec:
+  selector:
+    matchLabels:
+      app: admin-onboarding
+  template:
+    metadata:
+      labels:
+        app: admin-onboarding
+    spec:
+      containers:
+        - name: admin-onboarding
+          image: houssem80356/intelligent-app2-admin-contract-onboarding-service:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-db:3306/db_admin_onboarding?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery:8761/eureka/"

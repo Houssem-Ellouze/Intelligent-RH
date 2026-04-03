@@ -1,0 +1,56 @@
+<div class="signature-container">
+  <h2>Signature Digitale</h2>
+
+  <!-- Canvas pour dessiner -->
+  <canvas #canvas width="400" height="200"></canvas>
+
+  <div class="info-badge">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span>Cliquez et glissez pour signer</span>
+  </div>
+
+  <div class="buttons">
+    <!-- Boutons principaux -->
+    <button class="btn-save" (click)="saveSignature()">
+      <i class="bi bi-save"></i>
+      Enregistrer la signature
+    </button>
+
+    <button class="btn-qr" (click)="generateQR()">
+      <i class="bi bi-qr-code"></i>
+      Générer QR Code
+    </button>
+
+    <button class="btn-clear" (click)="clearCanvas()">
+      <i class="bi bi-eraser"></i>
+      Effacer
+    </button>
+
+    <!-- Bouton pour passer à l'étape suivante (célébration) -->
+  </div>
+
+  <!-- QR Code affiché -->
+  <div *ngIf="qrImg" class="qr-container">
+    <h3>QR Code généré</h3>
+    <p class="qr-description">Scannez pour voir la signature</p>
+
+    <a [href]="qrUrl" target="_blank" class="qr-link">
+      <img [src]="qrImg" alt="QR Code de la signature" />
+    </a>
+
+    <br />
+
+    <a [href]="qrImg" download="signature_qr.png" class="download-link">
+      <button class="btn-download">
+        <i class="bi bi-download"></i>
+        Télécharger le QR Code
+      </button>
+    </a>
+    <button class="btn-finish" (click)="finishAndProceed()">
+      <i class="bi bi-check-circle"></i>
+      Terminer et continuer
+    </button>
+  </div>
+</div>

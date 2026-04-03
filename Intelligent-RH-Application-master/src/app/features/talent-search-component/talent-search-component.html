@@ -1,0 +1,31 @@
+<div class="search-container">
+  <h2>Recherche de talents</h2>
+
+  <div class="filters">
+    <input type="number" [(ngModel)]="minScore" placeholder="Score minimum" />
+    <input type="number" [(ngModel)]="maxScore" placeholder="Score maximum" />
+    <input type="text" [(ngModel)]="keyword" placeholder="Mot-clé (prénom, nom, compétence)" />
+    <button (click)="search()">Rechercher</button>
+  </div>
+
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="error">{{ error }}</div>
+  <div *ngIf="!loading && results.length === 0">Aucun profil trouvé.</div>
+
+  <table *ngIf="results.length > 0">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Score</th>
+      <th>Potentiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let profile of results">
+      <td>{{ profile.candidatId }}</td>
+      <td>{{ profile.scoreGlobal }}</td>
+      <td>{{ profile.potentiel }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

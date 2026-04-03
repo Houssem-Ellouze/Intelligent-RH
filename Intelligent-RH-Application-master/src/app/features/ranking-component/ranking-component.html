@@ -1,0 +1,23 @@
+<!-- ranking-component.html -->
+<div class="champions-league-container">
+
+
+  <nav class="capgemini-navbar">
+    <a routerLink="/menu" class="logo">
+      <img
+        src="https://www.capgemini.com/fr-fr/wp-content/themes/capgemini2020/assets/images/logo.svg"
+        alt="Capgemini Logo"
+        class="logo-img"
+        loading="lazy"
+      />
+    </a>
+  </nav>
+
+  <!-- PODIUM — affiché quand 3+ talents chargés -->
+  <app-podium
+    *ngIf="!loading && !errorMessage && ranking.length >= 3"
+    [ranking]="ranking">
+  </app-podium>
+
+
+</div>

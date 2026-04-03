@@ -1,0 +1,67 @@
+<h1>Profile Upload</h1>
+<p class="subtitle">Importez le CV du candidat pour analyse</p>
+
+<div class="form-row">
+  <input
+    type="text"
+    [(ngModel)]="prenom"
+    placeholder="Entrez le prénom"
+  />
+
+  <input
+    type="text"
+    [(ngModel)]="nom"
+    placeholder="Entrez le nom"
+  />
+</div>
+
+<div class="upload-container">
+  <span class="upload-icon">📄</span>
+  <p><strong>Cliquez pour uploader</strong> ou glissez un PDF</p>
+  <p class="file-info">Fichier PDF uniquement (max. 5Mo)</p>
+
+  <input
+    type="file"
+    accept="application/pdf"
+    (change)="onFileSelected($event)"
+  />
+</div>
+
+<button
+  (click)="submit()"
+  [disabled]="loading || !prenom || !nom">
+
+  {{ loading ? 'Analyse en cours...' : 'Générer le profil' }}
+</button>
+
+<div *ngIf="profile" class="profile-card">
+  <div class="card-header">
+    <div class="success-icon">✓</div>
+    <h3>Analyse Terminée</h3>
+  </div>
+
+  <div class="card-body">
+    <div class="score-section">
+      <div class="score-header">
+        <span>Score Global</span>
+        <span class="score-percentage">{{ profile.scoreGlobal }}%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" [style.width.%]="profile.scoreGlobal"></div>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-item">
+        <label>Potentiel</label>
+        <div class="potential-badge" [attr.data-level]="profile.potentiel">
+          {{ profile.potentiel }}
+        </div>
+      </div>
+      <div class="detail-item">
+        <label>ID Profil</label>
+        <div class="id-value">#{{ profile.id }}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kanban-backend
+  namespace: intelligent-rh
+spec:
+  ports:
+    - port: 8088
+  selector:
+    app: kanban-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kanban-backend
+  namespace: intelligent-rh
+spec:
+  selector:
+    matchLabels:
+      app: kanban-backend
+  template:
+    metadata:
+      labels:
+        app: kanban-backend
+    spec:
+      containers:
+        - name: kanban-backend
+          image: houssem80356/intelligent-app2-kanban-backend:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-db:3306/kanban_db?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: ""
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery:8761/eureka/"

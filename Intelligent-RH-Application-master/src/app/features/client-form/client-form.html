@@ -1,0 +1,183 @@
+<div class="page-wrapper">
+  <div class="animated-bg"></div>
+
+  <div class="content-container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2 class="main-title">
+          {{ isEditMode ? 'Modifier le profil de ' + candidatForm.get('prenom')?.value : 'Ajouter un candidat' }}
+        </h2>
+        <p class="subtitle">Gestion du dossier candidat et de ses compétences</p>
+      </div>
+
+      <form [formGroup]="candidatForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-section">
+          <h3><i class="icon-user"></i> Informations Personnelles</h3>
+          <div class="row">
+            <div class="field">
+              <label>Nom</label>
+              <input type="text" formControlName="nom" placeholder="Ex: ELLOUZE">
+            </div>
+            <div class="field">
+              <label>Prénom</label>
+              <input type="text" formControlName="prenom" placeholder="Ex: HOUSSEM">
+            </div>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date de création</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="dateCreation"
+              placeholder="Choisir une date"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <mat-error *ngIf="candidatForm.get('dateCreation')?.invalid">
+              Date invalide
+            </mat-error>
+          </mat-form-field>
+
+
+          <div class="row">
+            <div class="field">
+              <label>Email professionnel</label>
+              <input type="email" formControlName="email" placeholder="exemple@mail.com">
+            </div>
+            <div class="field">
+              <label>Téléphone</label>
+              <input type="text" formControlName="telephone" placeholder="+216 ...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Photo de Profil</label>
+            <input type="file" (change)='onImageSelected($event)' accept="image/*">
+          </div>
+
+          <div class="field">
+            <label>Curriculum Vitae (PDF)</label>
+            <input type="file" (change)='onCvSelected($event)' accept=".pdf">
+          </div>
+
+          <div>
+            <div class="field">
+              <h3 class="poste-actuel">Poste Actuel</h3>
+              <input type="text" formControlName="posteActuel" placeholder="Ex: Développeur Fullstack">
+            </div>
+            <div>
+              <label>Domaine Principal</label>
+              <select formControlName="domainePrincipale"
+                      [class.is-invalid]="candidatForm.get('domainePrincipale')?.invalid && candidatForm.get('domainePrincipale')?.touched">
+                <option value="" disabled>-- Choisir un domaine --</option>
+                @for (domaine of domaines; track domaine) {
+                  <option [value]="domaine">{{ labels[domaine] }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3><i class="icon-briefcase"></i> Profil & Expérience</h3>
+          <div class="row">
+            <div class="field">
+              <label>Années d'expérience</label>
+              <input type="number" formControlName="anneesExperience" min="0">
+            </div>
+            <div class="field">
+              <label>Statut</label>
+              <select formControlName="status">
+                <option value="DISPONIBLE">Disponible</option>
+                <option value="EN_POSTE">En poste</option>
+                <option value="EN_ENTRETIEN">En entretien</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field full-width">
+            <label>Lien du CV (Drive / Dropbox)</label>
+            <input type="url" formControlName="lienCV" placeholder="https://...">
+          </div>
+
+          <div class="row spacing-top">
+            <div class="field">
+              <label>LinkedIn (Optionnel)</label>
+              <input type="text" formControlName="lienLinkedin" placeholder="Lien profil">
+            </div>
+            <div class="field">
+              <label>GitHub (Optionnel)</label>
+              <input type="text" formControlName="lienGitHub" placeholder="Lien repository">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="flex-justify">
+            <h3><i class="icon-star"></i> Compétences</h3>
+            <button type="button" class="btn-secondary" (click)="addCompetence()">
+              + Ajouter
+            </button>
+          </div>
+
+          <div formArrayName="competences" class="competence-list">
+            @for (comp of competences.controls; track comp; let i = $index) {
+              <div [formGroupName]="i" class="row competence-item">
+                <div class="field flex-3">
+                  <label>Technologie</label>
+                  <input type="text" formControlName="libelle" placeholder="ex: Angular">
+                </div>
+                <div class="field flex-2">
+                  <label>Type</label>
+                  <select formControlName="type">
+                    <option value="HARD_SKILL">Hard Skill</option>
+                    <option value="SOFT_SKILL">Soft Skill</option>
+                  </select>
+                </div>
+                <div class="field flex-2">
+                  <label>Niveau</label>
+                  <select formControlName="niveauDeclare">
+                    <option value="DEBUTANT">Débutant</option>
+                    <option value="INTERMEDIAIRE">Intermédiaire</option>
+                    <option value="EXPERT">Expert</option>
+                  </select>
+                </div>
+                <button type="button" class="btn-delete-mini" (click)="removeCompetence(i)">
+                  &times;
+                </button>
+              </div>
+            }
+
+            @if (competences.length === 0) {
+              <p class="empty-msg">Aucune compétence ajoutée.</p>
+            }
+          </div>
+        </div>
+
+        <div class="form-section footer-section">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="consentementDonnees">
+            <span class="checkmark"></span>
+            <span class="label-text">J'accepte le traitement de mes données personnelles (RGPD)</span>
+          </label>
+
+          @if (candidatForm.invalid && candidatForm) {
+            <p style="color: #ff4d4d; font-size: 0.8rem; margin-top: 10px;">
+              ⚠️ Formulaire incomplet ou RGPD non coché.
+            </p>
+          }
+
+          <div class="actions">
+            <button type="button" class="btn-cancel" (click)="onCancel()">Annuler</button>
+            <button type="submit" class="btn-submit" [disabled]="candidatForm.invalid">
+              {{ isEditMode ? 'Enregistrer' : 'Créer le candidat' }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

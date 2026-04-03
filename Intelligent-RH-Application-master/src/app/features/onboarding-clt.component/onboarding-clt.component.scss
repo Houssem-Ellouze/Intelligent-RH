@@ -1,0 +1,951 @@
+
+// ══════════════════════════════════════════════════
+//  TOKENS — Dark Navy Universe (same as example)
+// ══════════════════════════════════════════════════
+$bg-deep:   #0d1120;
+$bg-page:   #334670;
+$surface:   #0d1120;
+$surface2:  #111827;
+$blue:      #3B82F6;
+$green:     #10B981;
+$violet:    #A855F7;
+$rose:      #F43F5E;
+$amber:     #F59E0B;
+$white:     #ffffff;
+$text:      rgba(255,255,255,.85);
+$sub:       rgba(255,255,255,.38);
+$muted:     rgba(255,255,255,.18);
+$border:    rgba(255,255,255,.07);
+$border2:   rgba(255,255,255,.12);
+
+// ══════════════════════════════════════════════════
+//  KEYFRAMES — Animations élégantes
+// ══════════════════════════════════════════════════
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%     { opacity: .4; transform: scale(1.5); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(28px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+
+@keyframes glow-blue {
+  0%,100% { box-shadow: 0 0 30px rgba($blue, .15); }
+  50%     { box-shadow: 0 0 55px rgba($blue, .35); }
+}
+
+@keyframes glow-green {
+  0%,100% { box-shadow: 0 0 30px rgba($green, .15); }
+  50%     { box-shadow: 0 0 55px rgba($green, .35); }
+}
+
+@keyframes glow-violet {
+  0%,100% { box-shadow: 0 0 30px rgba($violet, .15); }
+  50%     { box-shadow: 0 0 55px rgba($violet, .35); }
+}
+
+// ══════════════════════════════════════════════════
+//  BASE STYLES
+// ══════════════════════════════════════════════════
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: $bg-page;
+  color: $text;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+code, pre, .mono {
+  font-family: 'DM Mono', monospace;
+}
+
+// ══════════════════════════════════════════════════
+//  ANIMATED BG — Grille subtile + orbs colorés
+// ══════════════════════════════════════════════════
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, $bg-page 0%, $bg-deep 100%);
+
+  // Grille subtile
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px, transparent 1px, transparent 80px);
+  }
+
+  // Orb bleu
+  &::after {
+    content: '';
+    position: absolute;
+    top: -15%;
+    left: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba($blue, .12) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PAGE WRAPPER — Orbs supplémentaires
+// ══════════════════════════════════════════════════
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+
+  &::before {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($violet, .1) 0%, transparent 58%);
+    border-radius: 50%;
+    animation: float 26s ease-in-out 6s infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 55%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba($green, .07) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 18s ease-in-out 3s infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.content-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+  backdrop-filter: blur(2px);
+}
+
+// ══════════════════════════════════════════════════
+//  HERO HEADER — Style épuré comme l'exemple
+// ══════════════════════════════════════════════════
+.hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  animation: fade-rise .6s ease both;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.badge-sunny {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  border: 1px solid $border;
+  border-radius: 99px;
+  padding: .3rem .9rem;
+  width: fit-content;
+
+  i {
+    color: $blue;
+    animation: pulse 2s infinite;
+  }
+}
+
+.main-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  color: $white;
+  line-height: 1.1;
+  margin: 0;
+
+  // Effet gradient comme l'exemple
+  background: linear-gradient(90deg, $blue, $violet, $green);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  margin-top: .5rem;
+  font-size: .95rem;
+  color: $sub;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+// ══════════════════════════════════════════════════
+//  STATS — Comme dans l'exemple
+// ══════════════════════════════════════════════════
+.stat-sunny {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .5rem 1.2rem .5rem .5rem;
+  background: rgba($bg-deep, .4);
+  backdrop-filter: blur(8px);
+  border: 1px solid $border;
+  border-radius: 99px;
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba($blue, .13);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $blue;
+    font-size: 1.2rem;
+  }
+
+  .stat-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-count {
+    font-size: 1.3rem;
+    font-weight: 900;
+    line-height: 1;
+    color: $white;
+  }
+
+  .stat-label {
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: $sub;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  BUTTON — Style neo comme l'exemple
+// ══════════════════════════════════════════════════
+.btn-neo-add {
+  position: relative;
+  padding: .8rem 1.8rem;
+  background: rgba($blue, .12);
+  border: 1px solid rgba($blue, .45);
+  border-radius: 14px;
+  color: $blue;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .05em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .3s cubic-bezier(.34,1.3,.64,1);
+
+  .btn-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  &:hover {
+    background: rgba($blue, .22);
+    border-color: rgba($blue, .8);
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba($blue, .3);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FILTER BAR
+// ══════════════════════════════════════════════════
+.filter-bar {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  animation: fade-rise .6s ease .12s both;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.search-input-wrapper {
+  flex: 2;
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $sub;
+    font-size: 1rem;
+    z-index: 2;
+  }
+}
+
+.neo-input {
+  width: 100%;
+  padding: .8rem 1rem .8rem 2.8rem;
+  background: rgba(255,255,255,.05);
+  border: 1px solid $border2;
+  border-radius: 14px;
+  color: $text;
+  font-family: 'Outfit', sans-serif;
+  font-size: .9rem;
+  outline: none;
+  backdrop-filter: blur(8px);
+  transition: all .2s;
+
+  &::placeholder {
+    color: $muted;
+  }
+
+  &:focus {
+    border-color: rgba($blue, .5);
+    box-shadow: 0 0 0 3px rgba($blue, .1);
+  }
+}
+
+.filter-buttons {
+  display: flex;
+  gap: .5rem;
+}
+
+.btn-filter-sunny {
+  padding: .6rem 1.5rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid $border;
+  border-radius: 14px;
+  color: $sub;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover {
+    background: rgba($blue, .08);
+    border-color: rgba($blue, .3);
+    color: $blue;
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background: rgba($blue, .15);
+    border-color: $blue;
+    color: $blue;
+    font-weight: 700;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  TALENT GRID
+// ══════════════════════════════════════════════════
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+// ══════════════════════════════════════════════════
+//  TALENT CARD — Style exact comme l'exemple
+// ══════════════════════════════════════════════════
+.talent-card {
+  animation: card-in .5s cubic-bezier(.34,1.3,.64,1) both;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 50}ms;
+    }
+  }
+}
+
+.card-inner {
+  position: relative;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 22px;
+  padding: 2rem 1.5rem 1.5rem;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1),
+  border-color .3s,
+  box-shadow .3s,
+  background .3s;
+  isolation: isolate;
+
+  // Glow effect comme dans l'exemple
+  &::before {
+    content: '';
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0;
+    top: -40px;
+    right: -40px;
+    transition: opacity .4s;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-12px) scale(1.025);
+
+    &::before {
+      opacity: .4;
+    }
+
+    .exp-chip {
+      transform: scale(1.08) translateY(-4px);
+    }
+
+    .profile-avatar {
+      transform: rotate(-4deg) scale(1.1);
+    }
+
+    .progress-fill::after {
+      transform: translateY(-50%) scale(1.5);
+    }
+  }
+
+
+  &.completed {
+    &::before { background: $green; }
+    border-color: rgba($green, .3);
+
+    .exp-chip { border-color: rgba($green, .4); }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  EXP CHIP — Comme le .num dans l'exemple
+// ══════════════════════════════════════════════════
+.exp-chip {
+  position: absolute;
+  top: 1rem;
+  right: 1.4rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  transition: transform .3s;
+  pointer-events: none;
+
+  .exp-val {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -.06em;
+    color: rgba(255,255,255,.15);
+  }
+
+  .exp-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: .55rem;
+    letter-spacing: .2em;
+    color: $muted;
+    text-transform: uppercase;
+    margin-top: -.5rem;
+  }
+
+  &.completed-chip {
+    .exp-val {
+      color: rgba($green, .25);
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  AVATAR — Comme le .icon dans l'exemple
+// ══════════════════════════════════════════════════
+.avatar-wrapper {
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid $border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+.profile-avatar {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: $text;
+  transition: transform .3s;
+}
+
+// ══════════════════════════════════════════════════
+//  CARD TOP
+// ══════════════════════════════════════════════════
+.card-top {
+  z-index: 2;
+}
+
+.user-base {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.user-name {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: $text;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.user-mail {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  color: $sub;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+
+  i {
+    color: $muted;
+  }
+}
+
+.user-domain {
+  display: inline-block;
+  margin-top: .3rem;
+  padding: .2rem .8rem;
+  border: 1px solid $border;
+  border-radius: 99px;
+  font-size: .65rem;
+  font-weight: 500;
+  width: fit-content;
+  z-index: 2;
+
+  &.completed-domain {
+    border-color: rgba($green, .3);
+    color: $green;
+    background: rgba($green, .05);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  CARD MID — Ligne de contact
+// ══════════════════════════════════════════════════
+.card-mid {
+  z-index: 2;
+  margin-top: .5rem;
+}
+
+.contact-line {
+  font-size: .8rem;
+  color: $sub;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 0;
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+
+  i {
+    color: $blue;
+    font-size: .9rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PROGRESS BAR — Comme le .line dans l'exemple
+// ══════════════════════════════════════════════════
+.card-skills {
+  z-index: 2;
+}
+
+.skills-title {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: $muted;
+  margin-bottom: .5rem;
+}
+
+.progress-sunny {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.progress-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,.1);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .5s cubic-bezier(.34,1.3,.64,1);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: $white;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    transition: transform .3s;
+  }
+}
+
+.progress-value {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  color: $sub;
+  min-width: 2.5rem;
+}
+
+// ══════════════════════════════════════════════════
+//  CARD BOTTOM — Actions
+// ══════════════════════════════════════════════════
+.card-bottom {
+  z-index: 2;
+  margin-top: auto;
+  padding-top: .5rem;
+  border-top: 1px solid $border;
+  display: flex;
+  gap: .8rem;
+}
+
+.action-btn {
+  flex: 1;
+  padding: .6rem 1rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid $border;
+  border-radius: 10px;
+  color: $sub;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: .75rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+
+  &:hover:not(:disabled) {
+    background: rgba($blue, .1);
+    border-color: $blue;
+    color: $blue;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}
+
+.completed-badge {
+  flex: 1;
+  padding: .6rem 1rem;
+  background: rgba($green, .08);
+  border: 1px solid rgba($green, .3);
+  border-radius: 10px;
+  color: $green;
+  font-weight: 600;
+  font-size: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+
+  i {
+    animation: pulse 2s infinite;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PAGINATION
+// ══════════════════════════════════════════════════
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  background: rgba($bg-deep, .4);
+  backdrop-filter: blur(8px);
+  border: 1px solid $border;
+  border-radius: 18px;
+}
+
+.page-btn {
+  padding: .5rem 1.5rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid $border;
+  border-radius: 10px;
+  color: $sub;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover:not(:disabled) {
+    background: rgba($blue, .1);
+    border-color: $blue;
+    color: $blue;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: .3;
+    cursor: not-allowed;
+  }
+}
+
+.page-info {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  color: $muted;
+
+  strong {
+    color: $blue;
+    font-size: .8rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  LOADING / EMPTY STATES
+// ══════════════════════════════════════════════════
+.cosmic-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
+  background: rgba($bg-deep, .4);
+  backdrop-filter: blur(8px);
+  border: 1px solid $border;
+  border-radius: 30px;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba($blue, .15);
+    border-top-color: $blue;
+    border-right-color: $violet;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem;
+    color: $sub;
+    letter-spacing: .1em;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  background: rgba($bg-deep, .4);
+  backdrop-filter: blur(8px);
+  border: 1px solid $border;
+  border-radius: 30px;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: .5;
+  }
+
+  p {
+    color: $sub;
+    font-size: .9rem;
+  }
+
+  &.error {
+    border-color: rgba($rose, .3);
+
+    .empty-icon {
+      animation: pulse 2s infinite;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  RESPONSIVE
+// ══════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  .talent-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-buttons {
+    width: 100%;
+    justify-content: stretch;
+
+    .btn-filter-sunny {
+      flex: 1;
+    }
+  }
+
+  .card-bottom {
+    flex-direction: column;
+  }
+
+  .pagination-bar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .exp-chip .exp-val {
+    font-size: 2.5rem;
+  }
+
+  .user-name {
+    font-size: 1.1rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════
+.text-gradient {
+  background: linear-gradient(90deg, $blue, $violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-blue {
+  animation: glow-blue 3s ease-in-out infinite;
+}
+
+.glow-green {
+  animation: glow-green 3s ease-in-out infinite;
+}
+
+.glow-violet {
+  animation: glow-violet 3s ease-in-out infinite;
+}

@@ -1,0 +1,8 @@
+<!-- logout.component.html -->
+<button (click)="onLogout()" [disabled]="loading">
+  {{ loading ? 'Déconnexion...' : 'Se déconnecter' }}
+</button>
+
+<div *ngIf="errorMessage" style="color: red; margin-top: 10px;">
+  {{ errorMessage }}
+</div>

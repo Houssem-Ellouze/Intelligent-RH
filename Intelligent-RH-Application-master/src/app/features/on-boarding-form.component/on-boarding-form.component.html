@@ -1,0 +1,26 @@
+<div class="onboarding-container">
+  <h3>Transformation du Collaborateur</h3>
+
+  <form [formGroup]="onBoardingForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="id">ID du Candidateur :</label>
+      <input id="id" type="number" formControlName="id" placeholder="Ex: 123">
+    </div>
+
+    <div class="form-group">
+      <label for="metier">Métier cible :</label>
+      <select id="metier" formControlName="metier">
+        <option value="" disabled selected>-- Choisir un domaine --</option>
+        <option *ngFor="let m of metiers" [value]="m.value">
+          {{ m.label }}
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="onBoardingForm.invalid">
+      Transformer le collaborateur
+    </button>
+  </form>
+
+  <p *ngIf="message" class="status-message">{{ message }}</p>
+</div>

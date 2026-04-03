@@ -1,0 +1,37 @@
+<body>
+<!-- Éléments décoratifs -->
+<div class="floating-shape shape-1"></div>
+<div class="floating-shape shape-2"></div>
+
+<!-- Formulaire -->
+<form (ngSubmit)="submit()" [formGroup]="form">
+  <div class="logo"></div>
+
+  <input
+    type="email"
+    formControlName="email"
+    placeholder="Adresse email"
+    autocomplete="email"
+  >
+
+  <input
+    type="password"
+    formControlName="password"
+    placeholder="Mot de passe"
+    autocomplete="current-password"
+  >
+
+  <div class="forgot-password">
+    <a href="/register">Inscription</a>
+  </div>
+  <div class="forgot-password">
+    <a href="/reset-password-request">Mot de passe oublié ?</a>
+  </div>
+
+  <button type="submit">
+    <span>Se connecter</span>
+  </button>
+
+  <p *ngIf="error">{{ error }}</p>
+</form>
+</body>

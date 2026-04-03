@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding Sunny · Gestion des talents</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="onboarding-clt.component.scss">
+</head>
+<body>
+<!-- Fond animé -->
+<div class="animated-bg"></div>
+
+<div class="page-wrapper">
+  <div class="content-container">
+
+    <!-- ░░ HEADER JOYEUX ░░ -->
+    <header class="hero-header">
+      <div class="title-section">
+          <span class="badge-sunny">
+            <i class="bi bi-sun"></i>
+            ONBOARDING
+          </span>
+        <h1 class="main-title">
+          Parcours d'intégration
+        </h1>
+        <p class="subtitle">Accompagnez vos nouveaux talents avec douceur ✨</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-neo-add" routerLink="/master-onboarding">
+            <span class="btn-content">
+              <i class="bi bi-stars"></i>
+              <span>WORKFLOW</span>
+              <i class="bi bi-arrow-right-short"></i>
+            </span>
+        </button>
+
+        <div class="stat-sunny">
+          <div class="stat-icon">
+            <i class="bi bi-emoji-smile"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-count">{{ collaborateurs.length }}</span>
+            <span class="stat-label">Talents suivis</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ░░ FILTRES ░░ -->
+    <div class="filter-bar">
+      <div class="search-input-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text"
+               class="neo-input"
+               (input)="onSearch($event)"
+               placeholder="Rechercher un talent...">
+      </div>
+
+      <div class="filter-buttons">
+        <button (click)="filtrerParStatut('TOUT')"
+                [class.active]="filtreStatutActuel === 'TOUT'"
+                class="btn-filter-sunny">
+          Tous
+        </button>
+        <button (click)="filtrerParStatut('EN_COURS')"
+                [class.active]="filtreStatutActuel === 'EN_COURS'"
+                class="btn-filter-sunny">
+          En cours
+        </button>
+        <button (click)="filtrerParStatut('TERMINE')"
+                [class.active]="filtreStatutActuel === 'TERMINE'"
+                class="btn-filter-sunny">
+          Terminés ✓
+        </button>
+      </div>
+    </div>
+
+    <!-- ░░ GRILLE DE CARTES ░░ -->
+    <div class="talent-grid" *ngIf="collaborateurs.length > 0; else loadingOrEmpty">
+      <article *ngFor="let collab of collaborateursPagines; let i = index"
+               class="talent-card"
+               [class.completed]="collab.statutOnboarding === 'TERMINE'">
+
+        <div class="card-inner">
+          <!-- Chip de statut -->
+          <div class="exp-chip" [class.completed-chip]="collab.statutOnboarding === 'TERMINE'">
+            <span class="exp-val">{{ collab.statutOnboarding === 'TERMINE' ? '✓' : i+1 }}</span>
+            <span class="exp-unit">{{ collab.statutOnboarding === 'TERMINE' ? 'DONE' : 'ÉTAPE' }}</span>
+          </div>
+
+          <!-- Zone avatar avec zigzag -->
+          <div class="avatar-wrapper">
+            <div class="profile-avatar">
+              {{ collab.prenom.charAt(0) }}{{ collab.nom.charAt(0) }}
+            </div>
+          </div>
+
+          <!-- Contenu carte -->
+          <div class="card-top">
+            <div class="user-base">
+              <h2 class="user-name">{{ collab.prenom }} {{ collab.nom }}</h2>
+              <span class="user-mail">
+                  <i class="bi bi-tag"></i> #{{ collab.matricule }}
+                </span>
+              <span class="user-domain" [class.completed-domain]="collab.statutOnboarding === 'TERMINE'">
+                  {{ collab.departement.nom || 'Non affecté' }}
+                </span>
+            </div>
+          </div>
+
+          <div class="card-mid">
+            <div class="contact-line">
+              <i class="bi bi-envelope"></i>
+              <span>{{ collab.emailPro || 'Email non renseigné' }}</span>
+            </div>
+          </div>
+
+          <!-- Barre de progression -->
+          <div class="card-skills">
+            <div class="skills-title">Progression</div>
+            <div class="progress-sunny">
+              <div class="progress-track">
+                <div class="progress-fill" [style.width]="getProgressBarWidth(collab)"></div>
+              </div>
+              <span class="progress-value">{{ getProgressBarWidth(collab) }}</span>
+            </div>
+          </div>
+
+          <!-- Footer avec actions -->
+          <div class="card-bottom">
+            <button *ngIf="collab.statutOnboarding !== 'TERMINE'"
+                    (click)="cloturerDossier(collab.id)"
+                    class="action-btn validate"
+                    [disabled]="isFinalizing">
+              <i class="bi bi-check2-circle"></i>
+              <span *ngIf="!isFinalizing">Valider</span>
+              <span *ngIf="isFinalizing">...</span>
+            </button>
+
+            <div *ngIf="collab.statutOnboarding === 'TERMINE'" class="completed-badge">
+              <i class="bi bi-emoji-sunglasses"></i>
+              <span>Intégré !</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ░░ PAGINATION ░░ -->
+    <nav class="pagination-bar" *ngIf="collaborateurs.length > itemsParPage">
+      <button class="page-btn"
+              [disabled]="pageActuelle === 1"
+              (click)="changerPage(pageActuelle - 1)">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+
+      <span class="page-info">
+          Page <strong>{{ pageActuelle }}</strong> sur <strong>{{ totalPages }}</strong>
+        </span>
+
+      <button class="page-btn"
+              [disabled]="pageActuelle === totalPages"
+              (click)="changerPage(pageActuelle + 1)">
+        <i class="bi bi-arrow-right"></i>
+      </button>
+    </nav>
+
+    <!-- ░░ LOADING / EMPTY STATE ░░ -->
+    <ng-template #loadingOrEmpty>
+      <div class="empty-state" *ngIf="!loadingError; else errorState">
+        <div class="empty-icon" *ngIf="collaborateurs.length === 0">🌱</div>
+        <div class="cosmic-loader" *ngIf="collaborateurs.length === 0">
+          <div class="spinner"></div>
+          <p>Chargement des talents</p>
+        </div>
+      </div>
+
+      <ng-template #errorState>
+        <div class="empty-state error">
+          <div class="empty-icon">😵‍💫</div>
+          <h3 style="margin: 1rem 0;">Oups !</h3>
+          <p>Connexion impossible</p>
+          <button class="btn-neo-add" style="margin-top: 2rem;" (click)="chargerCollaborateurs()">
+              <span class="btn-content">
+                <i class="bi bi-arrow-repeat"></i>
+                Réessayer
+              </span>
+          </button>
+        </div>
+      </ng-template>
+    </ng-template>
+
+  </div>
+</div>
+</body>
+</html>

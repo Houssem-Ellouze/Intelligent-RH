@@ -1,0 +1,729 @@
+// Variables RH Tech
+$primary-blue: #2a6df4;
+$secondary-blue: #00c3ff;
+$deep-blue: #0a1a3a;
+$accent-purple: #7b2eda;
+$success-green: #00d68f;
+$warning-orange: #ffaa5e;
+$data-gray: #1e263a;
+$card-bg: rgba(18, 25, 45, 0.85);
+$text-primary: #ffffff;
+$text-secondary: #8a99b4;
+$grid-line: rgba(42, 109, 244, 0.15);
+$neon-glow: rgba(42, 109, 244, 0.5);
+
+// Mixins technologiques
+@mixin glass-morphism {
+  background: rgba(18, 25, 45, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(42, 109, 244, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+}
+
+@mixin tech-border {
+  border: 1px solid rgba($primary-blue, 0.3);
+  border-radius: 8px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid rgba($primary-blue, 0.1);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+}
+
+@mixin data-stream {
+  background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($primary-blue, 0.2),
+      transparent
+  );
+  background-size: 200% 100%;
+  animation: dataFlow 2s linear infinite;
+}
+
+@mixin hexagon-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='64' viewBox='0 0 56 64'%3E%3Cpath d='M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z' fill='none' stroke='%232a6df4' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 60px 70px;
+}
+
+// Animations futuristes
+@keyframes pulse-neon {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes dataFlow {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float-tech {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes flicker-tech {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+// Style principal
+.reset-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at top, $deep-blue, #0a0f1f);
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+
+  // Grille hexagonale intelligente
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include hexagon-pattern;
+    opacity: 0.5;
+    animation: spin-slow 200s linear infinite;
+    pointer-events: none;
+  }
+
+  // Lignes de données
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent,
+      $primary-blue,
+      $accent-purple,
+      $primary-blue,
+      transparent
+    );
+    animation: scan-line 4s linear infinite;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+// Éléments décoratifs high-tech
+.decorative-element {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle at center,
+    rgba($primary-blue, 0.15) 0%,
+    rgba($accent-purple, 0.1) 50%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  animation: pulse-neon 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.decorative-1 {
+  top: -200px;
+  left: -200px;
+  animation-delay: -2s;
+}
+
+.decorative-2 {
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle at center,
+    rgba($accent-purple, 0.15) 0%,
+    rgba($primary-blue, 0.1) 50%,
+    transparent 70%
+  );
+  animation-delay: -4s;
+}
+
+// Éléments cyberpunk RH
+.cyber-element {
+  position: absolute;
+  border: 1px solid rgba($primary-blue, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid rgba($accent-purple, 0.2);
+    animation: pulse-neon 3s infinite;
+  }
+}
+
+.cyber-1 {
+  top: 10%;
+  right: 5%;
+  width: 300px;
+  height: 300px;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: spin-slow 40s linear infinite;
+
+  &::after {
+    content: '{ HR-DATA }';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba($primary-blue, 0.3);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    white-space: nowrap;
+    animation: flicker-tech 3s infinite;
+  }
+}
+
+.cyber-2 {
+  bottom: 15%;
+  left: 3%;
+  width: 200px;
+  height: 200px;
+  border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+  animation: spin-slow 30s linear infinite reverse;
+}
+
+// Points lumineux (données actives)
+.light-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: $primary-blue;
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px $primary-blue,
+    0 0 20px $primary-blue;
+  animation: pulse-neon 2s ease-in-out infinite;
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 1px solid rgba($primary-blue, 0.3);
+    border-radius: 50%;
+    animation: pulse-neon 1.5s ease-in-out infinite;
+  }
+}
+
+// Formulaire intelligent
+form {
+  position: relative;
+  width: 800px;
+  max-width: 90%;
+  padding: 3rem;
+  @include glass-morphism;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem 2rem;
+  border-radius: 20px;
+  z-index: 10;
+
+  // Effet de bordure animée
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+      $primary-blue,
+      $accent-purple,
+      $secondary-blue,
+      $primary-blue
+    );
+    background-size: 400% 400%;
+    border-radius: 22px;
+    opacity: 0.3;
+    animation: gradientShift 10s ease infinite;
+    z-index: -1;
+  }
+
+  // Lignes de données internes
+  &::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: rgba($text-secondary, 0.3);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    animation: flicker-tech 4s infinite;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+// Titre avec effet data
+.registration-title {
+  grid-column: span 2;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(135deg, $primary-blue, $accent-purple);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  position: relative;
+  padding: 1rem 0;
+
+  &::before {
+    content: 'REGISTRATION';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: rgba($primary-blue, 0.2);
+    transform: translate(5px, 5px);
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent,
+      $primary-blue,
+      $accent-purple,
+      transparent
+    );
+  }
+}
+
+// Labels intelligents
+label {
+  color: $text-secondary;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  align-self: center;
+  position: relative;
+  padding-left: 1rem;
+
+  &::before {
+    content: '>';
+    color: $primary-blue;
+    margin-right: 8px;
+    font-weight: bold;
+    animation: pulse-neon 2s infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 1px;
+    background: $primary-blue;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// Champs de saisie intelligents
+input, select {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: rgba($data-gray, 0.6);
+  border: 1px solid rgba($primary-blue, 0.3);
+  border-radius: 8px;
+  color: $text-primary;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  // Effet de données en arrière-plan
+  background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba($primary-blue, 0.1),
+      transparent
+  );
+  background-size: 200% 100%;
+
+  &:hover {
+    border-color: $primary-blue;
+    box-shadow: 0 0 15px rgba($primary-blue, 0.2);
+    background-position: 100% 0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent-purple;
+    box-shadow:
+      0 0 0 3px rgba($accent-purple, 0.2),
+      0 0 20px rgba($primary-blue, 0.3);
+    background: rgba($data-gray, 0.8);
+    transform: translateY(-2px);
+
+    // Animation de scan lors du focus
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent,
+        $primary-blue,
+        $accent-purple,
+        transparent
+      );
+      animation: dataFlow 2s linear infinite;
+    }
+  }
+
+  &::placeholder {
+    color: rgba($text-secondary, 0.4);
+    font-size: 0.9rem;
+  }
+}
+
+// Style spécifique pour select
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232a6df4' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2rem;
+
+  option {
+    background: $data-gray;
+    color: $text-primary;
+    padding: 1rem;
+  }
+}
+
+// Bouton intelligent
+button {
+  grid-column: span 2;
+  margin-top: 2rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, $primary-blue, $accent-purple);
+  border: none;
+  border-radius: 8px;
+  color: $text-primary;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  // Effet de balayage data
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  // Effet de pulse intelligent
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 25px -5px $primary-blue,
+      0 0 30px rgba($primary-blue, 0.5);
+
+    &::before {
+      left: 100%;
+    }
+
+    &::after {
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: '[';
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+
+    &::after {
+      content: ']';
+      margin-left: 8px;
+      opacity: 0.7;
+    }
+  }
+}
+
+// Animation de chargement RH
+button.loading {
+  pointer-events: none;
+  opacity: 0.8;
+
+  span {
+    opacity: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    border: 2px solid $text-primary;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin-slow 1s linear infinite;
+  }
+}
+
+// Messages d'erreur intelligents
+.error-message {
+  grid-column: span 2;
+  margin: 1rem 0 0;
+  padding: 1rem;
+  background: rgba($warning-orange, 0.1);
+  color: $warning-orange;
+  border: 1px solid rgba($warning-orange, 0.3);
+  border-radius: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  text-align: center;
+  position: relative;
+  animation: flicker-tech 0.5s ease;
+
+  &::before {
+    content: '⚠ ALERT: ';
+    font-weight: bold;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent,
+      $warning-orange,
+      transparent
+    );
+    animation: dataFlow 2s linear infinite;
+  }
+}
+
+// Indicateurs de validation intelligents
+input.ng-valid, select.ng-valid {
+  border-left: 4px solid $success-green;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%2300d68f'%3E%3Cpath d='M20 6L9 17l-5-5-1.5 1.5L9 20 21.5 7.5z'/%3E%3C/svg%3E"),
+  linear-gradient(90deg, transparent, rgba($primary-blue, 0.1), transparent);
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 1rem center, 0 0;
+  background-size: 1rem, 200% 100%;
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border-left: 4px solid $warning-orange;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23ffaa5e'%3E%3Cpath d='M12 2L2 19h20L12 2zm0 4l2.5 5h-5L12 6zm-2 7h4v4h-4v-4z'/%3E%3C/svg%3E"),
+  linear-gradient(90deg, transparent, rgba($warning-orange, 0.1), transparent);
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 1rem center, 0 0;
+  background-size: 1rem, 200% 100%;
+}
+
+// Effet matrix rain optionnel
+.matrix-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0.1;
+
+  span {
+    position: absolute;
+    color: $primary-blue;
+    font-family: monospace;
+    font-size: 12px;
+    animation: matrix-rain 3s linear infinite;
+    white-space: nowrap;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  form {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+
+    label, input, select, button {
+      grid-column: span 1;
+    }
+  }
+
+  .registration-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+
+  .cyber-element {
+    display: none;
+  }
+
+  .decorative-element {
+    opacity: 0.1;
+  }
+}
+
+// Stats en temps réel (optionnel)
+.real-time-stats {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: rgba($text-secondary, 0.3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  z-index: 20;
+  animation: flicker-tech 5s infinite;
+
+  span {
+    color: $primary-blue;
+  }
+}
+
+// Effet de survol intelligent sur les champs
+input:hover, select:hover {
+  & + label::after {
+    width: 100%;
+  }
+}
+
+// Style pour l'autofill
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: $text-primary;
+  -webkit-box-shadow: 0 0 0px 1000px rgba($data-gray, 0.9) inset;
+  border-color: $primary-blue;
+  transition: background-color 5000s ease-in-out 0s;
+}

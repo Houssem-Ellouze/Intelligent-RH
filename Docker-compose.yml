@@ -1,0 +1,260 @@
+services:
+  # --- DATABASE ---
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=talent_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  # --- SONARQUBE ---
+  sonardb:
+    image: postgres:15
+    container_name: sonardb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=sonar
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d sonar"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sonarqube
+    depends_on:
+      sonardb:
+        condition: service_healthy
+    ports:
+      - "30009:9000"
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
+      - SONAR_JDBC_USERNAME=admin
+      - SONAR_JDBC_PASSWORD=admin
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/status"]
+      interval: 20s
+      timeout: 10s
+      retries: 20
+
+  # --- TOOLS ---
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - microservices-network
+
+  # --- INFRASTRUCTURE ---
+  discovery:
+    build: ./Intelligent_Rh_Application-master/Discovery
+    image: houssem80356/intelligent-app2-discovery:latest
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8761/ || exit 1"]
+      interval: 10s
+      retries: 10
+
+  config-server:
+    build: ./Intelligent_Rh_Application-master/ConfigServer
+    image: houssem80356/intelligent-app2-config-server:latest
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1"]
+      interval: 10s
+      retries: 10
+
+  gateway:
+    build: ./Intelligent_Rh_Application-master/Gateway
+    image: houssem80356/intelligent-app2-gateway:latest
+    container_name: gateway
+    ports:
+      - "8222:8222"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    depends_on:
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  # --- BUSINESS SERVICES ---
+  talent-management-service:
+    build: ./Intelligent_Rh_Application-master/Talent-Management
+    image: houssem80356/intelligent-app2-talent-management-service:latest
+    container_name: talent-management-service
+    ports:
+      - "9002:9002"
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/talent_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - MAIL_HOST=maildev
+      - MAIL_PORT=1025
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  recrutement-service:
+    build: ./Intelligent_Rh_Application-master/Recruitment
+    image: houssem80356/intelligent-app2-recrutement-service:latest
+    container_name: recrutement-service
+    ports:
+      - "8082:8082"
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/recrutement_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - TALENT_SERVICE_URL=http://talent-management-service:9002
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  scoutisme-service:
+    build: ./Intelligent_Rh_Application-master/Scoutisme
+    image: houssem80356/intelligent-app2-scoutisme-service:latest
+    container_name: scoutisme-service
+    ports:
+      - "9009:9009"
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/scoutisme_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - TALENT_SERVICE_URL=http://talent-management-service:9002
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  kanban-backend:
+    build: ./Intelligent_Rh_Application-master/Board
+    image: houssem80356/intelligent-app2-kanban-backend:latest
+    container_name: kanban-backend
+    ports:
+      - "8088:8088"
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/kanban_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - TALENT_SERVICE_URL=http://talent-management-service:9002
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  admin-contract-onboarding-service:
+    build: ./Intelligent_Rh_Application-master/Admin_Onboarding_Service
+    image: houssem80356/intelligent-app2-admin-contract-onboarding-service:latest
+    container_name: admin-contract-onboarding-service
+    ports:
+      - "8083:8083"
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/db_admin_onboarding?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - TALENT_SERVICE_URL=http://talent-management-service:9002
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  # ==================== FRONTEND ====================
+  frontend:
+    build:
+      context: ./Intelligent-RH-Application-master
+      dockerfile: Dockerfile
+    image: houssem80356/intelligent-app2-frontend:latest
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      gateway:
+        condition: service_started
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  # ==================== JOB PREDICTION ====================
+  job-prediction:
+    build:
+      context: ./Intelligent_Rh_Application-master/JobPrediction
+      dockerfile: Dockerfile
+    image: houssem80356/intelligent-app2-job-prediction:latest
+    container_name: job-prediction
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+networks:
+  microservices-network:
+    external: true
+
+volumes:
+  mysql-data:
+  postgresql_data:
+  sonarqube_data:
+  sonarqube_extensions:

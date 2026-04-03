@@ -1,0 +1,88 @@
+<nav class="capgemini-navbar">
+  <a routerLink="/menu" class="logo">
+    <img
+      src="https://www.capgemini.com/fr-fr/wp-content/themes/capgemini2020/assets/images/logo.svg"
+      alt="Capgemini Logo"
+      class="logo-img"
+      loading="lazy"
+    />
+  </a>
+</nav>
+<div class="container">
+  <div class="calendar-container" cdkDropListGroup>
+
+    <h1>RDV Calendar</h1>
+
+    <!-- HEADER -->
+    <div class="calendar-header">
+
+      <div class="calendar-title">
+        <h2 *ngIf="currentView !== CalendarView.Day">
+          {{ viewDate | date:'MMMM y' }}
+        </h2>
+        <h2 *ngIf="currentView === CalendarView.Day">
+          {{ viewDate | date:'d MMMM y' }}
+        </h2>
+        <span *ngIf="currentView === CalendarView.Day">
+          {{ viewDate | date:'EEEE' }}
+        </span>
+      </div>
+
+      <mat-button-toggle-group
+        [value]="currentView"
+        (change)="switchToView($event.value)">
+        <mat-button-toggle [value]="CalendarView.Month">Month</mat-button-toggle>
+        <mat-button-toggle [value]="CalendarView.Week">Week</mat-button-toggle>
+        <mat-button-toggle [value]="CalendarView.Day">Day</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div class="calendar-controls">
+        <button mat-icon-button (click)="previous()"><mat-icon>-</mat-icon></button>
+        <button mat-stroked-button (click)="viewToday()">Today</button>
+        <button mat-icon-button (click)="next()"><mat-icon>+</mat-icon></button>
+        <button mat-flat-button color="primary" (click)="addAppointment()">Add</button>
+        <button mat-raised-button color="accent" (click)="refreshAppointments()">Refresh</button>
+      </div>
+    </div>
+
+    <!-- MONTH VIEW -->
+    <table *ngIf="currentView === CalendarView.Month" class="calendar-view-month">
+      <thead>
+      <tr>
+        <th *ngFor="let d of weekDays">{{ d }}</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let week of weeks">
+        <td *ngFor="let date of week"
+            cdkDropList
+            [id]="getDropListId(date)"
+            [cdkDropListData]="getAppointmentsForDate(date)"
+            [cdkDropListConnectedTo]="connectedDropListsIds"
+            (cdkDropListDropped)="drop($event, date)"
+            [class.today]="isToday(date)">
+
+          <div class="calendar-cell">
+            <div class="date-number">{{ date.getDate() }}</div>
+
+            <div *ngFor="let a of getAppointmentsForDate(date)"
+                 class="appointment"
+                 cdkDrag
+                 [cdkDragData]="a"
+                 [style.backgroundColor]="a.color"
+                 (click)="editAppointment(a, $event)">
+              <div>{{ a.title }}</div>
+              <small *ngIf="a.startTime">
+                {{ a.startTime }}{{ a.endTime ? ' - ' + a.endTime : '' }}
+              </small>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

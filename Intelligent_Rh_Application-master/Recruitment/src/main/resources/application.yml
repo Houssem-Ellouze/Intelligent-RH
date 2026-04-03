@@ -1,0 +1,67 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false # <--- AJOUTÉ : Empêche le crash JSON si une liste est vide ou Proxy
+  application:
+    name: recrutement-service
+  datasource: # Utilisation de mysql-db (nom du service Docker) ou localhost selon votre environnement
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/recrutement_db?createDatabaseIfNotExist=true}
+    username: root
+    password: ${MYSQL_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    config:
+      enabled: false
+
+server:
+  port: 8082
+  error:
+    include-stacktrace: always
+    include-message: always
+    include-exception: true
+
+
+# ? Configuration Swagger / OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+    display-request-duration: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
+
+app:
+  services:
+    url: ${TALENT_SERVICE_URL:http://talent-management-service:9002}
+
+
+logging:
+  level:
+    root: INFO
+    tn:
+      esprit:
+        recrutement: DEBUG
+    org:
+      springframework:
+        web: DEBUG

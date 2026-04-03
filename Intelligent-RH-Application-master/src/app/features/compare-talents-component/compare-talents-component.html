@@ -1,0 +1,39 @@
+<div class="arena-container">
+  <h1>Duel de Talents</h1>
+
+  <div class="input-grid">
+    <div class="card">
+      <h3>Candidat A</h3>
+      <input [(ngModel)]="prenomA" placeholder="Prénom">
+      <input [(ngModel)]="nomA" placeholder="Nom">
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="card">
+      <h3>Candidat B</h3>
+      <input [(ngModel)]="prenomB" placeholder="Prénom">
+      <input [(ngModel)]="nomB" placeholder="Nom">
+    </div>
+  </div>
+
+  <button (click)="compare()" class="duel-btn" [disabled]="loading">
+    {{ loading ? 'Analyse...' : 'Lancer la comparaison' }}
+  </button>
+
+  <div *ngIf="result" class="result-display">
+    <div class="score-card winner-effect">
+      <div class="side-a">
+        <span class="name-label">{{prenomA}}</span>
+        <div class="big-score">{{ result?.scoreA | number:'1.1-1' }}%</div>
+      </div>
+
+      <div class="side-b">
+        <span class="name-label">{{prenomB}}</span>
+        <div class="big-score">{{ result?.scoreB | number:'1.1-1' }}%</div>
+      </div>
+    </div>
+
+    <div class="winner-banner">
+      🏆 Vainqueur : <strong>{{ winnerName }}</strong>
+    </div>
+  </div>
+</div>

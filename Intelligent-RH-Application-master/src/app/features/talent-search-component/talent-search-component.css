@@ -1,0 +1,162 @@
+/* ====== GLOBAL CONTAINER ====== */
+.search-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1e1e2f, #252542);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ====== TITLE ====== */
+.search-container h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  background: linear-gradient(90deg, #00f5ff, #7b2ff7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ====== FILTER SECTION ====== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* ====== INPUTS ====== */
+.filters input {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  min-width: 180px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.filters input::placeholder {
+  color: #aaa;
+}
+
+.filters input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px #7b2ff7;
+  transform: scale(1.05);
+}
+
+/* ====== BUTTON ====== */
+.filters button {
+  padding: 12px 25px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(90deg, #00f5ff, #7b2ff7);
+  transition: all 0.3s ease;
+}
+
+.filters button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(123, 47, 247, 0.5);
+}
+
+.filters button:active {
+  transform: scale(0.95);
+}
+
+/* ====== STATUS MESSAGES ====== */
+.search-container div[ng-reflect-ng-if] {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+/* ====== TABLE ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+/* ====== TABLE HEADER ====== */
+thead {
+  background: linear-gradient(90deg, #00f5ff, #7b2ff7);
+}
+
+thead th {
+  padding: 15px;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-align: left;
+}
+
+/* ====== TABLE BODY ====== */
+tbody tr {
+  transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+  background: rgba(123, 47, 247, 0.2);
+  transform: scale(1.01);
+}
+
+tbody td {
+  padding: 14px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+
+/* ====== SCORE STYLE ====== */
+tbody td:nth-child(4) {
+  font-weight: bold;
+  color: #00f5ff;
+}
+
+/* ====== POTENTIAL BADGE ====== */
+tbody td:nth-child(5) {
+  font-weight: bold;
+  color: #7bffb2;
+}
+
+/* ====== ANIMATION ====== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  table {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,710 @@
+
+// ════════════════════════════════════════════════════════════════
+//  🎨 TOKENS — Champions League Theme
+//  Couleurs inspirées de l'exemple (coral, sun, mint, sky)
+// ════════════════════════════════════════════════════════════════
+$bg:            #f7f4ee;
+$surface:       #ffffff;
+$coral:         #ff6b5b;
+$coral2:        #ff9a8d;
+$sun:           #ffd166;
+$sun2:          #fff6d6;
+$mint:          #06d6a0;
+$mint2:         #b7f7e4;
+$sky:           #4cc9f0;
+$sky2:          #caf0ff;
+$ink:           #1a1825;
+$ink2:          #2e2b3d;
+$muted:         #a09eb8;
+$sub:           #9896aa;
+$border:        rgba(26,24,37,0.08);
+
+// Couleurs supplémentaires pour le classement
+$gold:          #FFD700;
+$silver:        #C0C0C0;
+$bronze:        #CD7F32;
+$gold-light:    #FFF0B5;
+$silver-light:  #F0F0F0;
+$bronze-light:  #FDE5C0;
+
+// ════════════════════════════════════════════════════════════════
+//  ✨ KEYFRAMES — Animations magiques (comme dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+@keyframes float-blob {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%     { transform: translate(28px,-18px) scale(1.06); }
+  70%     { transform: translate(-16px,12px) scale(.96); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes title-wag {
+  0%,100% { transform: rotate(0deg); }
+  20%     { transform: rotate(-2deg); }
+  60%     { transform: rotate(1.5deg); }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes btn-breathe {
+  0%,100% { box-shadow: 0 6px 20px rgba($mint,.35); }
+  50%     { box-shadow: 0 10px 32px rgba($mint,.55); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dot-bounce {
+  0%,80%,100% { transform: translateY(0) scale(1); opacity: .5; }
+  40%         { transform: translateY(-5px) scale(1.2); opacity: 1; }
+}
+
+@keyframes card-drop {
+  0%   { opacity: 0; transform: translateY(30px) scale(.95) rotate(.5deg); }
+  65%  { transform: translateY(-6px) scale(1.01) rotate(-.3deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+@keyframes score-pop {
+  0%   { opacity: 0; transform: scale(.6) rotate(-8deg); }
+  65%  { transform: scale(1.1) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes stripe-move {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+
+@keyframes item-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes verified-reveal {
+  from { opacity: 0; letter-spacing: .3em; }
+  to   { opacity: 1; letter-spacing: .06em; }
+}
+
+@keyframes pulse-dot {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%     { transform: scale(1.5); opacity: .6; }
+}
+
+
+
+
+
+@keyframes bar-fill {
+  from { width: 0; }
+}
+
+@keyframes medal-glow {
+  0%,100% { filter: drop-shadow(0 0 8px currentColor); }
+  50%     { filter: drop-shadow(0 0 16px currentColor); }
+}
+
+@keyframes rank-pulse {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.1); }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🌌 HOST — Fond avec grille et blobs (comme dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+  background: $bg;
+  color: $ink2;
+  position: relative;
+  overflow-x: hidden;
+  padding: 2rem 1.5rem;
+
+  // Dot grid (comme dans l'exemple)
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba($ink,.065) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Blob mint — top right (comme dans l'exemple)
+  &::after {
+    content: '';
+    position: fixed;
+    top: -12%; right: -10%;
+    width: 560px; height: 560px;
+    background: radial-gradient(circle, rgba($mint,.14) 0%, transparent 62%);
+    border-radius: 50%;
+    animation: float-blob 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// Blob sun — bottom left (comme dans l'exemple)
+.champions-league-container::before {
+  content: '';
+  position: fixed;
+  bottom: -15%; left: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba($sun,.18) 0%, transparent 60%);
+  border-radius: 50%;
+  animation: float-blob 24s ease-in-out 4s infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.champions-league-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🏆 PODIUM — À styliser dans son propre composant
+// ════════════════════════════════════════════════════════════════
+app-podium {
+  display: block;
+  animation: card-drop .6s cubic-bezier(.34,1.3,.64,1) both;
+  margin-bottom: 1rem;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📋 BANNIERE UCL (comme le h2 dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.ucl-banner {
+  text-align: center;
+  animation: fade-rise .6s ease both, title-wag 8s ease-in-out 2s infinite;
+  position: relative;
+  margin: 1rem 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 90%; height: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6'%3E%3Cpath d='M0 3 Q10 0 20 3 Q30 6 40 3' stroke='%23ffd166' stroke-width='2.5' fill='none'/%3E%3C/svg%3E") repeat-x;
+    background-size: 40px 6px;
+  }
+}
+
+.ucl-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: $ink;
+
+  .star {
+    font-size: 1.5em;
+    animation: medal-glow 3s ease-in-out infinite;
+
+    &:first-child {
+      color: $gold;
+      animation-delay: 0s;
+    }
+
+    &:last-child {
+      color: $sun;
+      animation-delay: 1.5s;
+    }
+  }
+}
+
+.season {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $muted;
+  letter-spacing: 0.2em;
+  margin-top: 0.5rem;
+  animation: verified-reveal .8s ease both .2s;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📊 TABLEAU DE CLASSEMENT (comme .score-card dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.ranking-table {
+  width: 100%;
+  background: $surface;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba($ink,.1), 0 1px 0 rgba($ink,.04);
+  animation: card-drop .6s cubic-bezier(.34,1.3,.64,1) both .1s;
+  border: 2px solid rgba($sun,.4);
+  position: relative;
+  border-collapse: collapse;
+
+  // Animated rainbow top stripe (comme dans l'exemple)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, $coral, $sun, $mint, $sky, $coral);
+    background-size: 300% 100%;
+    animation: stripe-move 3s linear infinite;
+    z-index: 3;
+  }
+
+  thead {
+    tr {
+      background: rgba($sun2, 0.5);
+    }
+
+    th {
+      padding: 1.2rem 1rem;
+      font-family: 'Fraunces', serif;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: $muted;
+      text-align: left;
+      border-bottom: 2px dashed rgba($ink,.07);
+    }
+  }
+
+  tbody {
+    tr {
+      transition: all .3s cubic-bezier(.34,1.3,.64,1);
+      animation: item-in .4s ease both;
+
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) { animation-delay: #{$i * 80 + 200}ms; }
+      }
+
+      &:hover {
+        background: rgba($sun,.08);
+        transform: scale(1.01);
+        box-shadow: 0 4px 12px rgba($ink,.05);
+      }
+    }
+  }
+
+  td {
+    padding: 1.2rem 1rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: $ink2;
+    border-bottom: 1px solid $border;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🏅 LIGNES SPÉCIALES (golden-boy, silver-star, bronze-talent)
+//  Comme .golden-boy, .silver-star, .bronze-talent dans l'exemple
+// ════════════════════════════════════════════════════════════════
+.golden-boy {
+  background: linear-gradient(90deg, rgba($gold, .08), transparent);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, $gold, $sun);
+    animation: medal-glow 2s ease-in-out infinite;
+  }
+
+  td:first-child .rank-inner {
+    .rank-number {
+      color: $gold;
+      font-weight: 900;
+      text-shadow: 0 0 10px rgba($gold, .5);
+    }
+
+    .medal {
+      animation: medal-glow 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+.silver-star {
+  background: linear-gradient(90deg, rgba($silver, .08), transparent);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, $silver, $muted);
+    animation: medal-glow 2s ease-in-out infinite;
+  }
+
+  td:first-child .rank-inner {
+    .rank-number {
+      color: $silver;
+      font-weight: 900;
+    }
+
+    .medal {
+      animation: medal-glow 1.8s ease-in-out infinite;
+    }
+  }
+}
+
+.bronze-talent {
+  background: linear-gradient(90deg, rgba($bronze, .08), transparent);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, $bronze, $coral2);
+    animation: medal-glow 2s ease-in-out infinite;
+  }
+
+  td:first-child .rank-inner {
+    .rank-number {
+      color: $bronze;
+      font-weight: 900;
+    }
+
+    .medal {
+      animation: medal-glow 2s ease-in-out infinite;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🔢 RANK CELL (comme .score-value dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.rank-cell {
+  width: 80px;
+}
+
+.rank-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: score-pop .7s cubic-bezier(.34,1.5,.64,1) both;
+  position: relative;
+
+  .rank-number {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $ink;
+    line-height: 1;
+  }
+
+  .medal {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 2px 4px rgba($ink,.2));
+    animation: rank-pulse 2s ease-in-out infinite;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📈 SCORE CELL (comme .highlight-text dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.score-cell {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $coral;
+  filter: drop-shadow(0 2px 8px rgba($coral,.2));
+  animation: score-pop .7s cubic-bezier(.34,1.5,.64,1) both .1s;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🎯 POTENTIAL BADGE (comme .highlight-text dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.potential-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: all .2s cubic-bezier(.34,1.3,.64,1);
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Classes de potentiel (comme dans l'exemple)
+.potential-badge.potentiel-eleve {
+  background: rgba($sky,.12);
+  border: 2px solid rgba($sky,.3);
+  color: deepskyblue;
+
+  &::before {
+    background: $sky;
+    box-shadow: 0 0 8px $sky;
+  }
+}
+
+.potential-badge.potentiel-moyen {
+  background: rgba($sun,.12);
+  border: 2px solid rgba($sun,.3);
+  color: orange;
+
+  &::before {
+    background: $sun;
+    box-shadow: 0 0 8px $sun;
+  }
+}
+
+.potential-badge.potentiel-faible {
+  background: rgba($muted,.12);
+  border: 2px solid rgba($muted,.3);
+  color: $muted;
+
+  &::before {
+    background: $muted;
+    box-shadow: 0 0 8px $muted;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ⏳ LOADING STATE (comme .info-msg dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.loading-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $muted;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+
+  .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: $mint;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: dot-bounce .9s ease-in-out infinite;
+
+    &:nth-child(2) { animation-delay: .15s; }
+    &:nth-child(3) { animation-delay: .3s; }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ⚠️ ERROR STATE
+// ════════════════════════════════════════════════════════════════
+.error-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $coral;
+  background: rgba($coral, .05);
+  letter-spacing: .05em;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🏟️ EMPTY STATE
+// ════════════════════════════════════════════════════════════════
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-style: italic;
+  color: $muted;
+  background: rgba($sun, .05);
+  letter-spacing: .02em;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📊 FOOTER STATS (comme .data-grid dans l'exemple)
+// ════════════════════════════════════════════════════════════════
+.ucl-footer {
+  margin-top: 2rem;
+  animation: fade-rise .6s ease both .3s;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba($ink,.06);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid rgba($sun,.4);
+}
+
+.stat-item {
+  background: $surface;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $ink2;
+  transition: all .3s ease;
+  animation: item-in .4s ease both;
+
+  @for $i from 1 through 3 {
+    &:nth-child(#{$i}) { animation-delay: #{$i * 100 + 400}ms; }
+  }
+
+  &:hover {
+    background: rgba($sun,.08);
+    transform: translateY(-2px);
+  }
+
+  &:first-child {
+    color: orange;
+
+    &::before {
+      content: '👑';
+      font-size: 1.5rem;
+      filter: drop-shadow(0 2px 4px rgba($gold,.5));
+      animation: medal-glow 2s ease-in-out infinite;
+    }
+  }
+
+  &:nth-child(2)::before {
+    content: '⭐';
+    font-size: 1.5rem;
+    color: $sun;
+    animation: rank-pulse 2s ease-in-out infinite;
+  }
+
+  &:last-child::before {
+    content: '📊';
+    font-size: 1.5rem;
+    color: $mint;
+    animation: spin 8s linear infinite;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📱 RESPONSIVE
+// ════════════════════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .ranking-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    th, td {
+      min-width: 120px;
+    }
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+
+  .stat-item {
+    padding: 1.2rem;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .ucl-logo {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    padding: 1rem;
+  }
+
+  .rank-inner {
+    .rank-number {
+      font-size: 1.2rem;
+    }
+
+    .medal {
+      font-size: 1rem;
+    }
+  }
+
+  .potential-badge {
+    padding: 4px 10px;
+    font-size: 0.6rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ✨ UTILITIES
+// ════════════════════════════════════════════════════════════════
+.text-gradient {
+  background: linear-gradient(135deg, $coral, $sun, $mint);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-gold {
+  filter: drop-shadow(0 0 10px rgba($gold, .5));
+}
+
+.glow-silver {
+  filter: drop-shadow(0 0 10px rgba($silver, .5));
+}
+
+.glow-bronze {
+  filter: drop-shadow(0 0 10px rgba($bronze, .5));
+}
+
+.animate-float {
+  animation: float-blob 8s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulse-dot 2s ease-in-out infinite;
+}

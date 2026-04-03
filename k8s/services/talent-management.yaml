@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: talent-management-service
+  namespace: intelligent-rh
+spec:
+  ports:
+    - port: 9002
+  selector:
+    app: talent-management-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talent-management-service
+  namespace: intelligent-rh
+spec:
+  selector:
+    matchLabels:
+      app: talent-management-service
+  template:
+    metadata:
+      labels:
+        app: talent-management-service
+    spec:
+      containers:
+        - name: talent-management-service
+          image: houssem80356/intelligent-app2-talent-management-service:latest
+          ports:
+            - containerPort: 9002
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-db:3306/talent_db?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: ""
+            - name: MAIL_HOST
+              value: "maildev"
+            - name: MAIL_PORT
+              value: "1025"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery:8761/eureka/"

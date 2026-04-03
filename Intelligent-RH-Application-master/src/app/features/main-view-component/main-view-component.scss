@@ -1,0 +1,1012 @@
+// ════════════════════════════════════════════════════════════════════════
+//  KANBAN BOARD — Sunny Playful Theme
+//  Cohérent avec le composant talent-card existant
+//  Fonts : Fraunces + Nunito + DM Mono
+// ════════════════════════════════════════════════════════════════════════
+
+// ── VARIABLES ────────────────────────────────────────────────────────────
+$bg:       #f7f4ee;
+$bg2:      #fffcf5;
+$surface:  #ffffff;
+$coral:    #ff6b5b;
+$coral2:   #ff9a8d;
+$sun:      #ffd166;
+$sun2:     #ffe8a0;
+$mint:     #06d6a0;
+$mint2:    #b7f7e4;
+$sky:      #4cc9f0;
+$sky2:     #caf0ff;
+$plum:     #7b2d8b;
+$ink:      #1a1825;
+$ink2:     #2e2b3d;
+$muted:    #a09eb8;
+$border:   rgba(26,24,37,0.08);
+$text:     #2e2b3d;
+$sub:      #9896aa;
+
+// Column accent palette — reprend les couleurs du thème
+$col-accents: (
+  1: ($coral,   $sun),
+  2: ($mint,    $sky),
+  3: ($sky,     $plum),
+  4: ($sun,     $coral2),
+);
+
+$font-display: 'Fraunces', serif;
+$font-ui:      'Nunito', sans-serif;
+$font-mono:    'DM Mono', monospace;
+
+$mobile:  640px;
+$tablet:  768px;
+
+// ── KEYFRAMES ────────────────────────────────────────────────────────────
+
+@keyframes float-blob {
+  0%,100% { transform: translate(0,0) scale(1) rotate(0deg); }
+  33%     { transform: translate(30px,-20px) scale(1.05) rotate(3deg); }
+  66%     { transform: translate(-20px,15px) scale(.97) rotate(-2deg); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes col-bounce-in {
+  0%   { opacity: 0; transform: translateY(40px) rotate(-1.5deg) scale(.94); }
+  65%  { transform: translateY(-8px) rotate(.6deg) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+
+@keyframes task-pop {
+  0%   { opacity: 0; transform: scale(.88) translateY(10px); }
+  70%  { transform: scale(1.04) translateY(-3px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg); }
+  25%     { transform: rotate(-5deg); }
+  75%     { transform: rotate(5deg); }
+}
+
+@keyframes bounce-dot {
+  0%,80%,100% { transform: translateY(0); }
+  40%         { transform: translateY(-7px); }
+}
+
+@keyframes stripe-slide {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 0; }
+}
+
+// ── MIXINS ───────────────────────────────────────────────────────────────
+
+@mixin shimmer-btn {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+@mixin pill-shadow($color) {
+  box-shadow: 0 6px 20px rgba($color,.35), 0 2px 0 rgba(0,0,0,.08) inset;
+}
+
+// ── ROOT ─────────────────────────────────────────────────────────────────
+
+.kanban-universe {
+  position: relative;
+  min-height: 100vh;
+  background: $bg;
+  font-family: $font-ui;
+  color: $text;
+  overflow-x: hidden;
+
+  // Blob soleil bas-droite
+  &::before {
+    content: '';
+    position: fixed;
+    bottom: -15%; right: -10%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba($sun,.18) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float-blob 22s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Blob mint milieu
+  &::after {
+    content: '';
+    position: fixed;
+    top: 40%; left: 55%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba($mint,.1) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float-blob 14s ease-in-out 5s infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// Dot grid + blob coral
+.kanban-universe > *:first-child ~ * {
+  position: relative;
+  z-index: 1;
+}
+
+// Overlay dot grid (pseudo sur navbar)
+.navbar-cosmic::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba($ink,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+// Blob coral top-left
+.navbar-cosmic::after {
+  content: '';
+  position: fixed;
+  top: -10%; left: -8%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba($coral,.1) 0%, transparent 65%);
+  border-radius: 50%;
+  animation: float-blob 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+// ── NAVBAR ───────────────────────────────────────────────────────────────
+
+.navbar-cosmic {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba($bg2, 0.88);
+  backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 2px dashed rgba($ink,.08);
+}
+
+.navbar-content {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 20px;
+  color: $coral;
+  animation: wiggle 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba($coral,.35));
+}
+
+.app-title {
+  font-family: $font-display;
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, $coral 0%, $sun 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.light-text {
+  color: $muted;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.action-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #050505;
+  padding: 6px 16px;
+  background: mediumspringgreen;
+  border: 2px solid mediumspringgreen;
+  border-radius: 50px;
+  @include pill-shadow(mediumspringgreen);
+  box-shadow: 0 3px 12px mediumspringgreen;
+
+  i {
+    font-size: 10px;
+    animation: spin 3s linear infinite;
+    color: $mint;
+  }
+}
+
+// ── BOARD REALM ───────────────────────────────────────────────────────────
+
+.board-realm {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+  animation: fade-rise .6s ease both;
+}
+
+.board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.board-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.board-name {
+  font-family: $font-display;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: $ink;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+
+  // Wavy underline — identique au main-title du talent component
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 0;
+    width: 100%; height: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6'%3E%3Cpath d='M0 3 Q10 0 20 3 Q30 6 40 3' stroke='%23ff6b5b' stroke-width='2.5' fill='none'/%3E%3C/svg%3E") repeat-x;
+    background-size: 40px 6px;
+  }
+
+  i {
+    color: $coral;
+    font-size: 1.8rem;
+    filter: drop-shadow(0 3px 8px rgba($coral,.3));
+    animation: wiggle 4s ease-in-out infinite;
+  }
+}
+
+.board-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $font-mono;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: $muted;
+  margin-top: 14px;
+
+  i { color: $sun; font-size: 11px; }
+}
+
+// Export Buttons
+.board-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.export-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 50px;
+  font-family: $font-ui;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .2s cubic-bezier(.34,1.3,.64,1), box-shadow .2s;
+  @include shimmer-btn;
+
+  i { font-size: 14px; transition: transform .3s; }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    i { transform: scale(1.2) rotate(-5deg); }
+  }
+
+  &:active { transform: scale(.97); }
+
+  &.pdf {
+    background: $coral;
+    color: white;
+    @include pill-shadow($coral);
+
+    &:hover { box-shadow: 0 12px 28px rgba($coral,.45); }
+  }
+
+  &.excel {
+    background: mediumspringgreen;
+    border: 2px solid mediumspringgreen;
+    color: #f0f4f2;
+  }
+}
+
+// ── COLUMNS GRID ─────────────────────────────────────────────────────────
+
+.board-container {
+  overflow-x: auto;
+  padding-bottom: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba($ink,.1) transparent;
+
+  &::-webkit-scrollbar { height: 5px; border-radius: 3px; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($coral,.25);
+    border-radius: 3px;
+    &:hover { background: rgba($coral,.45); }
+  }
+}
+
+.columns-grid {
+  display: flex;
+  gap: 20px;
+  min-width: max-content;
+  align-items: flex-start;
+}
+
+// ── COLUMN CARD ───────────────────────────────────────────────────────────
+
+.column-card {
+  width: 300px;
+  background: $surface;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba($ink,.08), 0 1px 0 rgba($ink,.04);
+  transition: transform .35s cubic-bezier(.34,1.3,.64,1), box-shadow .3s, border-color .3s;
+  flex-shrink: 0;
+
+  // Staggered bounce entrance
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) {
+      animation: col-bounce-in .55s cubic-bezier(.34,1.4,.64,1) #{$i * 80}ms both;
+    }
+  }
+
+  // Alternate tilt — comme les talent-cards
+  &:nth-child(even) { transform: rotate(.4deg); }
+  &:nth-child(odd)  { transform: rotate(-.3deg); }
+  // Rainbow top stripe
+  &::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background: linear-gradient(90deg, $coral, $sun, $mint, $sky);
+  }
+
+  &:hover {
+    transform: rotate(0deg) translateY(-10px);
+    box-shadow: 0 20px 50px rgba($ink,.13);
+    border-color: rgba($coral,.2);
+  }
+}
+
+// ── COLUMN HEADER ─────────────────────────────────────────────────────────
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 2px dashed rgba($ink,.07);
+}
+
+.column-title h3 {
+  font-family: $font-display;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: $ink;
+  line-height: 1;
+}
+
+.task-counter {
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 500;
+  color: $muted;
+  background: rgba($ink,.05);
+  border: 2px solid rgba($ink,.08);
+  border-radius: 50px;
+  padding: 3px 10px;
+  min-width: 28px;
+  text-align: center;
+  transition: all .2s;
+}
+
+// ── TASKS CONTAINER ───────────────────────────────────────────────────────
+
+.tasks-container {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 48px;
+}
+
+// ── TASK CARD ─────────────────────────────────────────────────────────────
+
+.task-card {
+  background: $bg;
+  border: 2px solid $border;
+  border-radius: 14px;
+  cursor: grab;
+  position: relative;
+  overflow: hidden;
+  transition: all .25s cubic-bezier(.34,1.3,.64,1);
+  animation: task-pop .3s cubic-bezier(.34,1.4,.64,1) both;
+
+  // Shimmer interne
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+    transform: skewX(-20deg);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  &:hover {
+    background: $surface;
+    border-color: rgba($coral, .35);
+    transform: translateX(5px) scale(1.02);
+    box-shadow: 0 8px 24px rgba($ink,.1), -4px 0 0 $coral;
+
+    &::before {
+      opacity: 1;
+      animation: shimmer 1s ease forwards;
+    }
+  }
+
+  &:active { cursor: grabbing; transform: scale(.98); }
+}
+
+// CDK drag states
+.cdk-drag-preview {
+  background: $surface;
+  border: 2px solid $coral;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba($ink,.2), 0 0 0 4px rgba($coral,.15);
+  transform: rotate(2deg) scale(1.04);
+  overflow: hidden;
+}
+
+.cdk-drag-placeholder {
+  border: 2px dashed rgba($coral,.3);
+  border-radius: 14px;
+  background: rgba($sun,.06);
+  min-height: 46px;
+  opacity: 0.6;
+}
+
+.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 220ms cubic-bezier(0,0,.2,1);
+}
+
+// Task inner
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+}
+
+.task-drag-handle {
+  color: rgba($ink,.2);
+  font-size: 12px;
+  cursor: grab;
+  flex-shrink: 0;
+  transition: color .2s, transform .2s;
+
+  .task-card:hover & {
+    color: $coral;
+    transform: scale(1.15);
+  }
+}
+
+.task-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: $font-ui;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $text;
+  line-height: 1.5;
+  caret-color: $coral;
+
+  &::placeholder {
+    color: $muted;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  &:focus { color: $ink; }
+}
+
+.task-delete {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: rgba($ink,.15);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 6px;
+  border-radius: 50px;
+  transition: all .2s cubic-bezier(.34,1.4,.64,1);
+  opacity: 0;
+
+  .task-card:hover & { opacity: 1; }
+
+  &:hover {
+    color: white;
+    background: $coral;
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba($coral,.4);
+  }
+}
+
+// ── ADD TASK BUTTON ───────────────────────────────────────────────────────
+
+.add-task-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  border: 2px dashed rgba($ink,.12);
+  border-radius: 14px;
+  color: $muted;
+  font-family: $font-ui;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .25s cubic-bezier(.34,1.3,.64,1);
+  margin-top: 4px;
+  @include shimmer-btn;
+
+  i {
+    font-size: 14px;
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1), color .2s;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba($ink,.08);
+
+    i { transform: rotate(90deg) scale(1.25); }
+  }
+
+  &:active { transform: scale(.97); }
+}
+
+// ── LOADING ───────────────────────────────────────────────────────────────
+
+.loading-portal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: calc(100vh - 66px);
+  font-family: $font-ui;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: $muted;
+  text-transform: uppercase;
+}
+
+.spacer { flex: 1; }
+
+.quantum-loader {
+  position: relative;
+  width: 60px; height: 60px;
+}
+
+.quantum-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid rgba($coral,.15);
+  border-top-color: $coral;
+  border-right-color: $sun;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 20px rgba($coral,.2);
+}
+
+.quantum-core {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 16px;
+    color: $sun;
+    animation: wiggle 1s ease-in-out infinite;
+  }
+}
+
+.loading-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .85rem;
+  color: $muted;
+
+  &::after {
+    content: '•••';
+    letter-spacing: 3px;
+    animation: bounce-dot .9s ease-in-out infinite;
+  }
+}
+
+.loading-url {
+  font-family: $font-mono;
+  font-size: .72rem;
+  color: darkseagreen;
+  letter-spacing: .04em;
+}
+
+.cancel-load-btn {
+  position: relative;
+  padding: 11px 28px;
+  background: orange;
+  border: 2px solid orange;
+  border-radius: 50px;
+  color: #ffffff;
+  font-family: $font-ui;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.34,1.3,.64,1);
+  overflow: hidden;
+  @include shimmer-btn;
+
+  i { margin-right: 6px; transition: transform .4s; }
+
+  &:hover {
+    background: orange;
+    color: white;
+    transform: translateY(-3px);
+    @include pill-shadow(orange);
+    i { transform: rotate(360deg); }
+  }
+}
+
+// ── DEBUG CONSOLE ─────────────────────────────────────────────────────────
+
+.debug-console {
+  position: relative;
+  z-index: 1;
+  margin: 14px 2rem;
+  padding: 10px 18px;
+  background: skyblue;
+  border: 2px solid skyblue;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: $font-mono;
+  font-size: 12px;
+  color: skyblue;
+
+  i { font-size: 11px; color: $sky; }
+}
+
+.debug-prompt { color: rgba($sky,.5); }
+
+// ── ERROR STATE ────────────────────────────────────────────────────────────
+
+.error-dimension {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 66px);
+  padding: 40px 2rem;
+}
+
+.error-portal {
+  max-width: 460px;
+  width: 100%;
+  background: $surface;
+  border-radius: 24px;
+  padding: 52px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba($ink,.12);
+  border: 2px solid rgba($coral,.15);
+  animation: col-bounce-in .55s cubic-bezier(.34,1.4,.64,1) both;
+  position: relative;
+  overflow: hidden;
+
+  // Rainbow stripe top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, $coral, $sun, $mint, $sky);
+  }
+}
+
+.error-icon {
+  font-size: 3rem;
+  color: $coral;
+  margin-bottom: 20px;
+  display: block;
+  animation: wiggle 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 10px rgba($coral,.3));
+}
+
+.error-title {
+  font-family: $font-display;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: $ink;
+  margin-bottom: 10px;
+}
+
+.error-message {
+  font-size: .85rem;
+  color: $sub;
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+.error-solution {
+  background: $bg;
+  border: 2px dashed rgba($ink,.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+
+  p {
+    font-family: $font-mono;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: $muted;
+    margin-bottom: 8px;
+  }
+}
+
+.error-code {
+  display: block;
+  font-family: $font-mono;
+  font-size: 13px;
+  color:lightseagreen;
+  background: lightseagreen;
+  border: 2px solid lightseagreen;
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  letter-spacing: .04em;
+}
+
+.error-path {
+  font-size: .75rem;
+  color: $sub;
+}
+
+.highlight {
+  color: $coral;
+  font-weight: 800;
+}
+
+.retry-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  background: $coral;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-family: $font-ui;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  @include pill-shadow($coral);
+  overflow: hidden;
+  transition: all .2s cubic-bezier(.34,1.3,.64,1);
+  @include shimmer-btn;
+
+  i { transition: transform .45s ease; }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 32px rgba($coral,.45);
+    i { transform: rotate(360deg); }
+  }
+}
+
+// ── EMPTY BOARD ────────────────────────────────────────────────────────────
+
+.empty-board {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 100px 40px;
+  font-family: $font-display;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: $muted;
+
+  i {
+    font-size: 3.5rem;
+    color: rgba($sun,.6);
+    filter: drop-shadow(0 4px 12px rgba($sun,.3));
+    animation: wiggle 4s ease-in-out infinite;
+  }
+}
+
+// ── RESPONSIVE ────────────────────────────────────────────────────────────
+
+@media (max-width: $tablet) {
+  .board-realm { padding: 2rem 1rem 4rem; }
+  .board-header { flex-direction: column; align-items: flex-start; }
+  .board-name { font-size: 2rem; }
+  .column-card { width: 270px; }
+  .column-card:nth-child(even),
+  .column-card:nth-child(odd) { transform: none; }
+}
+
+@media (max-width: $mobile) {
+  .board-actions { flex-direction: column; width: 100%; }
+  .export-btn { width: 100%; justify-content: center; }
+  .column-card { width: 260px; }
+}
+p {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-weight: 700;
+  font-style: italic;
+  color: #1a1825;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+p span {
+  background: linear-gradient(135deg, #ff6b5b, #ffd166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── CDK Drag & Drop ── */
+
+// Placeholder vide qui reste quand on déplace une carte
+.cdk-drag-placeholder {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  min-height: 60px;
+  transition: all 200ms ease;
+}
+
+// Carte en cours de déplacement (clone flottant)
+.cdk-drag-preview {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  opacity: 0.95;
+  transform: rotate(2deg) scale(1.03);
+  cursor: grabbing;
+}
+
+// Animation d'entrée des autres cartes pour laisser de la place
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+// Colonne qui reçoit le drop (zone active)
+.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+// Highlight de la colonne cible
+.cdk-drop-list-receiving {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  outline: 2px solid rgba(255, 255, 255, 0.2);
+  outline-offset: 4px;
+  transition: all 200ms ease;
+}
+
+// Curseur pendant le drag
+.task-card[cdkDrag] {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+// Handle de drag
+.task-drag-handle {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}

@@ -1,0 +1,177 @@
+<nav class="capgemini-navbar">
+  <a routerLink="/menu" class="logo">
+    <img
+      src="https://www.capgemini.com/fr-fr/wp-content/themes/capgemini2020/assets/images/logo.svg"
+      alt="Capgemini Logo"
+      class="logo-img"
+      loading="lazy"
+    />
+  </a>
+</nav>
+
+<div class="container" cdkDropListGroup>
+  <div class="calendar-container">
+    <br />
+    <h1>OnBoarding Calendar</h1>
+
+    <!-- Calendar Header -->
+    <div class="calendar-header">
+      <div class="calendar-title">
+        <h2 *ngIf="currentView === CalendarView.Month || currentView === CalendarView.Week">
+          {{ viewDate | date:'MMMM' }}
+          <span class="calendar-year">{{ viewDate | date:'y' }}</span>
+        </h2>
+        <h2 *ngIf="currentView === CalendarView.Day">
+          {{ viewDate | date:'d MMMM' }}
+          <span class="calendar-year">{{ viewDate | date:'y' }}</span>
+        </h2>
+        <span class="calendar-dayname" *ngIf="currentView === CalendarView.Day">
+          {{ viewDate | date:'EEEE' }}
+        </span>
+      </div>
+
+      <!-- View Toggle -->
+      <mat-button-toggle-group
+        class="calendar-view-toggle"
+        [value]="currentView"
+        (change)="switchToView($event.value)"
+        aria-label="Calendar View"
+      >
+        <mat-button-toggle [value]="CalendarView.Month">Month</mat-button-toggle>
+        <mat-button-toggle [value]="CalendarView.Week">Week</mat-button-toggle>
+        <mat-button-toggle [value]="CalendarView.Day">Day</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <!-- Controls -->
+      <div class="calendar-controls">
+        <button mat-icon-button (click)="previous()" aria-label="Previous">
+          <mat-icon>-</mat-icon>
+        </button>
+        <button mat-stroked-button (click)="viewToday()" aria-label="Today">
+          Today
+        </button>
+        <button mat-icon-button (click)="next()" aria-label="Next">
+          <mat-icon>+</mat-icon>
+        </button>
+        <button mat-flat-button color="primary" (click)="addAppointment()" aria-label="Add appointment">
+          Add Appointment
+        </button>
+        <button mat-raised-button color="accent" (click)="refreshAppointments()" aria-label="Refresh calendar">
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- Month View -->
+    <table *ngIf="currentView === CalendarView.Month" class="calendar-view-month" aria-label="Month view calendar">
+      <thead>
+      <tr>
+        <th *ngFor="let day of weekDays">{{ day }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let week of weeks">
+        <td
+          *ngFor="let date of week"
+          cdkDropList
+          [cdkDropListData]="getAppointmentsForDate(date)"
+          [cdkDropListConnectedTo]="connectedDropListsIds"
+          (cdkDropListDropped)="drop($event, date)"
+          [class.today]="isToday(date)"
+        >
+          <div class="calendar-cell">
+            <div class="date-number" [class.today]="isToday(date)" (click)="selectDate(date)">
+              {{ date.getDate() }}
+            </div>
+            <div class="appointments-container">
+              <div
+                *ngFor="let appointment of getAppointmentsForDate(date)"
+                class="appointment"
+                cdkDrag
+                [cdkDragData]="appointment"
+                [style.background-color]="appointment.color"
+                (click)="editAppointment(appointment, $event)"
+              >
+                <span class="appointment-title">{{ appointment.title }}</span>
+                <span *ngIf="appointment.startTime" class="appointment-time">
+                    {{ appointment.startTime }} - {{ appointment.endTime }}
+                  </span>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Week View -->
+    <table *ngIf="currentView === CalendarView.Week" class="calendar-view-week" aria-label="Week view calendar">
+      <thead>
+      <tr>
+        <th></th>
+        <th *ngFor="let day of monthDays">
+          <div>{{ weekDays[day.getDay()] }}</div>
+          <div>{{ day | date:'d' }}</div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let timeSlot of timeSlots">
+        <td class="time-slot">{{ timeSlot }}</td>
+        <td
+          *ngFor="let day of monthDays"
+          cdkDropList
+          [cdkDropListData]="getAppointmentsForDateTime(day, timeSlot)"
+          [cdkDropListConnectedTo]="connectedDropListsIds"
+          (cdkDropListDropped)="drop($event, day)"
+        >
+          <div class="calendar-cell">
+            <div
+              *ngFor="let appointment of getAppointmentsForDateTime(day, timeSlot)"
+              class="appointment"
+              cdkDrag
+              [cdkDragData]="appointment"
+              [style.background-color]="appointment.color"
+              (click)="editAppointment(appointment, $event)"
+            >
+              <span class="appointment-title">{{ appointment.title }}</span>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Day View -->
+    <table *ngIf="currentView === CalendarView.Day" class="calendar-view-day" aria-label="Day view calendar">
+      <tbody>
+      <tr *ngFor="let timeSlot of timeSlots">
+        <td class="time-slot">{{ timeSlot }}</td>
+        <td
+          cdkDropList
+          [cdkDropListData]="getAppointmentsForDateTime(viewDate, timeSlot)"
+          [cdkDropListConnectedTo]="connectedDropListsIds"
+          (cdkDropListDropped)="drop($event, viewDate)"
+        >
+          <div class="calendar-cell">
+            <div
+              *ngFor="let appointment of getAppointmentsForDateTime(viewDate, timeSlot)"
+              class="appointment"
+              cdkDrag
+              [cdkDragData]="appointment"
+              [style.background-color]="appointment.color"
+              (click)="editAppointment(appointment, $event)"
+            >
+              <span class="appointment-title">{{ appointment.title }}</span>
+              <span class="appointment-details">
+                  {{ appointment.startTime }} - {{ appointment.endTime }}
+                </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

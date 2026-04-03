@@ -1,0 +1,564 @@
+
+// ══════════════════════════════════════════════════
+//  TOKENS
+// ══════════════════════════════════════════════════
+$bg:      #f7f4ee;
+$surface: #ffffff;
+$coral:   #ff6b5b;
+$coral2:  #ff9a8d;
+$sun:     #ffd166;
+$sun2:    #fff0b3;
+$mint:    #06d6a0;
+$mint2:   #b7f7e4;
+$sky:     #4cc9f0;
+$sky2:    #caf0ff;
+$plum:    #7b2d8b;
+$ink:     #1a1825;
+$ink2:    #2e2b3d;
+$muted:   #a09eb8;
+$border:  rgba(26,24,37,0.08);
+$text:    #2e2b3d;
+$sub:     #9896aa;
+
+// Side colors
+$side-a:  $coral;
+$side-b:  $sky;
+
+// ══════════════════════════════════════════════════
+//  KEYFRAMES
+// ══════════════════════════════════════════════════
+@keyframes float-blob {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%      { transform: translate(25px,-18px) scale(1.06); }
+  70%      { transform: translate(-15px,12px) scale(.96); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes card-slide-left {
+  from { opacity: 0; transform: translateX(-40px) rotate(-2deg); }
+  to   { opacity: 1; transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes card-slide-right {
+  from { opacity: 0; transform: translateX(40px) rotate(2deg); }
+  to   { opacity: 1; transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes vs-pop {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  70%  { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes score-count {
+  from { opacity: 0; transform: translateY(16px) scale(.85); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes winner-in {
+  0%   { opacity: 0; transform: translateY(20px) scale(.9); }
+  65%  { transform: translateY(-6px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes trophy-bounce {
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50%      { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(60px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes stripe-move {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+
+@keyframes bar-grow-a {
+  from { width: 0; }
+}
+
+@keyframes bar-grow-b {
+  from { width: 0; }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: .5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-6deg); }
+  75%      { transform: rotate(6deg); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes btn-idle {
+  0%,100% { box-shadow: 0 6px 20px rgba($coral,.35), 0 2px 0 rgba(0,0,0,.08) inset; }
+  50%      { box-shadow: 0 10px 30px rgba($coral,.5), 0 2px 0 rgba(0,0,0,.08) inset; }
+}
+
+// ══════════════════════════════════════════════════
+//  HOST
+// ══════════════════════════════════════════════════
+:host {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+
+  // Dot grid background
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba($ink,.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Blob A — coral left
+  &::after {
+    content: '';
+    position: fixed;
+    top: -10%; left: -10%;
+    width: 550px; height: 550px;
+    background: radial-gradient(circle, rgba($coral,.12) 0%, transparent 65%);
+    border-radius: 50%;
+    animation: float-blob 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// Blob B — sky right
+.arena-container {
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: fixed;
+    bottom: -15%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba($sky,.14) 0%, transparent 62%);
+    border-radius: 50%;
+    animation: float-blob 22s ease-in-out 3s infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  ARENA WRAPPER
+// ══════════════════════════════════════════════════
+.arena-container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+// ══════════════════════════════════════════════════
+//  TITLE
+// ══════════════════════════════════════════════════
+h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.6rem, 7vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: $ink;
+  text-align: center;
+  margin: 0;
+  animation: fade-rise .6s ease both;
+  position: relative;
+
+  // Wavy coral underline
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 80%; height: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6'%3E%3Cpath d='M0 3 Q10 0 20 3 Q30 6 40 3' stroke='%23ff6b5b' stroke-width='2.5' fill='none'/%3E%3C/svg%3E") repeat-x;
+    background-size: 40px 6px;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  INPUT GRID
+// ══════════════════════════════════════════════════
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+    .vs-divider { justify-self: center; }
+  }
+}
+
+// ── Candidate Cards ──────────────────────────────
+.card {
+  background: $surface;
+  border-radius: 20px;
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba($ink,.08), 0 1px 0 rgba($ink,.04);
+  border: 2px solid transparent;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+
+  // Animated rainbow stripe top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background-size: 300% 100%;
+    animation: stripe-move 3s linear infinite;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba($ink,.12);
+  }
+
+  // Card A — coral
+  &:first-child {
+    animation: card-slide-left .6s cubic-bezier(.34,1.3,.64,1) .2s both;
+    &::before { background: linear-gradient(90deg, $coral, $sun, $coral); }
+    &:hover   { border-color: rgba($coral,.25); }
+  }
+
+  // Card B — sky
+  &:last-child {
+    animation: card-slide-right .6s cubic-bezier(.34,1.3,.64,1) .2s both;
+    &::before { background: linear-gradient(90deg, $sky, $mint, $sky); }
+    &:hover   { border-color: rgba($sky,.3); }
+  }
+
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: .02em;
+  }
+
+  &:first-child h3 { color: $coral; }
+  &:last-child  h3 { color: deepskyblue; }
+
+  // Inputs
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    background: $bg;
+    border: 2px solid rgba($ink,.08);
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    color: $ink;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    box-sizing: border-box;
+
+    &::placeholder { color: $muted; font-weight: 500; }
+  }
+
+  &:first-child input:focus {
+    border-color: $coral;
+    box-shadow: 0 0 0 4px rgba($coral,.1);
+  }
+
+  &:last-child input:focus {
+    border-color: $sky;
+    box-shadow: 0 0 0 4px rgba($sky,.15);
+  }
+}
+
+// ── VS Divider ───────────────────────────────────
+.vs-divider {
+  font-family: 'Fraunces', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  font-style: italic;
+  color: $ink;
+  letter-spacing: -.04em;
+  line-height: 1;
+  animation: vs-pop .7s cubic-bezier(.34,1.6,.64,1) .5s both;
+  position: relative;
+  text-align: center;
+  user-select: none;
+
+  // Pulsing ring
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba($sun,.3);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  // Second ring delayed
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba($sun,.15);
+    animation: pulse-ring 2s ease-out .6s infinite;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  DUEL BUTTON
+// ══════════════════════════════════════════════════
+.duel-btn {
+  padding: 18px 48px;
+  background: $coral;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: .02em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s cubic-bezier(.34,1.3,.64,1), box-shadow .2s;
+  animation: fade-rise .6s ease .4s both, btn-idle 3s ease-in-out infinite 1s;
+
+  // Shimmer
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 16px 40px rgba($coral,.5);
+    animation: none;
+  }
+
+  &:active:not(:disabled) { transform: scale(.97); }
+
+  &:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    animation: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px; height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  RESULT DISPLAY
+// ══════════════════════════════════════════════════
+.result-display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fade-rise .5s ease both;
+}
+
+// ── Score Card ───────────────────────────────────
+.score-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba($ink,.12), 0 1px 0 rgba($ink,.04);
+  position: relative;
+
+  // Center divider
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10%; bottom: 10%;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, rgba($ink,.1), transparent);
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+}
+
+// Side base
+.side-a, .side-b {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 2.5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+
+  // Shimmer sweep
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+}
+
+.side-a {
+  background: linear-gradient(135deg, rgba($coral,.08) 0%, rgba($coral,.03) 100%);
+  border-top: 4px solid $coral;
+  animation: card-slide-left .5s ease both;
+}
+
+.side-b {
+  background: linear-gradient(135deg, rgba($sky,.1) 0%, rgba($sky,.03) 100%);
+  border-top: 4px solid $sky;
+  animation: card-slide-right .5s ease both;
+}
+
+.name-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+
+  .side-a & { color: $coral; }
+  .side-b & { color: deepskyblue; }
+}
+
+.big-score {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.04em;
+  animation: score-count .6s cubic-bezier(.34,1.3,.64,1) .2s both;
+
+  .side-a & {
+    color: $coral;
+    filter: drop-shadow(0 4px 12px rgba($coral,.3));
+  }
+  .side-b & {
+    color: deepskyblue;
+    filter: drop-shadow(0 4px 12px rgba($sky,.35));
+  }
+}
+
+// ── Winner Banner ────────────────────────────────
+.winner-banner {
+  background: $surface;
+  border: 2px solid rgba($sun,.6);
+  border-radius: 20px;
+  padding: 1.4rem 2rem;
+  text-align: center;
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-style: italic;
+  color: $ink;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba($sun,.3), 0 1px 0 rgba($ink,.04);
+  animation: winner-in .6s cubic-bezier(.34,1.4,.64,1) .3s both;
+
+  // Sun background
+  background: linear-gradient(135deg, $sun2 0%, $surface 60%);
+
+  // Shimmer
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3s ease-in-out infinite 1s;
+  }
+
+  // Trophy emoji
+  &::after {
+    content: '🏆';
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    animation: trophy-bounce 2s ease-in-out infinite;
+  }
+
+  strong {
+    color: orange;
+    font-style: normal;
+    font-size: 1.4rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  RESPONSIVE
+// ══════════════════════════════════════════════════
+@media (max-width: 560px) {
+  .score-card {
+    grid-template-columns: 1fr;
+    .side-b { border-top: none; border-left: 4px solid $sky; }
+  }
+
+  .arena-container { padding: 2.5rem 1rem 4rem; }
+  .duel-btn { padding: 16px 32px; font-size: 1rem; }
+  .winner-banner { font-size: 1.05rem; padding: 1.2rem 1.5rem; &::after { display: none; } }
+}

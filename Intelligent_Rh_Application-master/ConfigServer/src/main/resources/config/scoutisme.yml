@@ -1,0 +1,12 @@
+welcome:
+  message: "Helloooo from scoutisme"
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+

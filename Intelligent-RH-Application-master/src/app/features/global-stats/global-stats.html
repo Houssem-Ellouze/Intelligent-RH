@@ -1,0 +1,113 @@
+<nav class="capgemini-navbar">
+  <a routerLink="/menu" class="logo">
+    <img
+      src="https://www.capgemini.com/fr-fr/wp-content/themes/capgemini2020/assets/images/logo.svg"
+      alt="Capgemini Logo"
+      class="logo-img"
+      loading="lazy"
+    />
+  </a>
+</nav>
+
+<!-- Loader -->
+<div *ngIf="loading" class="dashboard-loading">
+  <p>Chargement des statistiques...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="dashboard-error">
+  <p>Erreur lors du chargement des données.</p>
+</div>
+
+<!-- Dashboard -->
+<div *ngIf="!loading && !error" class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Global Dashboard</h1>
+  </div>
+
+  <div class="dashboard-tabs">
+    <button
+      *ngFor="let tab of tabs"
+      (click)="setActiveTab(tab.id)"
+      [class.active]="activeTab === tab.id">
+      {{ tab.label }}
+    </button>
+  </div>
+
+  <!-- ===================== CANDIDATS ===================== -->
+  <div *ngIf="activeTab === 'candidats'" class="charts-grid">
+
+    <div class="chart-card">
+      <h3>Candidats par mois</h3>
+      <canvas id="candidatsParMoisChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Moyenne des compétences</h3>
+      <canvas id="moyenneCompetencesParMoisChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Répartition par expérience</h3>
+      <canvas id="candidatsParExperienceChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- ===================== RECRUTEMENT ===================== -->
+  <div *ngIf="activeTab === 'recrutement'" class="charts-grid">
+
+    <div class="chart-card">
+      <h3>Candidatures par mois</h3>
+      <canvas id="candidaturesPerMonthChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Moyenne des entretiens / mois</h3>
+      <canvas id="averageEntretiensPerMonthChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Répartition par état</h3>
+      <canvas id="candidaturesByEtatChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Candidatures par domaine</h3>
+      <canvas id="candidaturesByDomaineChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Candidatures par offre</h3>
+      <canvas id="candidaturesPerOffreChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Moyenne des entretiens par offre</h3>
+      <canvas id="averageEntretiensPerOffreChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- ===================== ONBOARDING ===================== -->
+  <div *ngIf="activeTab === 'onBoarding'" class="charts-grid">
+
+    <div class="chart-card">
+      <h3>Collaborateurs par mois</h3>
+      <canvas id="collaborateursParMoisChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Moyenne des tâches par mois</h3>
+      <canvas id="moyenneTachesParMoisChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>Répartition par taille des tâches</h3>
+      <canvas id="collaborateursParTailleChart"></canvas>
+    </div>
+
+  </div>
+
+</div>

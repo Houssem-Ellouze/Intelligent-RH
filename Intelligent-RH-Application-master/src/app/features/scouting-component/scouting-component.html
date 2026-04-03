@@ -1,0 +1,167 @@
+<div class="shell" [class.route-active]="hasActiveRoute()">
+
+  <!-- ░░ AMBIENT BACKGROUND ░░ -->
+  <div class="ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- ░░ SIDEBAR ░░ -->
+  <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+
+    <button class="collapse-btn" (click)="toggleSidebar()" [attr.aria-label]="sidebarCollapsed ? 'Expand' : 'Collapse'">
+      <span class="collapse-icon">{{ sidebarCollapsed ? '›' : '‹' }}</span>
+    </button>
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-gem">
+        <span class="gem-inner">T</span>
+        <div class="gem-ring"></div>
+      </div>
+      <div class="brand-text" *ngIf="!sidebarCollapsed">
+        <span class="brand-name">ClientOS</span>
+        <span class="brand-sub">Management Suite</span>
+      </div>
+    </div>
+
+    <!-- Nav items -->
+    <nav class="snav">
+      <span class="snav-label" *ngIf="!sidebarCollapsed">MODULES</span>
+
+      <a class="snav-item"
+         *ngFor="let item of menuItems; let i = index"
+         [routerLink]="item.path"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: false }"
+         [style.animation-delay]="i * 80 + 'ms'">
+
+        <div class="snav-icon-wrap">
+          <span class="snav-emoji">{{ item.icon }}</span>
+          <div class="snav-glow"></div>
+        </div>
+
+        <div class="snav-meta" *ngIf="!sidebarCollapsed">
+          <span class="snav-title">{{ item.label }}</span>
+          <span class="snav-desc">{{ item.description }}</span>
+        </div>
+
+        <span class="snav-badge" *ngIf="item.badge && !sidebarCollapsed">{{ item.badge }}</span>
+        <div class="snav-indicator"></div>
+      </a>
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-foot" *ngIf="!sidebarCollapsed">
+      <div class="foot-avatar">A</div>
+      <div class="foot-info">
+        <span class="foot-name">Client</span>
+        <span class="foot-role">Client</span>
+      </div>
+      <span class="foot-dot"></span>
+    </div>
+  </aside>
+
+  <!-- ░░ MAIN ░░ -->
+  <div class="stage">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="page-chip" *ngIf="activeItem">
+          <span>{{ activeItem.icon }}</span>
+          <span>{{ activeItem.label }}</span>
+        </div>
+        <div class="breadcrumb" *ngIf="!activeItem">
+          <span class="bc-home">🏠 Accueil</span>
+          <span class="bc-sep">/</span>
+          <span class="bc-page">Vue d'ensemble</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-pill">
+          <span>🔍</span>
+          <input type="text" placeholder="Rechercher un talent..." />
+        </div>
+        <div class="notif-btn">
+          <span>🔔</span>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="user-pill">
+          <div class="user-avatar">C</div>
+          <span class="user-name">Client</span>
+          <span class="user-chevron">▾</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── DASHBOARD (no active route) ── -->
+    <section class="dashboard" *ngIf="!hasActiveRoute()">
+
+      <div class="dash-hero">
+        <div class="dash-eyebrow">Tableau de bord</div>
+        <h1 class="dash-headline">
+           <em>Gérez vos talents avec précision</em><br>
+        </h1>
+        <p class="dash-body">Sélectionnez un module ci-dessous pour accéder aux outils de gestion avancée.</p>
+
+        <div class="stats-row">
+          <div class="stat-pill" *ngFor="let s of stats">
+            <span class="stat-val">{{ s.value }}</span>
+            <span class="stat-lbl">{{ s.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="cards-grid">
+        <a class="mega-card"
+           *ngFor="let item of menuItems; let i = index"
+           [routerLink]="item.path"
+           [ngClass]="item.colorClass"
+           [style.animation-delay]="(i * 100) + 'ms'">
+
+          <!-- Background texture -->
+          <div class="card-texture"></div>
+          <div class="card-shine"></div>
+
+          <!-- Top row -->
+          <div class="card-top">
+            <div class="card-big-icon">{{ item.icon }}</div>
+            <div class="card-tag">{{ item.tag }}</div>
+          </div>
+
+          <!-- Content -->
+          <div class="card-content">
+            <h2 class="card-name">{{ item.label }}</h2>
+            <p class="card-text">{{ item.cardDescription }}</p>
+          </div>
+
+          <!-- Footer -->
+          <div class="card-foot">
+            <div class="card-stat">
+              <span class="cs-num">{{ item.stat }}</span>
+              <span class="cs-lbl">{{ item.statLabel }}</span>
+            </div>
+            <div class="card-cta">
+              <span>Accéder</span>
+              <span class="cta-arrow">→</span>
+            </div>
+          </div>
+
+          <!-- Hover glow -->
+          <div class="card-glow-overlay"></div>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- ── ROUTE OUTLET ── -->
+    <section class="outlet-wrap" *ngIf="hasActiveRoute()">
+      <router-outlet></router-outlet>
+    </section>
+
+  </div>
+</div>

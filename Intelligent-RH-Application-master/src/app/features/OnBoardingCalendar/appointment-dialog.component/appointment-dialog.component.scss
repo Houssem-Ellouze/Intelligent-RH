@@ -1,0 +1,139 @@
+// Variables
+$primary-color: #3f51b5;
+$secondary-color: #ff4081;
+$error-color: #f44336;
+$background-color: #ffffff;
+$text-color: #333333;
+$border-color: #e0e0e0;
+$hover-color: rgba(0, 0, 0, 0.04);
+$shadow-color: rgba(0, 0, 0, 0.2);
+
+// Mixins
+@mixin transition($property) {
+  transition: $property 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@mixin shadow-elevation($level) {
+  @if $level == 1 {
+    box-shadow: 0 2px 1px -1px $shadow-color,
+    0 1px 1px 0 $shadow-color,
+    0 1px 3px 0 $shadow-color;
+  } @else if $level == 2 {
+  box-shadow: 0 3px 3px -2px $shadow-color,
+  0 3px 4px 0 $shadow-color,
+  0 1px 8px 0 $shadow-color;
+}
+}
+
+@mixin focus-effect {
+  &:focus-within {
+    .mat-form-field-outline {
+      color: $primary-color;
+    }
+    .mat-form-field-label {
+      color: $primary-color;
+    }
+  }
+}
+
+// Dialog Styles
+   .dialog-content {
+     padding: 24px;
+     min-width: 400px;
+     max-width: 600px;
+     background: $background-color;
+     border-radius: 8px;
+
+     h5[mat-dialog-title] {
+       font-size: 20px;
+       font-weight: 500;
+       color: $primary-color;
+       margin: 0 0 20px 0;
+       padding-bottom: 16px;
+       border-bottom: 1px solid $border-color;
+       display: flex;
+       align-items: center;
+
+       mat-icon {
+         margin-right: 10px;
+       }
+     }
+
+     [mat-dialog-content] {
+       padding: 0;
+       margin: 0 0 20px 0;
+
+       .form-field {
+         width: 100%;
+         margin-bottom: 16px;
+         @include focus-effect;
+
+         .mat-form-field-label {
+           color: rgba($text-color, 0.6);
+         }
+
+         .mat-input-element {
+           color: $text-color;
+           font-size: 14px;
+         }
+
+         .mat-datepicker-toggle {
+           color: rgba($text-color, 0.6);
+         }
+       }
+
+       .error {
+         color: $error-color;
+         font-size: 12px;
+         margin-top: -10px;
+         margin-bottom: 10px;
+         animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+       }
+     }
+
+     [mat-dialog-actions] {
+       padding: 0;
+       margin: 0;
+       display: flex;
+       justify-content: flex-end;
+
+       button {
+         @include transition(all);
+         border-radius: 4px;
+         font-weight: 500;
+         text-transform: uppercase;
+         letter-spacing: 0.5px;
+
+         &[mat-flat-button] {
+           background-color: $primary-color;
+           color: white;
+           @include shadow-elevation(1);
+
+           &:hover {
+             @include shadow-elevation(2);
+           }
+         }
+
+         &[mat-stroked-button] {
+           border-color: $border-color;
+           color: $text-color;
+
+           &:hover {
+             background-color: $hover-color;
+           }
+         }
+
+         &:last-child {
+           margin-right: 0;
+         }
+       }
+     }
+   }
+
+// Animations
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}

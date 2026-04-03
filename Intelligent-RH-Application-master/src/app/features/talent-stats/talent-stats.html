@@ -1,0 +1,30 @@
+<div class="dashboard-container">
+  <h2 class="dashboard-title">🎯 Dashboard Candidats</h2>
+
+    <!-- Total candidats -->
+    <p class="dashboard-total">
+      <strong>Total Candidats :</strong> {{ stats.totalCandidats }}
+    </p>
+
+    <div class="chart-grid">
+      <!-- Bar Chart : candidats par mois -->
+      <div class="chart-card">
+        <h5 class="chart-title">📅 Candidats par Mois</h5>
+        <canvas id="candidatsParMoisChart"></canvas>
+      </div>
+
+      <!-- Line Chart : moyenne compétences par mois -->
+      <div class="chart-card">
+        <h5 class="chart-title">📈 Moyenne des Compétences par Mois</h5>
+        <canvas id="moyenneCompetencesParMoisChart"></canvas>
+      </div>
+
+      <!-- Pie Chart : répartition par expérience -->
+      <div class="chart-card">
+        <h5 class="chart-title">📊 Répartition par Expérience</h5>
+        <canvas id="candidatsParExperienceChart"></canvas>
+      </div>
+    </div>
+
+
+</div>

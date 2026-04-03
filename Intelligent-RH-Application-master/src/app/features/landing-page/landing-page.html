@@ -1,0 +1,442 @@
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" [class.scrolled]="true">
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <span class="logo-mark">⬡</span>
+      <span class="logo-text">NexusRH</span>
+    </a>
+
+    <ul class="nav-links" [class.open]="isMenuOpen">
+      <li *ngFor="let link of navLinks">
+        <a (click)="scrollTo(link.href)">{{ link.label }}</a>
+      </li>
+      <li><a class="btn-nav-outline" routerLink="/login">Se connecter</a></li>
+      <li><a class="btn-nav-primary" href="#">Essai gratuit</a></li>
+    </ul>
+
+    <button class="hamburger" (click)="toggleMenu()">
+      <span [class.open]="isMenuOpen"></span>
+      <span [class.open]="isMenuOpen"></span>
+      <span [class.open]="isMenuOpen"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Nouvelle version 1.0 disponible
+    </div>
+
+    <h1 class="hero-title">
+      La Digitalisation <br />
+      au service de vos <span class="accent-text">Ressources Humaines</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      NexusRH automatise le recrutement, anticipe les talents, et optimise la performance
+      de vos équipes — tout ça en un seul outil unifié propulsé par la digitalisation.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary">
+        <span>Démarrer gratuitement</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <button class="btn-ghost">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Voir la démo
+      </button>
+    </div>
+
+    <div class="hero-trust">
+      <span class="trust-label">Faite confiance par</span>
+      <div class="trust-logos">
+        <span>Vermeil Group</span>
+        <span>TechNova</span>
+        <span>Lumière Finance</span>
+        <span>AtlasHR</span>
+        <span>PrimeCorp</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="dashboard-preview">
+      <div class="dash-header">
+        <div class="dash-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="dash-title">NexusRH Dashboard</span>
+      </div>
+      <div class="dash-body">
+        <div class="dash-stat-row">
+          <div class="dash-card">
+            <div class="dash-card-label">Candidatures actives</div>
+            <div class="dash-card-value">1,247</div>
+            <div class="dash-card-trend up">↑ 12%</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Score IA moyen</div>
+            <div class="dash-card-value">94%</div>
+            <div class="dash-card-trend up">↑ 3pts</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Départs prédits</div>
+            <div class="dash-card-value">3</div>
+            <div class="dash-card-trend warn">⚠ Risque</div>
+          </div>
+        </div>
+        <div class="dash-chart-area">
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height: 65%"></div>
+            <div class="chart-bar" style="height: 80%"></div>
+            <div class="chart-bar" style="height: 50%"></div>
+            <div class="chart-bar active" style="height: 95%"></div>
+            <div class="chart-bar" style="height: 70%"></div>
+            <div class="chart-bar" style="height: 85%"></div>
+            <div class="chart-bar" style="height: 60%"></div>
+          </div>
+        </div>
+        <div class="dash-ai-tag">
+          <span class="ai-pulse"></span>
+          IA en analyse — 3 profils identifiés
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== ABOUT ===== -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+
+    <div class="about-visual">
+      <div class="about-card-stack">
+        <div class="about-stat-card">
+          <div class="asc-icon">🏆</div>
+          <div class="asc-value">2021</div>
+          <div class="asc-label">Fondée à Sfax</div>
+        </div>
+        <div class="about-stat-card alt">
+          <div class="asc-icon">👥</div>
+          <div class="asc-value">10+</div>
+          <div class="asc-label">Collaborateurs</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="asc-icon">🌍</div>
+          <div class="asc-value">1</div>
+          <div class="asc-label">Pays couverts</div>
+        </div>
+        <div class="about-stat-card alt">
+          <div class="asc-icon">💡</div>
+          <div class="asc-value">3</div>
+          <div class="asc-label">Idees déposés</div>
+        </div>
+      </div>
+
+      <div class="about-team-preview">
+        <div class="team-avatars">
+          <div class="ta ta-1">AM</div>
+          <div class="ta ta-2">SL</div>
+          <div class="ta ta-3">KB</div>
+          <div class="ta ta-4">NR</div>
+          <div class="ta ta-more">+76</div>
+        </div>
+        <span>Une équipe de passionnés RH & IA</span>
+      </div>
+    </div>
+
+    <div class="about-content">
+      <div class="section-tag" style="width: fit-content">À propos</div>
+      <h2 class="section-title" style="text-align: left">
+        Nés de la frustration<br />des RH, <em>construits par des ingénieurs</em>
+      </h2>
+      <p class="about-text">
+        En 2021, nos fondateurs — ex-DRH et chercheurs aux service Digitale — ont réalisé que les outils RH existants étaient soit trop complexes, soit trop limités. Ils ont décidé de tout repenser depuis zéro.
+      </p>
+      <p class="about-text">
+        Aujourd'hui, NexusRH est la plateforme de référence pour les équipes RH qui veulent allier <strong>La Digitalisation</strong> et <strong>humanité</strong>. Nous croyons que la technologie doit amplifier les décisions humaines, jamais les remplacer.
+      </p>
+
+      <div class="about-values">
+        <div class="value-item" *ngFor="let v of values">
+          <div class="value-icon">{{ v.icon }}</div>
+          <div>
+            <strong>{{ v.title }}</strong>
+            <p>{{ v.desc }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cta">
+        <button class="btn-primary">
+          Rejoindre l'aventure
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+        <button class="btn-ghost">Voir nos offres d'emploi</button>
+      </div>
+
+      <div class="about-press">
+        <span class="press-label">Parlé dans</span>
+        <div class="press-logos">
+          <span>Le Monde</span>
+          <span>Les Échos</span>
+          <span>Tech.eu</span>
+          <span>Forbes France</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item" *ngFor="let stat of stats">
+      <div class="stat-value">{{ stat.value }}<span class="stat-suffix">{{ stat.suffix }}</span></div>
+      <div class="stat-label">{{ stat.label }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features-section" id="features">
+  <div class="section-header">
+    <div class="section-tag">Fonctionnalités</div>
+    <h2 class="section-title">Tout ce dont votre RH a besoin,<br /><em>amplifié par la digitalisation</em></h2>
+    <p class="section-subtitle">Six piliers d'intelligence pour couvrir l'intégralité du cycle de vie de vos collaborateurs.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card" *ngFor="let feature of features; let i = index" [attr.data-index]="i">
+      <div class="feature-icon">{{ feature.icon }}</div>
+      <div class="feature-tag">{{ feature.tag }}</div>
+      <h3 class="feature-title">{{ feature.title }}</h3>
+      <p class="feature-desc">{{ feature.description }}</p>
+      <div class="feature-link">
+        En savoir plus
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials-section" id="testimonials">
+  <div class="section-header">
+    <div class="section-tag">Témoignages</div>
+    <h2 class="section-title">Ce que disent nos clients</h2>
+  </div>
+
+  <div class="testimonial-wrapper">
+    <div class="testimonial-card" *ngFor="let t of testimonials; let i = index" [class.active]="i === activeTestimonial">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">{{ t.quote }}</p>
+      <div class="quote-author">
+        <div class="author-avatar">{{ t.avatar }}</div>
+        <div class="author-info">
+          <strong>{{ t.author }}</strong>
+          <span>{{ t.role }} · {{ t.company }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-dots">
+      <button
+        *ngFor="let t of testimonials; let i = index"
+        class="dot"
+        [class.active]="i === activeTestimonial"
+        (click)="setTestimonial(i)"
+      ></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing-section" id="pricing">
+  <div class="section-header">
+    <div class="section-tag">Tarifs</div>
+    <h2 class="section-title">Simple, transparent,<br /><em>sans mauvaises surprises</em></h2>
+    <p class="section-subtitle">Commencez gratuitement. Évoluez quand vous êtes prêt. Annulez à tout moment.</p>
+
+    <div class="billing-toggle">
+      <span [class.active]="!isAnnual" (click)="isAnnual = false">Mensuel</span>
+      <div class="toggle-track" (click)="isAnnual = !isAnnual">
+        <div class="toggle-thumb" [class.annual]="isAnnual"></div>
+      </div>
+      <span [class.active]="isAnnual" (click)="isAnnual = true">
+        Annuel
+        <span class="save-badge">-20%</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="pricing-card">
+      <div class="plan-header">
+        <div class="plan-icon">🌱</div>
+        <div class="plan-name">Starter</div>
+        <p class="plan-desc">Idéal pour les PME qui démarrent leur transformation RH.</p>
+      </div>
+      <div class="plan-price">
+        <span class="price-amount">{{ isAnnual ? '39' : '49' }}</span>
+        <span class="price-unit">€ / mois</span>
+      </div>
+      <p class="price-billing">{{ isAnnual ? 'Facturé 468 €/an' : 'Facturé mensuellement' }}</p>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> Jusqu'à 50 employés</li>
+        <li><span class="feat-check">✓</span> Recrutement IA (10 offres/mois)</li>
+        <li><span class="feat-check">✓</span> Gestion des congés & absences</li>
+        <li><span class="feat-check">✓</span> Tableau de bord basique</li>
+        <li><span class="feat-check">✓</span> Support email</li>
+        <li><span class="feat-cross">✗</span> Analytics prédictifs</li>
+        <li><span class="feat-cross">✗</span> Chatbot RH</li>
+      </ul>
+      <button class="btn-plan outline">Commencer gratuitement</button>
+    </div>
+
+    <!-- Pro (featured) -->
+    <div class="pricing-card featured">
+      <div class="plan-badge-top">⭐ Le plus populaire</div>
+      <div class="plan-header">
+        <div class="plan-icon">🚀</div>
+        <div class="plan-name">Pro</div>
+        <p class="plan-desc">Pour les équipes RH qui veulent exploiter toute la puissance de l'IA.</p>
+      </div>
+      <div class="plan-price">
+        <span class="price-amount">{{ isAnnual ? '99' : '129' }}</span>
+        <span class="price-unit">€ / mois</span>
+      </div>
+      <p class="price-billing">{{ isAnnual ? 'Facturé 1 188 €/an' : 'Facturé mensuellement' }}</p>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> Jusqu'à 500 employés</li>
+        <li><span class="feat-check">✓</span> Recrutement IA illimité</li>
+        <li><span class="feat-check">✓</span> Analytics prédictifs & rétention</li>
+        <li><span class="feat-check">✓</span> Gestion des talents & carrières</li>
+        <li><span class="feat-check">✓</span> Chatbot RH 24/7</li>
+        <li><span class="feat-check">✓</span> Onboarding automatisé</li>
+        <li><span class="feat-check">✓</span> Support prioritaire</li>
+      </ul>
+      <button class="btn-plan primary">Démarrer l'essai gratuit</button>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="pricing-card">
+      <div class="plan-header">
+        <div class="plan-icon">🏢</div>
+        <div class="plan-name">Enterprise</div>
+        <p class="plan-desc">Solution sur mesure pour les grandes organisations avec des besoins complexes.</p>
+      </div>
+      <div class="plan-price">
+        <span class="price-amount custom">Sur devis</span>
+      </div>
+      <p class="price-billing">Tarification personnalisée</p>
+      <ul class="plan-features">
+        <li><span class="feat-check">✓</span> Employés illimités</li>
+        <li><span class="feat-check">✓</span> Toutes les fonctionnalités Pro</li>
+        <li><span class="feat-check">✓</span> Intégrations SIRH sur mesure</li>
+        <li><span class="feat-check">✓</span> SSO & sécurité avancée</li>
+        <li><span class="feat-check">✓</span> SLA garanti 99,9%</li>
+        <li><span class="feat-check">✓</span> Déploiement on-premise possible</li>
+        <li><span class="feat-check">✓</span> Account manager dédié</li>
+      </ul>
+      <button class="btn-plan outline">Contacter notre équipe</button>
+    </div>
+  </div>
+
+  <div class="pricing-footer-note">
+    <span>🔒 Paiement sécurisé SSL</span>
+    <span>✅ 14 jours d'essai gratuit</span>
+    <span>↩ Remboursement 30 jours</span>
+    <span>🇫🇷 Hébergement en France</span>
+  </div>
+</section>
+
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="cta-bg">
+    <div class="cta-orb"></div>
+  </div>
+  <div class="cta-content">
+    <div class="section-tag">Commencer maintenant</div>
+    <h2 class="cta-title">Transformez votre RH<br />dès aujourd'hui</h2>
+    <p class="cta-subtitle">14 jours d'essai gratuit · Aucune carte bancaire requise · Support inclus</p>
+    <div class="cta-actions">
+      <button class="btn-primary large" routerLink="/register">
+        Créer mon compte gratuit
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <button class="btn-ghost large">Demander une démo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="logo" href="#">
+        <span class="logo-mark">⬡</span>
+        <span class="logo-text">NexusRH</span>
+      </a>
+      <p>L'IA au service de l'humain.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <strong>Produit</strong>
+        <a href="#">Fonctionnalités</a>
+        <a href="#">Tarifs</a>
+        <a href="#">Roadmap</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <strong>Ressources</strong>
+        <a href="#">Documentation</a>
+        <a href="#">API</a>
+        <a href="#">Blog RH</a>
+        <a href="#">Webinaires</a>
+      </div>
+      <div class="footer-col">
+        <strong>Entreprise</strong>
+        <a href="#">À propos</a>
+        <a href="#">Carrières</a>
+        <a href="#">Presse</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 NexusRH. Tous droits réservés.</span>
+    <div class="footer-legal">
+      <a href="#">Confidentialité</a>
+      <a href="#">CGU</a>
+      <a href="#">RGPD</a>
+    </div>
+  </div>
+</footer>
+
+<app-chatbot></app-chatbot>

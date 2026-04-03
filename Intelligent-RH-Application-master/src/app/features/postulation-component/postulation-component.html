@@ -1,0 +1,50 @@
+<div class="swagger-card">
+  <div class="header-swagger">
+    <span class="verb">{{ messageSuccess ? 'Candidature Enregistrée' : 'Postulation pour l\'Offre' }}</span>
+  </div>
+
+  <div class="parameters-section" *ngIf="!messageSuccess">
+    <h3>Identité du Candidat</h3>
+    <hr class="separator">
+
+    <div class="parameter-row">
+      <div class="param-meta">
+        <label>Référence de l'Offre <span class="tag-readonly">ID-{{ offreId }}</span></label>
+      </div>
+      <input type="number" [value]="offreId" readonly class="input-readonly" />
+    </div>
+
+    <div class="parameter-row">
+      <div class="param-meta">
+        <label>Prenom<span class="required">*</span></label>
+      </div>
+      <input type="text" [(ngModel)]="searchPrenom" placeholder="Ex: Houssem" class="executive-input" />
+    </div>
+
+    <div class="parameter-row">
+      <div class="param-meta">
+        <label>Nom<span class="required">*</span></label>
+      </div>
+      <input type="text" [(ngModel)]="searchNom" placeholder="Ex: Ellouze" class="executive-input" />
+    </div>
+  </div>
+
+  <div class="footer-actions" *ngIf="!messageSuccess">
+    <button class="btn-execute" [disabled]="isSubmitting || !searchPrenom || !searchNom" (click)="executePostulation()">
+      <span *ngIf="!isSubmitting">Transmettre la candidature</span>
+      <span *ngIf="isSubmitting" class="loader-dots">Vérification identité...</span>
+    </button>
+  </div>
+
+  <div class="result-box success animate-pop" *ngIf="messageSuccess">
+    <i class="bi bi-check-circle-fill"></i>
+    <div>
+      <strong>Félicitations !</strong>
+      <p>{{ messageSuccess }}</p>
+    </div>
+  </div>
+
+  <div class="result-box error animate-shake" *ngIf="messageError">
+    <i class="bi bi-exclamation-triangle-fill"></i> {{ messageError }}
+  </div>
+</div>

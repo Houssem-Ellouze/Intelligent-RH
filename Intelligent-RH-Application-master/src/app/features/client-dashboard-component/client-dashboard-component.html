@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClientHub — Espace Client</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #060810;
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      padding: 0 2.5rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,8,16,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      transition: box-shadow .3s;
+    }
+
+    .navbar.scrolled {
+      box-shadow: 0 4px 40px rgba(0,0,0,.6);
+    }
+
+    .navbar__logo {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .navbar__logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3B82F6, #A855F7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(59,130,246,.4);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .navbar__logo:hover .navbar__logo-icon { transform: rotate(-8deg) scale(1.1); }
+    .navbar__logo-icon svg { width: 20px; height: 20px; color: #fff; }
+
+    .navbar__logo-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.03em;
+    }
+    .navbar__logo-name span {
+      background: linear-gradient(90deg, #3B82F6, #A855F7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar__links {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      list-style: none;
+    }
+
+    .navbar__links a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .9rem;
+      border-radius: 8px;
+      font-size: .88rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+      transition: color .2s, background .2s;
+      cursor: pointer;
+    }
+    .navbar__links a svg { width: 15px; height: 15px; opacity: .7; transition: opacity .2s, transform .3s; }
+    .navbar__links a:hover { color: #fff; background: rgba(255,255,255,.07); }
+    .navbar__links a:hover svg { opacity: 1; transform: translateY(-1px); }
+    .navbar__links a.active { color: #fff; background: rgba(59,130,246,.15); }
+    .navbar__links a.active svg { opacity: 1; }
+    .navbar__links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 50%;
+      transform: translateX(-50%);
+      width: 20px; height: 2px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #3B82F6, #A855F7);
+    }
+
+    .navbar__actions { display: flex; align-items: center; gap: .75rem; }
+
+    .navbar__notif {
+      position: relative;
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(255,255,255,.6);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .navbar__notif svg { width: 18px; height: 18px; }
+    .navbar__notif:hover { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.2); color: #fff; }
+
+    .navbar__notif-dot {
+      position: absolute;
+      top: 7px; right: 7px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #EF4444;
+      border: 2px solid #060810;
+      animation: ping 2s infinite;
+    }
+
+    .navbar__cta {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .5rem 1.1rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3B82F6, #6366F1);
+      border: none;
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 4px 16px rgba(59,130,246,.35);
+      transition: opacity .2s, transform .2s, box-shadow .2s;
+    }
+    .navbar__cta svg { width: 16px; height: 16px; }
+    .navbar__cta:hover { opacity: .88; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,130,246,.4); }
+
+    .navbar__avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10B981, #3B82F6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,.1);
+      transition: transform .25s, border-color .25s;
+    }
+    .navbar__avatar:hover { transform: scale(1.1); border-color: rgba(59,130,246,.5); }
+
+    .navbar__burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: .4rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: transparent;
+    }
+    .navbar__burger span {
+      display: block;
+      width: 20px; height: 2px;
+      background: rgba(255,255,255,.7);
+      border-radius: 99px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    .navbar__mobile {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: rgba(10,12,22,.97);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 1rem 1.5rem 1.5rem;
+      flex-direction: column;
+      gap: .3rem;
+      backdrop-filter: blur(20px);
+      animation: slideDown .25s ease;
+      z-index: 99;
+    }
+    .navbar__mobile.open { display: flex; }
+    .navbar__mobile a {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .7rem .9rem;
+      border-radius: 10px;
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+      cursor: pointer;
+    }
+    .navbar__mobile a svg { width: 16px; height: 16px; }
+    .navbar__mobile a:hover,
+    .navbar__mobile a.active { background: rgba(59,130,246,.12); color: #fff; }
+    .navbar__mobile-divider { height: 1px; background: rgba(255,255,255,.07); margin: .5rem 0; }
+
+    /* ══════════════════════════════════
+       PAGE CONTENT
+    ══════════════════════════════════ */
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 2rem 3rem;
+      gap: 3rem;
+    }
+
+    /* ── En-tête ─────────────────────── */
+    .page-header { text-align: center; animation: fadeDown .5s ease both; }
+
+    .page-header__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 99px;
+      padding: .3rem .9rem;
+      margin-bottom: 1rem;
+    }
+    .page-header__eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #3B82F6;
+      animation: ping 2s infinite;
+    }
+
+    .page-header__title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .page-header__title span {
+      background: linear-gradient(90deg, #3B82F6, #A855F7, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header__sub {
+      margin-top: .75rem;
+      font-size: .95rem;
+      color: rgba(255,255,255,.38);
+      font-weight: 300;
+    }
+
+    /* ── Grille 3 cards ───────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    /* ── Card ─────────────────────────── */
+    .card {
+      position: relative;
+      border-radius: 22px;
+      padding: 2.2rem 1.8rem 1.8rem;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border: 1px solid rgba(255,255,255,.07);
+      background: #0d1120;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1),
+      border-color .3s, box-shadow .3s, background .3s;
+      min-height: 300px;
+      isolation: isolate;
+      user-select: none;
+      animation: fadeUp .5s ease both;
+    }
+    .card:nth-child(1) { animation-delay: .1s; }
+    .card:nth-child(2) { animation-delay: .2s; }
+    .card:nth-child(3) { animation-delay: .3s; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0;
+      top: -40px; right: -40px;
+      transition: opacity .4s;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .card:hover          { transform: translateY(-12px) scale(1.025); }
+    .card:hover::before  { opacity: .4; }
+    .card.active         { transform: translateY(-16px) scale(1.035); }
+    .card.active::before { opacity: .5; }
+
+    /* Profil */
+    .card--profil::before { background: #3B82F6; }
+    .card--profil:hover, .card--profil.active {
+      border-color: rgba(59,130,246,.6);
+      box-shadow: 0 24px 64px rgba(59,130,246,.28), inset 0 0 32px rgba(59,130,246,.05);
+      background: linear-gradient(160deg, #0d1120 55%, #091b35 100%);
+    }
+    .card--profil .num          { color: rgba(59,130,246,.18); }
+    .card--profil .icon         { background: rgba(59,130,246,.13); color: #3B82F6; }
+    .card--profil .name strong  { color: #3B82F6; }
+    .card--profil .line         { background: linear-gradient(90deg, #3B82F6, transparent); }
+    .card--profil .arrow        { color: #3B82F6; }
+
+    /* Recrutement */
+    .card--recrutement::before { background: #10B981; }
+    .card--recrutement:hover, .card--recrutement.active {
+      border-color: rgba(16,185,129,.6);
+      box-shadow: 0 24px 64px rgba(16,185,129,.28), inset 0 0 32px rgba(16,185,129,.05);
+      background: linear-gradient(160deg, #0d1120 55%, #07201a 100%);
+    }
+    .card--recrutement .num         { color: rgba(16,185,129,.18); }
+    .card--recrutement .icon        { background: rgba(16,185,129,.13); color: #10B981; }
+    .card--recrutement .name strong { color: #10B981; }
+    .card--recrutement .line        { background: linear-gradient(90deg, #10B981, transparent); }
+    .card--recrutement .arrow       { color: #10B981; }
+
+    /* Onboarding */
+    .card--onboarding::before { background: #A855F7; }
+    .card--onboarding:hover, .card--onboarding.active {
+      border-color: rgba(168,85,247,.6);
+      box-shadow: 0 24px 64px rgba(168,85,247,.28), inset 0 0 32px rgba(168,85,247,.05);
+      background: linear-gradient(160deg, #0d1120 55%, #150d28 100%);
+    }
+    .card--onboarding .num         { color: rgba(168,85,247,.18); }
+    .card--onboarding .icon        { background: rgba(168,85,247,.13); color: #A855F7; }
+    .card--onboarding .name strong { color: #A855F7; }
+    .card--onboarding .line        { background: linear-gradient(90deg, #A855F7, transparent); }
+    .card--onboarding .arrow       { color: #A855F7; }
+
+    /* ── Éléments card ────────────────── */
+    .num {
+      position: absolute;
+      top: 1rem; right: 1.4rem;
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.06em;
+      z-index: 2;
+      pointer-events: none;
+      transition: transform .3s;
+    }
+    .card:hover .num { transform: scale(1.08) translateY(-4px); }
+
+    .icon {
+      width: 54px; height: 54px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+      flex-shrink: 0;
+    }
+    .icon svg { width: 26px; height: 26px; }
+    .card:hover .icon { transform: rotate(-8deg) scale(1.18); }
+
+    .label {
+      font-size: .85rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.35);
+      z-index: 2;
+      margin-top: -.3rem;
+    }
+
+    .name {
+      font-size: 1.45rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      z-index: 2;
+    }
+    .name strong {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .line {
+      height: 2px;
+      width: 44px;
+      border-radius: 99px;
+      z-index: 2;
+      transition: width .35s ease;
+    }
+    .card:hover .line { width: 90px; }
+
+    .desc {
+      font-size: .86rem;
+      color: rgba(255,255,255,.35);
+      line-height: 1.65;
+      z-index: 2;
+      flex: 1;
+      font-weight: 300;
+    }
+
+    .arrow {
+      font-size: 1.5rem;
+      z-index: 2;
+      align-self: flex-end;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity .25s, transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .card:hover .arrow { opacity: 1; transform: translateX(4px); }
+
+    .hint {
+      font-size: .75rem;
+      color: rgba(255,255,255,.18);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      animation: fadeUp .5s .4s ease both;
+      opacity: 0;
+    }
+
+    /* ══════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════ */
+    @keyframes ping {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.5); opacity: .5; }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 768px) {
+      .navbar__links, .navbar__cta { display: none; }
+      .navbar__burger { display: flex; }
+      .navbar { padding: 0 1.25rem; }
+      .grid { grid-template-columns: 1fr; max-width: 400px; }
+      .num  { font-size: 3.5rem; }
+      .page { padding: 2.5rem 1.25rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+
+  <a class="navbar__logo" href="#">
+    <div class="navbar__logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <span class="navbar__logo-name">Client<span>Hub</span></span>
+  </a>
+
+  <ul class="navbar__links">
+    <li><a routerLink="/all-stats" class="active" onclick="setActive(event, this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a></li>
+    <li><a routerLink="/clt-client" onclick="setActive(event, this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Profils
+    </a></li>
+    <li><a routerLink="/clt-offre" onclick="setActive(event, this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      Recrutements
+    </a></li>
+    <li><a routerLink="/clt-onboarding" onclick="setActive(event, this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Onboarding
+    </a></li>
+  </ul>
+
+  <div class="navbar__actions">
+    <div class="navbar__notif">
+      <app-hr-notification-bell></app-hr-notification-bell>
+    </div>
+    <button class="navbar__cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nouveau
+    </button>
+    <div routerLink="/profile" class="navbar__avatar">CL</div>
+
+    <button class="navbar__burger" onclick="toggleMobile()" id="burger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ MOBILE MENU ══════════════════════════════════ -->
+<div class="navbar__mobile" id="mobileMenu">
+  <a href="#" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Dashboard
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Profils
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+    Recrutements
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Onboarding
+  </a>
+  <div class="navbar__mobile-divider"></div>
+  <a href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 1 0 4.93 19.07"/></svg>
+    Mon Compte
+  </a>
+</div>
+
+<!-- ══ PAGE ══════════════════════════════════════════ -->
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-header__eyebrow">Espace Client</div>
+    <h1 class="page-header__title">Vos <span>Espaces de Gestion</span></h1>
+    <p class="page-header__sub">Cliquez sur une section pour y accéder</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- 01 Profils -->
+    <div class="card card--profil" onclick="toggleCard(this)">
+      <span class="num">01</span>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </div>
+      <p class="label">Module</p>
+      <p class="name" routerLink="/clt-client">Gestion des<br><strong>Profils</strong></p>
+      <div class="line"></div>
+      <p class="desc">Consultez et administrez l'ensemble des profils clients, informations personnelles et accès.</p>
+      <span class="arrow">→</span>
+    </div>
+
+    <!-- 02 Recrutements -->
+    <div class="card card--recrutement" onclick="toggleCard(this)">
+      <span class="num">02</span>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <line x1="12" y1="12" x2="12" y2="16"/>
+          <line x1="10" y1="14" x2="14" y2="14"/>
+        </svg>
+      </div>
+      <p class="label">Module</p>
+      <p class="name" routerLink="/clt-offre">Gestion des<br><strong>Recrutements</strong></p>
+      <div class="line"></div>
+      <p class="desc">Gérez les offres d'emploi, les candidatures reçues et planifiez les entretiens.</p>
+      <span class="arrow">→</span>
+    </div>
+
+    <!-- 03 Onboarding -->
+    <div class="card card--onboarding" onclick="toggleCard(this)">
+      <span class="num">03</span>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <p class="label">Module</p>
+      <p class="name" routerLink="/clt-onboarding">Gestion de<br><strong>l'Onboarding</strong></p>
+      <div class="line"></div>
+      <p class="desc">Accompagnez les nouveaux collaborateurs à chaque étape de leur intégration.</p>
+      <span class="arrow">→</span>
+    </div>
+
+
+    <div class="card card--scouting" onclick="toggleCard(this)">
+      <span class="num">04</span>
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <path d="M11 8v3l2 2"/>
+        </svg>
+      </div>
+      <p class="tag">Détection</p>
+      <p class="name" routerLink="/clt-scouting" >Gestion de<br><strong>Scouting</strong></p>
+      <div class="line"></div>
+      <p class="desc">Identifiez et suivez les talents potentiels. Constituez votre vivier de candidats stratégiques.</p>
+      <span class="arrow">→</span>
+    </div>
+
+
+    <div class="card card--3" onclick="toggleCard(this)">
+      <span class="num">05</span>
+
+      <div class="icon">
+        <!-- Icône Kanban Board -->
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.8"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+          <rect x="3" y="4" width="5" height="16" rx="1"/>
+          <rect x="10" y="4" width="5" height="10" rx="1"/>
+          <rect x="17" y="4" width="4" height="13" rx="1"/>
+        </svg>
+      </div>
+
+      <p class="tag">Organisation</p>
+
+      <p class="name" routerLink="/rh-prediction">
+        Analyse<br><strong>Predictive</strong>
+      </p>
+
+      <div class="line"></div>
+
+      <p class="desc">
+        Gérez et suivez les tâches du processus RH avec un tableau Kanban interactif
+        (À faire, En cours, Terminé).
+      </p>
+
+      <span class="arrow">→</span>
+    </div>
+  </div>
+
+  <p class="hint">↑ Survolez les cartes pour interagir</p>
+</div>
+
+<script>
+  // Navbar scroll shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Mobile menu
+  let mobileOpen = false;
+  function toggleMobile() {
+    mobileOpen = !mobileOpen;
+    document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
+    const spans = document.querySelectorAll('#burger span');
+    if (mobileOpen) {
+      spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+      spans[1].style.opacity   = '0';
+      spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+    } else {
+      spans.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  }
+
+  // Active nav link
+  function setActive(e, el) {
+    e.preventDefault();
+    document.querySelectorAll('.navbar__links a').forEach(l => l.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Card toggle
+  function toggleCard(el) {
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    if (!wasActive) el.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

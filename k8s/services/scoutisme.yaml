@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: scoutisme-service
+  namespace: intelligent-rh
+spec:
+  ports:
+    - port: 9009
+  selector:
+    app: scoutisme-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoutisme-service
+  namespace: intelligent-rh
+spec:
+  selector:
+    matchLabels:
+      app: scoutisme-service
+  template:
+    metadata:
+      labels:
+        app: scoutisme-service
+    spec:
+      containers:
+        - name: scoutisme-service
+          image: houssem80356/intelligent-app2-scoutisme-service:latest
+          ports:
+            - containerPort: 9009
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-db:3306/scoutisme_db?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: ""
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery:8761/eureka/"

@@ -1,0 +1,67 @@
+<div class="page-wrapper">
+  <div class="animated-bg"></div>
+
+  <div class="content-container">
+
+    <header class="hero-header">
+      <div>
+        <h1 class="main-title">Offres d'Emploi Disponibles</h1>
+        <p class="subtitle">Trouvez votre prochaine opportunité technique</p>
+      </div>
+    </header>
+
+    <div *ngIf="loading" class="loader-container" style="text-align: center; padding: 50px;">
+      <div class="spinner"></div>
+      <p>Chargement des opportunités...</p>
+    </div>
+
+    <div class="talent-grid" *ngIf="!loading && offres.length > 0">
+
+      <div class="talent-card" *ngFor="let offre of offres">
+
+        <div class="exp-chip">
+          <span class="exp-val">{{ offre.statut || 'BROUILLON' }}</span>
+          <span class="exp-unit">Statut</span>
+        </div>
+
+        <div class="user-avatar">
+          {{ offre.titre ? offre.titre.substring(0, 1) : 'O' }}
+        </div>
+
+        <div class="user-base">
+          <h2 class="user-name">{{ offre.titre }}</h2>
+          <span class="user-mail">📅 Publié le {{ offre.datePublication | date:'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div class="card-body" style="margin-top: 15px;">
+          <p class="user-mail" style="line-height: 1.6; color: #cbd5e1;">
+            {{ (offre.description && offre.description.length > 150) ? (offre.description | slice:0:150) + '...' : offre.description }}
+          </p>
+        </div>
+
+        <div class="card-bottom">
+
+          <button
+            class="btn-download"
+            style="padding: 10px 20px; flex: 1.5;"
+            (click)="offre.id ? onPostuler(offre.id) : null"
+            [disabled]="offre.statut !== 'PUBLIEE'">
+            <i class="bi bi-send"></i>
+            {{ offre.statut === 'PUBLIEE' ? 'Postuler' : 'Fermé' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf="!loading && offres.length === 0" class="talent-card" style="text-align: center; margin-top: 50px;">
+      <div class="user-avatar" style="margin: 0 auto 20px auto;">📂</div>
+      <h2 class="user-name">Aucune offre active</h2>
+      <p class="user-mail">Revenez plus tard ou actualisez la page.</p>
+      <button (click)="chargerOffres()" class="cyber-link cv" style="width: 200px; margin: 20px auto; border:none; cursor:pointer;">
+        Actualiser
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="page-wrapper">
+  <div class="animated-bg"></div>
+
+  <div class="content-container" style="max-width: 800px;">
+
+    <header class="hero-header">
+      <div>
+        <h1 class="main-title">Nouvelle Mission</h1>
+        <p class="subtitle">Propulsez une opportunité dans la galaxie tech</p>
+      </div>
+    </header>
+
+    <div class="talent-card">
+
+      <div class="card-skills">
+        <h3 style="color: var(--neon-blue); margin-bottom: 25px;">
+          <i class="bi bi-cpu"></i> Détails de l'Offre
+        </h3>
+
+        <div class="search-input-wrapper" style="margin-bottom: 30px; flex-direction: column; align-items: flex-start;">
+          <label class="user-mail" style="margin-bottom: 10px; display: block;">
+            Intitulé du Poste <span style="color: var(--neon-blue);">*</span>
+          </label>
+          <div style="width: 100%; position: relative;">
+            <i class="bi bi-type search-icon"></i>
+            <input
+              type="text"
+              class="neo-input"
+              [(ngModel)]="nouvelleOffre.titre"
+              placeholder="Ex: Expert Angular & Microservices"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="search-input-wrapper" style="margin-bottom: 30px; flex-direction: column; align-items: flex-start;">
+          <label class="user-mail" style="margin-bottom: 10px; display: block;">
+            Description de la Mission <span style="color: var(--neon-blue);">*</span>
+          </label>
+          <div style="width: 100%; position: relative;">
+            <i class="bi bi-text-paragraph search-icon" style="top: 15px;"></i>
+            <textarea
+              class="neo-input"
+              [(ngModel)]="nouvelleOffre.description"
+              rows="6"
+              style="padding-top: 15px; min-height: 150px; resize: none;"
+              placeholder="Détaillez les technos et les responsabilités..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="download-section" style="margin-top: 20px;">
+        <button
+          class="btn-download"
+          [disabled]="isSubmitting || !nouvelleOffre.titre"
+          (click)="submitOffre()"
+          style="width: 100%;">
+          <i class="bi bi-rocket-takeoff"></i>
+          {{ isSubmitting ? 'Propagation...' : 'Diffuser l\'offre' }}
+        </button>
+      </div>
+
+      <div *ngIf="message" style="margin-top: 25px;">
+        <div class="contact-line"
+             [style.color]="message.includes('succès') ? '#00ff88' : '#ef4444'"
+             [style.borderColor]="message.includes('succès') ? '#00ff8844' : '#ef444444'">
+          <span>{{ message.includes('succès') ? '✅' : '⚠️' }}</span>
+          {{ message }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="form-container">
+  <h2>Mettre à jour le CV et recalculer le score</h2>
+
+  <form (ngSubmit)="updateCV()" #cvForm="ngForm">
+
+    <div class="form-group">
+      <label for="prenom">Prénom :</label>
+      <input
+        type="text"
+        id="prenom"
+        name="prenom"
+        [(ngModel)]="prenom"
+        placeholder="Entrez le prénom"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="nom">Nom :</label>
+      <input
+        type="text"
+        id="nom"
+        name="nom"
+        [(ngModel)]="nom"
+        placeholder="Entrez le nom"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cv">Choisir CV :</label>
+      <input
+        type="file"
+        id="cv"
+        name="cv"
+        accept=".pdf"
+        (change)="onFileSelected($event)"
+        required
+      />
+    </div>
+
+    <button type="submit" [disabled]="cvForm.invalid">
+      Mettre à jour le CV
+    </button>
+
+  </form>
+
+  <p *ngIf="responseMessage">
+    {{ responseMessage }}
+  </p>
+</div>

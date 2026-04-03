@@ -1,0 +1,74 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: intelligent-rh-ingress
+  namespace: intelligent-rh
+  annotations:
+    # Utilisation du contrôleur NGINX
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # Configuration CORS complète pour tes microservices
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://intelligent-rh, http://intelligent-rh"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-charset,x-accept-encoding,x-requested-with,authorization"
+    # Sécurité SSL : Redirection automatique vers HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # Taille maximale des uploads (utile pour les CV/fichiers)
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx # Syntaxe moderne recommandée
+  tls:
+    - hosts:
+        - intelligent-rh
+      secretName: talentflow-tls-secret
+  rules:
+    - host: intelligent-rh
+      http:
+        paths:
+          # --- ROUTES API (Vers la Gateway Spring Boot) ---
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+          - path: /appointments
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+          - path: /calendars
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+          - path: /files
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+
+          # --- ROUTE FRONTEND (Angular - Route par défaut) ---
+          # Doit être placée en dernier pour ne pas intercepter les autres
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Activation de votre compte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f6fb;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h1 {
+            color: #003366;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .code {
+            margin: 25px 0;
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+            letter-spacing: 4px;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        .btn a {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+
+        .btn a:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .code {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Activation de votre compte</h1>
+
+    <p th:text="'Bonjour ' + ${username} + ','"></p>
+
+    <p>
+        Merci pour votre inscription.
+        Veuillez utiliser le code ci-dessous pour activer votre compte :
+    </p>
+
+    <div class="code">
+        <span th:text="${resetCode}"></span>
+    </div>
+
+    <p>Ou cliquez directement sur le bouton :</p>
+
+    <div class="btn">
+        <a th:href="${url}" target="_blank">Activer mon compte</a>
+    </div>
+
+    <div class="footer">
+        Ce code expire dans 15 minutes. <br>
+        Si vous n’êtes pas à l’origine de cette demande, ignorez cet email.
+    </div>
+
+</div>
+
+</body>
+</html>

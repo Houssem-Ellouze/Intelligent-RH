@@ -1,0 +1,79 @@
+/* Container principal */
+.reset-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  overflow: hidden;
+}
+
+/* Wrapper du contenu (IMPORTANT pour le z-index) */
+.content-wrapper {
+  position: relative;
+  z-index: 10; /* Toujours au-dessus */
+  background: rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  color: white;
+}
+
+/* Éléments décoratifs */
+.decorative-element,
+.cyber-element,
+.light-dot {
+  position: absolute;
+  z-index: 1; /* Derrière le contenu */
+  pointer-events: none; /* 🔥 PERMET AU BOUTON DE RESTER CLIQUABLE */
+}
+
+/* Exemple de style décoratif */
+.decorative-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #3b82f6, transparent);
+  top: -100px;
+  left: -100px;
+}
+
+.decorative-2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #9333ea, transparent);
+  bottom: -100px;
+  right: -100px;
+}
+
+/* Points lumineux */
+.light-dot {
+  width: 8px;
+  height: 8px;
+  background: #38bdf8;
+  border-radius: 50%;
+  animation: blink 3s infinite alternate;
+}
+
+@keyframes blink {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* Bouton */
+.btn-primary {
+  background-color: #3b82f6;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}

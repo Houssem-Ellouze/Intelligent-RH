@@ -1,0 +1,145 @@
+<div class="page-wrapper">
+  <div class="animated-bg"></div>
+
+  <div class="content-container">
+    <header class="hero-header">
+      <div class="title-section">
+        <h2 class="main-title">Gestion des Talents</h2>
+        <p class="subtitle">Découvrez et gérez vos futurs collaborateurs</p>
+      </div>
+      <div class="action-section">
+        <button class="btn-neo-add" routerLink="/candidat/nouveau">
+          <span class="btn-content">
+            <i class="plus-icon">+</i> Nouveau Candidat
+          </span>
+          <div class="btn-glow"></div>
+        </button>
+      </div>
+    </header>
+
+    <div class="filter-bar">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+          placeholder="Search for a talent (name, surname)..."
+          class="neo-input"
+        >
+      </div>
+
+      <div class="filter-select-wrapper">
+        <select [(ngModel)]="selectedDomaine" (change)="onSearchChange()" class="neo-select">
+          <option value="">Tous les domaines</option>
+          <option *ngFor="let domaine of domaines" [value]="domaine">
+            {{ labels[domaine] || domaine }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <main class="main-content">
+      <div *ngIf="candidats$ | async as allCandidats; else loading">
+
+        <ng-container *ngIf="getFilteredCandidats(allCandidats) as filtered">
+
+          <div class="talent-grid" *ngIf="filtered.length > 0; else noResults">
+            <div class="talent-card" *ngFor="let c of getPaginatedCandidats(allCandidats)">
+              <div class="card-inner">
+                <div class="exp-chip">
+                  <span class="exp-val">{{ c.anneesExperience }}</span>
+                  <span class="exp-unit">ANS EXP</span>
+                </div>
+
+                <div class="avatar-wrapper">
+                  <img
+                    [src]="candidatService.getFileUrl(c.fileName)"
+                    [alt]="c.nom"
+                    class="profile-avatar"
+                    (error)="handleImageError($event, c.prenom + ' ' + c.nom)"
+                  />
+                </div>
+
+                <div class="card-top">
+                  <div class="user-base">
+                    <h3 class="user-name">{{ c.prenom }} {{ c.nom }}</h3>
+                    <span class="user-mail">{{ c.email }}</span>
+                    <p class="user-domain">{{ c.domainePrincipale }}</p>
+                    <p class="user-post"><strong>{{ c.posteActuel }}</strong></p>
+                    <div>
+                      📅 {{ c.dateCreation | date:'dd/MM/yyyy HH:mm' }}
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="card-mid">
+                  <div class="contact-line"><span>📞</span> {{ c.telephone }}</div>
+                  <br>
+                  <div class="links-box">
+                    <button *ngIf="c.lienCV" type="button" class="btn-download" (click)="downloadFile(c.lienCV)">
+                      <i class="icon-download"></i> Télécharger CV
+                    </button>
+                    <div class="social-row">
+                      <a [href]="c.lienGitHub" target="_blank" class="social-item">GitHub</a>
+                      <a [href]="c.lienLinkedin" target="_blank" class="social-item">LinkedIn</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-skills">
+                  <h4 class="skills-title">Skills</h4>
+                  <div class="skills-wrapper">
+                    <span *ngFor="let comp of c.competences" class="skill-badge" [attr.data-type]="comp.type">
+                      {{ comp.libelle }}
+                      <span class="skill-level" [ngClass]="comp.niveauDeclare.toLowerCase()"></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="card-bottom">
+                  <button class="action-btn edit" [routerLink]="['/client/modifier', c.id]">Modifier</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pagination-bar" *ngIf="getTotalPages(allCandidats) > 1">
+            <button class="page-btn" (click)="goToPrevious()" [disabled]="currentPage === 1">
+              &larr; Précédent
+            </button>
+            <span class="page-info">
+              Page <strong>{{ currentPage }}</strong> sur {{ getTotalPages(allCandidats) }}
+            </span>
+            <button class="page-btn" (click)="goToNext(allCandidats)" [disabled]="currentPage === getTotalPages(allCandidats)">
+              Suivant &rarr;
+            </button>
+          </div>
+
+          <ng-template #noResults>
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <p>Aucun talent ne correspond à votre recherche.</p>
+            </div>
+          </ng-template>
+
+        </ng-container>
+      </div>
+    </main>
+
+    <ng-template #loading>
+      <div class="cosmic-loader">
+        <div class="spinner"></div>
+        <p>Synchronisation des données...</p>
+      </div>
+    </ng-template>
+
+    <ng-template #empty>
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <p>La base de données est vide.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

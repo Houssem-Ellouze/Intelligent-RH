@@ -1,0 +1,909 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
+
+// ══════════════════════════════════════════════════
+//  TOKENS — Sunny Playful Editorial EXTRAORDINAIRE
+// ══════════════════════════════════════════════════
+$bg:        #f7f4ee;
+$bg2:       #fffcf5;
+$surface:   #ffffff;
+$coral: #008bfc;
+$coral2:    #ff9a8d;
+$sun: #66e3ff;
+$sun2:      #ffe8a0;
+$mint: #91b4ec;
+$mint2:     #b7f7e4;
+$sky:       #4cc9f0;
+$sky2:      #caf0ff;
+$plum:      #7b2d8b;
+$ink:       #1a1825;
+$ink2:      #2e2b3d;
+$muted:     #a09eb8;
+$border:    rgba(26,24,37,0.08);
+$text:      #2e2b3d;
+$sub:       #9896aa;
+$gradient:  linear-gradient(135deg, $coral, $sun, $mint, $sky);
+$gradient2: linear-gradient(45deg, $sky2, $mint2, $sun2, $coral2);
+
+// ══════════════════════════════════════════════════
+//  KEYFRAMES MAGIQUES
+// ══════════════════════════════════════════════════
+@keyframes float-in {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shimmer-border {
+  0% { border-image-source: linear-gradient(0deg, $coral, $sun, $mint, $sky); }
+  25% { border-image-source: linear-gradient(90deg, $coral, $sun, $mint, $sky); }
+  50% { border-image-source: linear-gradient(180deg, $coral, $sun, $mint, $sky); }
+  75% { border-image-source: linear-gradient(270deg, $coral, $sun, $mint, $sky); }
+  100% { border-image-source: linear-gradient(360deg, $coral, $sun, $mint, $sky); }
+}
+
+@keyframes rainbow-glow {
+  0% { filter: drop-shadow(0 0 5px $coral); }
+  25% { filter: drop-shadow(0 0 20px $sun); }
+  50% { filter: drop-shadow(0 0 5px $mint); }
+  75% { filter: drop-shadow(0 0 20px $sky); }
+  100% { filter: drop-shadow(0 0 5px $coral); }
+}
+
+@keyframes confetti {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+// ══════════════════════════════════════════════════
+//  HOST & BACKGROUND
+// ══════════════════════════════════════════════════
+:host {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+  position: relative;
+}
+
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba($sun,.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float-in 20s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    bottom: -10%;
+    left: -5%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($mint,.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float-in 25s ease-in-out infinite alternate-reverse;
+    pointer-events: none;
+  }
+}
+
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba($coral,.1) 2px, transparent 2px),
+      radial-gradient(circle at 80% 70%, rgba($sky,.1) 3px, transparent 3px),
+      radial-gradient(circle at 40% 80%, rgba($sun,.1) 4px, transparent 4px);
+    background-size: 60px 60px, 80px 80px, 100px 100px;
+    animation: pulse-soft 8s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    width: 400px;
+    height: 400px;
+    background: $gradient2;
+    filter: blur(80px);
+    opacity: 0.15;
+    border-radius: 50%;
+    animation: gradient-shift 15s ease infinite;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FORM CONTAINER — EXTRAORDINAIRE
+// ══════════════════════════════════════════════════
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  animation: float-in 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.form-container {
+  background: rgba($surface, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 40px;
+  padding: 2.5rem;
+  box-shadow:
+    0 25px 50px -12px rgba($ink, 0.25),
+    0 0 0 2px rgba($coral, 0.1) inset,
+    0 0 30px rgba($mint, 0.1);
+  border: 2px solid transparent;
+  animation: shimmer-border 8s linear infinite;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba($coral, 0.1) 60deg,
+        rgba($sun, 0.1) 120deg,
+        rgba($mint, 0.1) 180deg,
+        rgba($sky, 0.1) 240deg,
+        transparent 300deg
+    );
+    animation: gradient-shift 10s linear infinite;
+    pointer-events: none;
+  }
+}
+
+.form-header {
+  margin-bottom: 2.5rem;
+  position: relative;
+
+  .main-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: $ink;
+    margin: 0 0 0.5rem;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: repeating-linear-gradient(
+          90deg,
+          $coral,
+          $sun,
+          $mint,
+          $sky
+      );
+      border-radius: 3px;
+      animation: gradient-shift 3s linear infinite;
+      background-size: 300% 100%;
+    }
+  }
+
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: $muted;
+    letter-spacing: 0.05em;
+    margin: 1rem 0 0;
+    position: relative;
+    padding-left: 1rem;
+
+    &::before {
+      content: '✦';
+      position: absolute;
+      left: -5px;
+      color: $coral;
+      animation: rainbow-glow 3s ease-in-out infinite;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FORM SECTIONS
+// ══════════════════════════════════════════════════
+.form-section {
+  background: $surface;
+  border-radius: 30px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow:
+    0 4px 20px rgba($ink, 0.06),
+    0 0 0 1px rgba($coral, 0.1);
+  transition: all 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow:
+      0 30px 40px -20px rgba($ink, 0.3),
+      0 0 0 2px rgba($coral, 0.2);
+  }
+
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $ink;
+    margin: 0 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-style: normal;
+      font-size: 1.6rem;
+      animation: wiggle 3s ease-in-out infinite;
+    }
+  }
+
+  .icon-user::before { content: '👤'; }
+  .icon-briefcase::before { content: '💼'; }
+  .icon-star::before { content: '⭐'; }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba($coral, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: all 0.5s;
+  }
+
+  &:hover::after {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FORM FIELDS — EXTRAORDINAIRES
+// ══════════════════════════════════════════════════
+.row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.field {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+
+  label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: $muted;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s;
+  }
+
+  &:hover label {
+    color: $coral;
+    transform: translateX(5px);
+  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="url"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  background: $bg2;
+  border: 2px solid $border;
+  border-radius: 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $ink;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  outline: none;
+
+  &:focus {
+    border-color: $coral;
+    box-shadow:
+      0 0 0 4px rgba($coral, 0.15),
+      0 4px 12px rgba($ink, 0.1);
+    transform: scale(1.02);
+  }
+
+  &::placeholder {
+    color: $muted;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  &:hover:not(:focus) {
+    border-color: deepskyblue;
+    background: white;
+  }
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ff6b5b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2rem;
+  padding-right: 2.5rem;
+
+  option {
+    background: $surface;
+    color: $ink;
+    padding: 0.5rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  MAT-FORM-FIELD OVERRIDE
+// ══════════════════════════════════════════════════
+.full-width {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.mat-form-field-appearance-outline {
+  .mat-form-field-outline {
+    color: $border;
+  }
+
+  .mat-form-field-label {
+    color: $muted;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .mat-input-element {
+    color: $ink;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+  }
+
+  &.mat-focused {
+    .mat-form-field-outline-thick {
+      color: $coral;
+    }
+
+    .mat-form-field-label {
+      color: $coral;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FILE INPUTS
+// ══════════════════════════════════════════════════
+input[type="file"] {
+  padding: 0.5rem;
+  background: linear-gradient(135deg, $bg2 0%, $surface 100%);
+  border: 3px dashed rgba($coral, 0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.4s;
+
+  &::-webkit-file-upload-button {
+    background: $gradient;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    margin-right: 1rem;
+    border-radius: 15px;
+    color: $ink;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px deepskyblue;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px deepskyblue;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  &:hover {
+    border-color: $coral;
+    background: linear-gradient(135deg, white, deepskyblue);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  POSTE ACTUEL SPECIAL
+// ══════════════════════════════════════════════════
+.poste-actuel {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  color: black;
+  margin: 0 0 0.5rem;
+  position: relative;
+  display: inline-block;
+
+  &::before {
+    content: '✨';
+    position: absolute;
+    left: -25px;
+    animation: rainbow-glow 2s ease-in-out infinite;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  COMPETENCES SECTION
+// ══════════════════════════════════════════════════
+.flex-justify {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  button {
+    margin: 0;
+  }
+}
+
+.competence-list {
+  margin-top: 1.5rem;
+}
+
+.competence-item {
+  background: rgba($bg2, 0.7);
+  border-radius: 25px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+  position: relative;
+  animation: slide-in-right 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  &:hover {
+    background: rgba($coral2, 0.1);
+    transform: translateX(10px) scale(1.02);
+    box-shadow: 0 10px 20px -10px rgba($coral, 0.3);
+  }
+
+  .field {
+    margin: 0;
+  }
+}
+
+.btn-delete-mini {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba($coral, 0.3);
+  background: $surface;
+  color: $coral;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+
+  &:hover {
+    background: $coral;
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+    border-color: $coral;
+    box-shadow: 0 6px 15px rgba($coral, 0.4);
+  }
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 2rem;
+  color: $muted;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  background: rgba($bg2, 0.5);
+  border-radius: 20px;
+  border: 2px dashed $border;
+}
+
+// ══════════════════════════════════════════════════
+//  CHECKBOX PERSONNALISÉ
+// ══════════════════════════════════════════════════
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  color: $ink;
+  user-select: none;
+  margin: 1rem 0;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    &:checked ~ .checkmark {
+      background: $gradient;
+      border-color: transparent;
+
+      &::after {
+        display: block;
+        animation: confetti 0.5s ease-out;
+      }
+    }
+
+    &:checked ~ .label-text {
+      color: $coral;
+      font-weight: 800;
+    }
+  }
+
+  .checkmark {
+    position: absolute;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background: $surface;
+    border: 2px solid $border;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 8px;
+      top: 4px;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover .checkmark {
+    border-color: $coral;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 12px rgba($coral, 0.2);
+  }
+}
+
+.label-text {
+  transition: all 0.3s;
+}
+
+// ══════════════════════════════════════════════════
+//  BUTTONS — EXTRAORDINAIRES
+// ══════════════════════════════════════════════════
+.btn-secondary {
+  background: $surface;
+  border: 2px solid rgba($coral, 0.3);
+  border-radius: 50px;
+  padding: 0.7rem 1.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: $coral;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: $gradient;
+    transition: left 0.4s;
+    z-index: 0;
+  }
+
+  &:hover {
+    color: $ink;
+    border-color: transparent;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba($coral, 0.3);
+
+    &::before {
+      left: 0;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.btn-cancel {
+  background: rgba($muted, 0.1);
+  border: 2px solid rgba($muted, 0.2);
+  border-radius: 50px;
+  padding: 0.9rem 2rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: $muted;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  &:hover {
+    background: rgba($muted, 0.2);
+    color: $ink2;
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: 0 10px 25px rgba($muted, 0.2);
+    border-color: $muted;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-submit {
+  background: $gradient;
+  background-size: 200% 100%;
+  border: none;
+  border-radius: 50px;
+  padding: 0.9rem 2rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: $ink;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba($coral, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent 30%
+    );
+    animation: gradient-shift 4s linear infinite;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px rgba($coral, 0.4);
+    background-position: 100% 0;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+// ══════════════════════════════════════════════════
+//  FOOTER SECTION
+// ══════════════════════════════════════════════════
+.footer-section {
+  background: $gradient2;
+  background-size: 200% 100%;
+  border: 2px solid transparent;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba($surface, 0.9);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  ERROR MESSAGE
+// ══════════════════════════════════════════════════
+.text-danger {
+  color: $coral;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  animation: wiggle 0.5s ease-in-out;
+}
+
+// ══════════════════════════════════════════════════
+//  CONFETTI EFFECT
+// ══════════════════════════════════════════════════
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: $gradient;
+  animation: confetti 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+// ══════════════════════════════════════════════════
+//  RESPONSIVE
+// ══════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .competence-item {
+    flex-direction: column;
+
+    .btn-delete-mini {
+      align-self: center;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  ANIMATIONS DE SUCCÈS
+// ══════════════════════════════════════════════════
+@keyframes success-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-message {
+  background: $mint;
+  color: $ink;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  animation: success-pop 0.5s cubic-bezier(0.34, 1.5, 0.64, 1);
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 25px rgba($mint, 0.3);
+}
+
+// ══════════════════════════════════════════════════
+//  SCROLLBAR PERSONNALISÉ
+// ══════════════════════════════════════════════════
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg2;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gradient;
+  border-radius: 10px;
+  border: 2px solid $surface;
+
+  &:hover {
+    background: linear-gradient(135deg, $coral, $sun, $mint);
+  }
+}

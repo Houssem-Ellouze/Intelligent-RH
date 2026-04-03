@@ -1,0 +1,58 @@
+<div class="cyber-panel">
+  <div class="panel-accent"></div>
+
+  <div class="panel-header">
+    <div class="header-content">
+      <h3 class="panel-title">Planifier Entretien</h3>
+    </div>
+    <div class="status-indicator" [class.active]="!isProcessing"></div>
+  </div>
+
+  <div class="panel-body">
+    <div class="input-group">
+      <label class="cyber-label">Date & Heure</label>
+      <div class="input-container">
+        <input
+          type="datetime-local"
+          [(ngModel)]="entretien.dateEntretien"
+          class="cyber-input"
+          [disabled]="isProcessing">
+        <div class="glow-line"></div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="cyber-label">Notes & Objectifs</label>
+      <div class="input-container">
+        <textarea
+          [(ngModel)]="entretien.notes"
+          placeholder="Points techniques à aborder..."
+          class="cyber-input"
+          [disabled]="isProcessing">
+        </textarea>
+        <div class="glow-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <button
+      class="btn-confirm-neo"
+      (click)="planifier()"
+      [disabled]="isProcessing || !entretien.dateEntretien">
+
+      <span *ngIf="!isProcessing">Confirmer le RDV</span>
+
+      <div *ngIf="isProcessing" class="mini-loader">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+  </div>
+
+  <div *ngIf="message" class="feedback-msg" [class.success]="!errorOccurred">
+    <span class="icon">{{ errorOccurred ? '⚠' : '⚡' }}</span>
+    {{ message }}
+  </div>
+</div>
+
+

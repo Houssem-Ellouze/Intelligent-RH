@@ -1,0 +1,117 @@
+/* --- SWAGGER CARD MODERNE --- */
+.swagger-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  max-width: 600px;
+  margin: auto;
+}
+
+.header-swagger {
+  background: #f8fafc;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-swagger .verb {
+  color: #007aff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.parameters-section { padding: 24px; }
+
+.separator {
+  border: 0;
+  height: 1px;
+  background: #f1f5f9;
+  margin-bottom: 24px;
+}
+
+/* Meta Data Styles */
+.param-meta label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.tag-readonly {
+  font-size: 0.7rem;
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.required { color: #ef4444; font-size: 0.75rem; }
+
+/* Input States */
+input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007aff;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+.input-readonly {
+  background: #f8fafc !important;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+/* CTA Button */
+.btn-execute {
+  width: calc(100% - 48px);
+  margin: 0 24px 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, #007aff 0%, #0051af 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-execute:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 122, 255, 0.25);
+}
+
+.btn-execute:disabled {
+  background: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/* Results */
+.result-box {
+  margin: 0 24px 24px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-box.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}

@@ -1,0 +1,73 @@
+<div class="rh-container">
+  <div class="header">
+    <h1>Analyse de CV <span class="ai-tag">IA</span></h1>
+    <p>Adéquation profil / poste en temps réel</p>
+  </div>
+
+  <div class="upload-zone" [class.dragging]="isDragging"
+       (dragover)="$event.preventDefault(); isDragging=true"
+       (dragleave)="isDragging=false"
+       (drop)="onDrop($event)">
+
+    <input #fileInput type="file" accept=".pdf" (change)="onFileSelected($event)" hidden/>
+
+    <div class="drop-box" (click)="fileInput.click()">
+      <i class="fas fa-file-pdf icon"></i>
+      <p *ngIf="!selectedFile">Glissez votre CV ici ou <span>cliquez</span></p>
+      <p *ngIf="selectedFile" class="file-info"><strong>{{ selectedFile.name }}</strong></p>
+    </div>
+
+    <div class="actions">
+      <button class="btn-analyze" [disabled]="!selectedFile || loading" (click)="uploadCV()">
+        {{ loading ? 'Analyse en cours...' : 'Lancer le Scoring' }}
+      </button>
+      <button class="btn-reset" *ngIf="selectedFile" (click)="reset()">Réinitialiser</button>
+    </div>
+
+    <div *ngIf="error" class="error-msg">{{ error }}</div>
+  </div>
+
+  <div *ngIf="result" class="results-list animate-in">
+    <div class="best-match-hero">
+      <div class="rank">Meilleure Adéquation</div>
+      <h2>{{ result.best_job }}</h2>
+      <div class="global-score">{{ result.match_percentage }}%</div>
+    </div>
+
+    <div class="job-cards">
+      <div *ngFor="let job of result.top_jobs; let i = index" class="card">
+        <div class="card-header">
+          <h3>{{ job.job }}</h3>
+          <span class="score-badge" [ngClass]="{'high': job.score >= 70}">{{ job.score }}% match</span>
+        </div>
+
+        <div class="card-body">
+          <div class="stats">
+            <div class="stat">
+              <small>Confiance IA</small>
+              <div class="bar"><div class="fill" [style.width.%]="job.ai_confidence"></div></div>
+            </div>
+            <div class="stat">
+              <small>Skills DB</small>
+              <div class="bar"><div class="fill green" [style.width.%]="job.skills_match"></div></div>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <label>Points forts :</label>
+            <div class="chips">
+              <span *ngFor="let s of job.matched_skills" class="chip found">{{ s }}</span>
+            </div>
+          </div>
+
+          <div class="skills-group" *ngIf="job.missing_skills.length > 0">
+            <label>Compétences manquantes :</label>
+            <div class="chips">
+              <span *ngFor="let s of job.missing_skills" class="chip missing">{{ s }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

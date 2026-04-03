@@ -1,0 +1,102 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: talent-management-service
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql-db}:3306/talent_db?createDatabaseIfNotExist=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1200000
+      initialization-fail-timeout: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ellouzeh00@gmail.com
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+          ssl:
+            enable: false
+
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+    check-template-location: true
+
+  cloud:
+    config:
+      enabled: false
+
+  # Désactiver l'import du config server
+  # config:
+  #   import: optional:configserver:http://localhost:8888
+
+file:
+  path: "./uploads"
+
+# Configuration Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-server:8761/eureka/}
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+    hostname: ${HOSTNAME:talent-management-service}
+
+logging:
+  level:
+    tn.esprit.employees: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    org.springframework.transaction: DEBUG
+    com.zaxxer.hikari: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: -sO3BslPuvzRRU-wBAfWbNoPv0T5V4_XfyU4vhJz16c
+      expiration: 8640000
+    mailing:
+      frontend:
+        activation-url: ${FRONTEND_URL:http://http://intelligent-rh:4200/activate-account}

@@ -1,0 +1,525 @@
+// ==========================================
+// VARIABLES & CONFIGURATION
+// ==========================================
+$primary: #6366f1;
+$primary-dark: #4f46e5;
+$primary-light: #818cf8;
+$secondary: #8b5cf6;
+$success: #10b981;
+$warning: #f59e0b;
+$danger: #ef4444;
+$dark: #0f172a;
+$gray-700: #334155;
+$gray-500: #64748b;
+$gray-300: #cbd5e1;
+$gray-100: #f1f5f9;
+$white: #ffffff;
+
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+$gradient-primary: linear-gradient(135deg, $primary 0%, $secondary 100%);
+$gradient-success: linear-gradient(135deg, $success 0%, #34d399 100%);
+
+// ==========================================
+// MIXINS
+// ==========================================
+@mixin glass-morphism {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@mixin hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+}
+
+@mixin smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ==========================================
+// CONTAINER PRINCIPAL
+// ==========================================
+.rh-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// ==========================================
+// HEADER
+// ==========================================
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.6s ease-out;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: $gradient-primary;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+
+    .ai-tag {
+      background: $gradient-primary;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.2rem;
+      vertical-align: super;
+      margin-left: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  p {
+    color: $gray-500;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+// ==========================================
+// ZONE D'UPLOAD
+// ==========================================
+.upload-zone {
+  background: $white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-lg;
+  @include smooth-transition;
+
+  &.dragging {
+    .drop-box {
+      border-color: $primary;
+      background: rgba(99, 102, 241, 0.05);
+      transform: scale(1.02);
+    }
+  }
+}
+
+.drop-box {
+  border: 2px dashed $gray-300;
+  border-radius: 1rem;
+  padding: 3rem;
+  text-align: center;
+  cursor: pointer;
+  @include smooth-transition;
+  background: $gray-100;
+
+  &:hover {
+    border-color: $primary;
+    background: rgba(99, 102, 241, 0.05);
+    transform: scale(1.02);
+  }
+
+  .icon {
+    font-size: 3rem;
+    color: $primary;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  p {
+    color: $gray-500;
+    font-size: 1rem;
+    margin: 0;
+
+    span {
+      color: $primary;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
+
+  .file-info {
+    color: $primary;
+    font-size: 1.1rem;
+    word-break: break-all;
+  }
+}
+
+// ==========================================
+// BOUTONS
+// ==========================================
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-analyze, .btn-reset {
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  @include smooth-transition;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-analyze {
+  background: $gradient-primary;
+  color: $white;
+  box-shadow: $shadow-md;
+
+  &:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.btn-reset {
+  background: $gray-100;
+  color: $gray-700;
+
+  &:hover {
+    background: $gray-300;
+    transform: translateY(-2px);
+  }
+}
+
+.error-msg {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: $danger;
+  border-radius: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  animation: shake 0.5s ease-out;
+}
+
+// ==========================================
+// RÉSULTATS
+// ==========================================
+.results-list {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.best-match-hero {
+  background: $gradient-primary;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: $white;
+  position: relative;
+  overflow: hidden;
+  @include hover-lift;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+
+  .rank {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .global-score {
+    font-size: 4rem;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    backdrop-filter: blur(10px);
+  }
+}
+
+// ==========================================
+// CARTES DES POSTES
+// ==========================================
+.job-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: $white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  @include smooth-transition;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+
+  .card-header {
+    background: $gray-100;
+    padding: 1.5rem;
+    border-bottom: 1px solid $gray-300;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+      color: $dark;
+    }
+
+    .score-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: $gray-300;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+
+      &.high {
+        background: $gradient-success;
+        color: $white;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// ==========================================
+// STATISTIQUES & BARRES
+// ==========================================
+.stats {
+  margin-bottom: 1.5rem;
+
+  .stat {
+    margin-bottom: 1rem;
+
+    small {
+      display: block;
+      font-size: 0.75rem;
+      color: $gray-500;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .bar {
+      height: 6px;
+      background: $gray-300;
+      border-radius: 9999px;
+      overflow: hidden;
+
+      .fill {
+        height: 100%;
+        background: $gradient-primary;
+        border-radius: 9999px;
+        transition: width 1s ease-out;
+
+        &.green {
+          background: $gradient-success;
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// COMPÉTENCES (CHIPS)
+// ==========================================
+.skills-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $gray-500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.found {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+  }
+
+  &.missing {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+  }
+}
+
+// ==========================================
+// ANIMATIONS
+// ==========================================
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+@media (max-width: 640px) {
+  .rh-container {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .best-match-hero {
+    padding: 1.5rem;
+
+    .global-score {
+      font-size: 2.5rem;
+    }
+  }
+
+  .actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// ==========================================
+// UTILITAIRES
+// ==========================================
+.animate-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $gray-100;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gradient-primary;
+  border-radius: 9999px;
+
+  &:hover {
+    background: $primary-dark;
+  }
+}

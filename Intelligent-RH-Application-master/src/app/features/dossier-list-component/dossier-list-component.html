@@ -1,0 +1,108 @@
+<div class="page-wrapper">
+  <div class="animated-bg"></div>
+
+  <div class="content-container">
+    <div class="dashboard-container">
+
+      <header class="hero-header">
+        <div class="title-group">
+          <h2 class="main-title">Statut des Candidats</h2>
+          <p class="subtitle" *ngIf="!loading">
+            <span class="user-domain">{{ dossiersAffiches.length }} dossiers synchronisés</span>
+          </p>
+        </div>
+
+        <button *ngIf="filtreActif" (click)="resetFiltre()" class="btn-neo-add">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <span class="text">Afficher tout</span>
+        </button>
+      </header>
+
+      <div *ngIf="loading" class="loader-container">
+        <div class="scanner-box">
+          <div class="scanner-line"></div>
+          <i class="bi bi-cpu cpu-icon"></i>
+        </div>
+        <p class="loader-text">Analyse du flux de données...</p>
+      </div>
+
+      <div class="grid-layout-wrapper" *ngIf="!loading && dossiersAffiches.length > 0">
+
+        <div class="talent-grid">
+          <div *ngFor="let dossier of paginatedDossiers"
+               class="talent-card"
+               [class.finalized]="dossier.etat_actuel === 'ACCEPTEE'">
+
+            <div class="card-glow"></div>
+
+            <div class="exp-chip">
+              <span class="exp-val">#{{ dossier.candidature_id }}</span>
+              <span class="exp-unit">ID DOSSIER</span>
+            </div>
+
+            <div class="card-content">
+              <div class="offer-section">
+                <h3 style="text-transform: uppercase; font-size: 0.75rem; color: var(--neon-blue);">Mission</h3>
+                <h3 class="user-post"><strong>{{ dossier.offre_concernee }}</strong></h3>
+              </div>
+
+              <div class="user-base">
+                <div *ngIf="dossier.infos_candidat?.nom; else errorT">
+                  <h2 class="user-name">{{ dossier.infos_candidat.nom }} {{ dossier.infos_candidat.prenom }}</h2>
+                  <p class="user-mail">{{ dossier.infos_candidat.email }}</p>
+                </div>
+                <ng-template #errorT>
+                  <div class="skill-badge" data-type="SOFT_SKILL">
+                    <span class="skill-level expert"></span> Profil Incomplet
+                  </div>
+                </ng-template>
+              </div>
+
+              <div class="card-skills">
+                <div class="workflow-header" style="font-size: 0.7rem; opacity: 0.5; margin-bottom: 10px;">GESTION DU FLUX</div>
+                <app-statut-manager
+                  [candidatureId]="dossier.candidature_id"
+                  [etatActuel]="dossier.etat_actuel"
+                  (statutChange)="chargerDossiers()">
+                </app-statut-manager>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination-bar" *ngIf="totalPages > 1">
+          <span class="page-info">PAGE {{ currentPage }} / {{ totalPages }}</span>
+
+          <div class="nav-controls" style="display: flex; align-items: center; gap: 15px;">
+            <button (click)="setPage(currentPage - 1)"
+                    [disabled]="currentPage === 1"
+                    class="page-btn">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <div class="page-indicators" style="display: flex; gap: 8px;">
+               <span *ngFor="let p of [].constructor(totalPages); let i = index"
+                     (click)="setPage(i + 1)"
+                     class="dot"
+                     [class.active]="(i + 1) === currentPage">
+               </span>
+            </div>
+
+            <button (click)="setPage(currentPage + 1)"
+                    [disabled]="currentPage === totalPages"
+                    class="page-btn">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && dossiersAffiches.length === 0" class="talent-card" style="text-align: center; padding: 60px;">
+        <i class="bi bi-folder-x" style="font-size: 3rem; color: var(--neon-blue); opacity: 0.5;"></i>
+        <h3 class="user-name" style="margin-top: 20px;">Aucune donnée</h3>
+        <p class="user-mail">Le système n'a trouvé aucune candidature correspondante.</p>
+      </div>
+
+    </div>
+  </div>
+</div>

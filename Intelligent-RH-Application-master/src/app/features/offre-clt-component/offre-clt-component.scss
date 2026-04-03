@@ -1,0 +1,945 @@
+
+// ════════════════════════════════════════════════════════════════
+//  🎨 TOKENS — Dark Universe (same as last example)
+// ════════════════════════════════════════════════════════════════
+$bg-deep:      #0d1120;
+$bg-page:      #334670;
+$surface:      #0d1120;
+$surface2:     #111827;
+$surface3:     rgba(13, 17, 32, 0.8);
+$white:        #ffffff;
+
+// Couleurs principales
+$blue:         #3B82F6;
+$blue-light:   #60A5FA;
+$blue-dark:    #1E3A8A;
+$green:        #10B981;
+$green-light:  #34D399;
+$violet:       #A855F7;
+$violet-light: #C084FC;
+$rose:         #F43F5E;
+$amber:        #F59E0B;
+$cyan:         #06B6D4;
+
+// Couleurs textes
+$text:         rgba(255, 255, 255, 0.9);
+$text-soft:    rgba(255, 255, 255, 0.7);
+$text-sub:     rgba(255, 255, 255, 0.5);
+$text-muted:   rgba(255, 255, 255, 0.35);
+$text-dim:     rgba(255, 255, 255, 0.2);
+
+// Bordures
+$border:       rgba(255, 255, 255, 0.07);
+$border-soft:  rgba(255, 255, 255, 0.05);
+$border-light: rgba(255, 255, 255, 0.12);
+$border-blue:  rgba(59, 130, 246, 0.3);
+
+// Ombres
+$shadow-sm:    0 4px 12px rgba(0, 0, 0, 0.2);
+$shadow-md:    0 12px 28px rgba(0, 0, 0, 0.3);
+$shadow-lg:    0 24px 48px rgba(0, 0, 0, 0.4);
+$shadow-blue:  0 12px 28px rgba(59, 130, 246, 0.25);
+
+// ════════════════════════════════════════════════════════════════
+//  ✨ KEYFRAMES — Animations magiques
+// ════════════════════════════════════════════════════════════════
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-12px) translateX(6px); }
+  50% { transform: translateY(-6px) translateX(-6px); }
+  75% { transform: translateY(6px) translateX(3px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+
+@keyframes card-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes border-pulse {
+  0%, 100% { border-color: $border; }
+  50% { border-color: rgba($blue, 0.4); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.5); }
+}
+
+@keyframes text-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🌌 BASE STYLES
+// ════════════════════════════════════════════════════════════════
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: $bg-page;
+  color: $text;
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🎭 PAGE WRAPPER — avec effets de fond magiques
+// ════════════════════════════════════════════════════════════════
+.page-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 40%, rgba($blue, 0.08) 0%, transparent 40%),
+  radial-gradient(circle at 70% 60%, rgba($violet, 0.08) 0%, transparent 40%),
+  radial-gradient(circle at 50% 50%, rgba($green, 0.05) 0%, transparent 50%),
+  $bg-page;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.02) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 50px),
+    repeating-linear-gradient(0deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 50px);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🌠 ANIMATED BG — Orbs flottants
+// ════════════════════════════════════════════════════════════════
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  // Orb bleu géant
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 80vmax;
+    height: 80vmax;
+    background: radial-gradient(circle, rgba($blue, 0.15) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 25s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+
+  // Orb violet
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 70vmax;
+    height: 70vmax;
+    background: radial-gradient(circle, rgba($violet, 0.12) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 30s ease-in-out infinite reverse;
+    mix-blend-mode: screen;
+  }
+
+  // Orb vert supplémentaire
+  .orb-extra {
+    position: absolute;
+    top: 40%;
+    left: 60%;
+    width: 50vmax;
+    height: 50vmax;
+    background: radial-gradient(circle, rgba($green, 0.1) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out 2s infinite;
+    mix-blend-mode: screen;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📦 CONTENT CONTAINER
+// ════════════════════════════════════════════════════════════════
+.content-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+  backdrop-filter: blur(2px);
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem 3rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  👑 HERO HEADER — Style grandiose
+// ════════════════════════════════════════════════════════════════
+.hero-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  padding: 2rem 0;
+  position: relative;
+  animation: card-appear 0.8s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba($blue, 0.5),
+      rgba($violet, 0.5),
+      rgba($green, 0.5),
+      transparent);
+    border-radius: 2px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    filter: blur(20px);
+  }
+}
+
+.main-title {
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg,
+    $white 0%,
+    $blue-light 40%,
+    $violet-light 70%,
+    $white 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: text-shimmer 8s linear infinite;
+  text-shadow: 0 0 30px rgba($blue, 0.3);
+
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: $text-soft;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  position: relative;
+  display: inline-block;
+  padding: 0 1.5rem;
+
+  &::before, &::after {
+    content: '✨';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    font-size: 0.9rem;
+  }
+
+  &::before {
+    left: 0;
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  &::after {
+    right: 0;
+    animation: pulse-glow 3s ease-in-out 1.5s infinite;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ⏳ LOADER — Cosmique
+// ════════════════════════════════════════════════════════════════
+.loader-container {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: rgba($surface, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid $border;
+  border-radius: 32px;
+  margin: 2rem 0;
+  animation: card-appear 0.6s ease both;
+
+  p {
+    margin-top: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: $text-sub;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '...';
+      position: absolute;
+      right: -20px;
+      animation: dot-pulse 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border: 3px solid rgba($blue, 0.15);
+  border-top-color: $blue;
+  border-right-color: $violet;
+  border-bottom-color: $green;
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 30px rgba($blue, 0.2);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🎴 TALENT GRID — Grille magique
+// ════════════════════════════════════════════════════════════════
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.8rem;
+  margin: 2rem 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🃏 TALENT CARD — Style extraodinaire
+// ════════════════════════════════════════════════════════════════
+.talent-card {
+  position: relative;
+  background: $surface3;
+  backdrop-filter: blur(12px);
+  border: 1px solid $border;
+  border-radius: 28px;
+  padding: 2.2rem 1.8rem 1.8rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: card-appear 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+
+  $cards-per-row: 6;
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.08}s;
+    }
+  }
+
+  // Glow overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba($blue, 0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  // Shimmer line
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba($blue, 0.5),
+      rgba($violet, 0.5),
+      transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-12px) scale(1.02);
+    border-color: rgba($blue, 0.4);
+    box-shadow: 0 30px 50px -20px rgba($blue, 0.4),
+    0 0 0 1px rgba($blue, 0.2) inset;
+
+    &::before {
+      opacity: 1;
+    }
+
+    &::after {
+      transform: translateX(100%);
+    }
+
+    .exp-chip {
+      transform: scale(1.1) translateY(-4px);
+      border-color: rgba($blue, 0.4);
+      box-shadow: 0 10px 20px -5px rgba($blue, 0.3);
+    }
+
+    .user-avatar {
+      transform: rotate(5deg) scale(1.15);
+      border-color: rgba($blue, 0.5);
+      box-shadow: 0 15px 30px -8px rgba($blue, 0.4);
+    }
+
+    .btn-download {
+      background: $blue;
+      border-color: $blue;
+      color: $white;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -8px rgba($blue, 0.6);
+    }
+  }
+
+  // Variation de couleurs par carte (comme dans l'exemple)
+
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🔢 EXP CHIP — Comme le numéro dans l'exemple
+// ════════════════════════════════════════════════════════════════
+.exp-chip {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  padding: 0.5rem 0.8rem;
+  background: rgba($surface, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid $border;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  .exp-val {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: $text;
+    text-transform: uppercase;
+  }
+
+  .exp-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
+    color: $text-muted;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  👤 USER AVATAR — Comme l'icône dans l'exemple
+// ════════════════════════════════════════════════════════════════
+.user-avatar {
+  width: 70px;
+  height: 70px;
+  background: rgba($surface, 0.8);
+  backdrop-filter: blur(4px);
+  border: 2px solid $border;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $text;
+  margin-bottom: 1rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+  // Petit effet de brillance
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📝 USER BASE — Informations
+// ════════════════════════════════════════════════════════════════
+.user-base {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  z-index: 2;
+}
+
+.user-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: $white;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, $blue, $violet);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .talent-card:hover &::after {
+    width: 80px;
+  }
+}
+
+.user-mail {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: $text-sub;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  letter-spacing: 0.3px;
+
+  i, &[class^="bi"] {
+    color: $blue;
+    font-size: 0.9rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📄 CARD BODY — Description
+// ════════════════════════════════════════════════════════════════
+.card-body {
+  margin: 0.5rem 0;
+  z-index: 2;
+
+  p {
+    color: $text-soft !important;
+    line-height: 1.7 !important;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🎯 CARD BOTTOM — Actions
+// ════════════════════════════════════════════════════════════════
+.card-bottom {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid $border;
+  z-index: 2;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🔘 ACTION BUTTON
+// ════════════════════════════════════════════════════════════════
+.action-btn {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $border;
+  border-radius: 18px;
+  color: $text-soft;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+  }
+
+  &:hover:not(:disabled) {
+    background: rgba($blue, 0.15);
+    border-color: rgba($blue, 0.4);
+    color: $blue;
+    transform: translateY(-3px);
+
+    &::before {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.edit {
+    color: $text-soft;
+
+    &:hover:not(:disabled) {
+      background: rgba($violet, 0.15);
+      border-color: rgba($violet, 0.4);
+      color: $violet;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📥 DOWNLOAD BUTTON
+// ════════════════════════════════════════════════════════════════
+.btn-download {
+  flex: 1.5;
+  padding: 0.8rem 1.5rem;
+  background: rgba($blue, 0.12);
+  border: 1px solid rgba($blue, 0.3);
+  border-radius: 18px;
+  color: $blue;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+
+  i {
+    font-size: 1rem;
+    transition: transform 0.3s;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover:not(:disabled) {
+    background: $blue;
+    border-color: $blue;
+    color: $white;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -8px rgba($blue, 0.6);
+
+    i {
+      transform: translateX(4px) rotate(5deg);
+    }
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: $border;
+    color: $text-muted;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🔗 CYBER LINK — Bouton d'actualisation
+// ════════════════════════════════════════════════════════════════
+.cyber-link {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: rgba($blue, 0.1);
+  border: 1px solid rgba($blue, 0.3);
+  border-radius: 40px;
+  color: $blue;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba($blue, 0.4), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  &:hover {
+    background: $blue;
+    border-color: $blue;
+    color: $white;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px -10px rgba($blue, 0.5);
+
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  &.cv {
+    background: linear-gradient(135deg, rgba($green, 0.15), rgba($blue, 0.15));
+    border-color: rgba($green, 0.3);
+    color: $green;
+
+    &:hover {
+      background: $green;
+      border-color: $green;
+      color: $white;
+      box-shadow: 0 15px 30px -10px rgba($green, 0.5);
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  🎨 EMPTY STATE
+// ════════════════════════════════════════════════════════════════
+.talent-card:last-child {
+  text-align: center;
+  background: rgba($surface, 0.5);
+
+  .user-avatar {
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, rgba($amber, 0.2), rgba($rose, 0.2));
+    border-color: rgba($amber, 0.3);
+    font-size: 2.5rem;
+  }
+
+  .user-name {
+    font-size: 1.3rem;
+    color: $text-soft;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .user-mail {
+    color: $text-muted;
+    margin-bottom: 1rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  📱 RESPONSIVE
+// ════════════════════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .talent-card {
+    padding: 1.8rem 1.5rem 1.5rem;
+  }
+
+  .user-name {
+    font-size: 1.3rem;
+  }
+
+  .exp-chip {
+    top: 1rem;
+    right: 1rem;
+
+    .exp-val {
+      font-size: 0.9rem;
+    }
+  }
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+
+    &::before, &::after {
+      display: none;
+    }
+  }
+
+  .talent-card {
+    padding: 1.5rem 1.2rem;
+  }
+
+  .card-bottom {
+    gap: 0.8rem;
+  }
+
+  .action-btn, .btn-download {
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ✨ UTILITIES — Classes magiques
+// ════════════════════════════════════════════════════════════════
+.glow-text {
+  text-shadow: 0 0 20px rgba($blue, 0.5);
+}
+
+.glow-blue {
+  box-shadow: 0 0 30px rgba($blue, 0.3);
+}
+
+.glow-violet {
+  box-shadow: 0 0 30px rgba($violet, 0.3);
+}
+
+.glow-green {
+  box-shadow: 0 0 30px rgba($green, 0.3);
+}
+
+.border-gradient {
+  border: double 1px transparent;
+  background-image: linear-gradient($surface, $surface),
+  linear-gradient(135deg, $blue, $violet);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}

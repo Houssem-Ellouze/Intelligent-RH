@@ -1,0 +1,96 @@
+<div class="chat-wrapper" [class.open]="isChatOpen">
+  <!-- Bouton flottant pour ouvrir/fermer -->
+  <button class="chat-toggle-btn" (click)="toggleChat()">
+    @if (isChatOpen) {
+      <span class="close-icon">✕</span>
+    } @else {
+      <span class="chat-icon">💬</span>
+      @if (hasUnreadMessages) {
+        <span class="notification-badge">{{ unreadCount }}</span>
+      }
+    }
+  </button>
+
+  <!-- Le conteneur du chat -->
+  <div class="chat-container" #chatContainer>
+    <!-- En-tête du chat -->
+    <div class="chat-header">
+      <div class="header-content">
+        <div class="bot-avatar">🤖</div>
+        <div class="header-info">
+          <h3>Assistant RH</h3>
+          <span class="status-dot" [class.active]="fileUploaded"></span>
+        </div>
+      </div>
+      <button class="file-toggle-btn" (click)="toggleFileUpload()" title="Ajouter un fichier">
+        📎
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" #chatMessages>
+      @for (msg of messages; track msg.timestamp) {
+        <div class="message" [class.user]="msg.type === 'user'"
+             [class.bot]="msg.type === 'bot'"
+             [class.system]="msg.type === 'system'">
+          <div class="message-content">
+            @for (line of msg.content.split('\n'); track line) {
+              <div>{{ line }}</div>
+            }
+          </div>
+          <span class="message-time">{{ msg.timestamp | date:'HH:mm' }}</span>
+        </div>
+      }
+
+      @if (isTyping) {
+        <div class="typing">
+          <span></span><span></span><span></span>
+        </div>
+      }
+    </div>
+
+    <!-- Upload rapide -->
+    @if (showFileUpload) {
+      <div class="upload-area">
+        <input #fileInput type="file" id="fileInput" accept=".pdf,.docx,.txt"
+               (change)="onFileSelected($event)" style="display: none">
+        <button class="upload-btn" (click)="fileInput.click()">
+          📤 Choisir un fichier
+        </button>
+      </div>
+    }
+
+    <!-- Questions rapides -->
+    @if (fileUploaded) {
+      <div class="quick-questions">
+        @for (q of quickQuestions; track q.label) {
+          <button class="quick-btn" (click)="sendQuickQuestion(q)" title="{{q.text}}">
+            {{ q.icon }}
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Input -->
+    <div class="chat-input">
+      @if (selectedFile) {
+        <div class="file-badge">
+          <span>📄</span>
+          <span class="filename">{{ selectedFile.name | slice:0:15 }}{{selectedFile.name.length > 15 ? '...' : ''}}</span>
+          <button (click)="removeFile()">✕</button>
+        </div>
+      }
+      <div class="input-wrapper">
+        <input #messageInput type="text"
+               placeholder="{{ fileUploaded ? 'Votre question...' : 'Uploader un fichier' }}"
+               [(ngModel)]="currentMessage"
+               (keypress)="onKeyPress($event)"
+               [disabled]="!fileUploaded">
+        <button class="send-btn" (click)="sendMessage()"
+                [disabled]="!currentMessage.trim() || !fileUploaded">
+          📤
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

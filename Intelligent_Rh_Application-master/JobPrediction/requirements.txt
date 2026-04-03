@@ -1,0 +1,6 @@
+flask==3.0.3
+flask-cors==5.0.0
+pdfplumber==0.11.4
+joblib==1.4.2
+scikit-learn==1.5.2      # si tu utilises le modèle ML
+werkzeug==3.0.4

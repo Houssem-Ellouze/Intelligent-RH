@@ -1,0 +1,836 @@
+
+// ══════════════════════════════════════════════════
+//  TOKENS — Dark Navy Universe (same as onboarding)
+// ══════════════════════════════════════════════════
+$bg-deep:   #0d1120;
+$bg-page:   #334670;
+$surface:   #0d1120;
+$surface2:  #111827;
+$blue:      #3B82F6;
+$green:     #10B981;
+$violet:    #A855F7;
+$rose:      #F43F5E;
+$amber:     #F59E0B;
+$white:     #ffffff;
+$text:      rgba(255,255,255,.85);
+$sub:       rgba(255,255,255,.38);
+$muted:     rgba(255,255,255,.18);
+$border:    rgba(255,255,255,.07);
+$border2:   rgba(255,255,255,.12);
+
+// ══════════════════════════════════════════════════
+//  KEYFRAMES
+// ══════════════════════════════════════════════════
+@keyframes pulse {
+  0%,100% { opacity: 1;  transform: scale(1);   }
+  50%      { opacity: .4; transform: scale(1.5); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(28px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes skill-in {
+  from { opacity: 0; transform: scale(.7) rotate(-4deg); }
+  to   { opacity: 1; transform: scale(1)  rotate(0deg);  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dot-pulse {
+  0%,100% { opacity: 1;  transform: scale(1);   }
+  50%      { opacity: .3; transform: scale(1.6); }
+}
+
+@keyframes line-grow {
+  from { width: 44px; }
+  to   { width: 90px; }
+}
+
+@keyframes glow-breathe-blue {
+  0%,100% { box-shadow: 0 0 30px rgba($blue,.15); }
+  50%      { box-shadow: 0 0 55px rgba($blue,.35); }
+}
+
+@keyframes glow-breathe-green {
+  0%,100% { box-shadow: 0 0 30px rgba($green,.15); }
+  50%      { box-shadow: 0 0 55px rgba($green,.35); }
+}
+
+@keyframes num-float {
+  0%,100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.05) translateY(-4px); }
+}
+
+// ══════════════════════════════════════════════════
+//  HOST
+// ══════════════════════════════════════════════════
+:host {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  background: $bg-page;
+  color: $text;
+  min-height: 100vh;
+}
+
+// ══════════════════════════════════════════════════
+//  ANIMATED BG
+// ══════════════════════════════════════════════════
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  // Subtle grid
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg,  rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(0deg,   rgba(255,255,255,.02)  0px, rgba(255,255,255,.02)  1px, transparent 1px, transparent 80px);
+  }
+
+  // Radial blue orb top-left
+  &::after {
+    content: '';
+    position: absolute;
+    top: -15%; left: -10%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba($blue,.12) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: num-float 20s ease-in-out infinite;
+  }
+}
+
+// Extra orbs on page-wrapper
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+
+  &::before {
+    content: '';
+    position: fixed;
+    bottom: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba($violet,.1) 0%, transparent 58%);
+    border-radius: 50%;
+    animation: num-float 26s ease-in-out 6s infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 50%; left: 55%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba($green,.07) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: num-float 18s ease-in-out 3s infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  CONTENT CONTAINER
+// ══════════════════════════════════════════════════
+.content-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+  position: relative;
+  z-index: 1;
+}
+
+// ══════════════════════════════════════════════════
+//  HERO HEADER
+// ══════════════════════════════════════════════════
+.hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  animation: fade-rise .6s ease both;
+
+  @media (max-width: 640px) { flex-direction: column; align-items: flex-start; }
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.main-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: $white;
+  margin: 0;
+
+  // Gradient word highlight
+  background: linear-gradient(90deg, $white 30%, $blue, $violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: .85rem;
+  font-weight: 300;
+  color: $sub;
+  margin: 0;
+  letter-spacing: .04em;
+}
+
+// ── Add button ──────────────────────────────────
+.btn-neo-add {
+  position: relative;
+  padding: 13px 26px;
+  background: rgba($blue,.12);
+  border: 1px solid rgba($blue,.45);
+  border-radius: 14px;
+  color: $blue;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .05em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .3s cubic-bezier(.34,1.3,.64,1);
+
+  .btn-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .plus-icon { font-style: normal; font-size: 1.2rem; font-weight: 300; }
+
+  .btn-glow {
+    position: absolute;
+    inset: 0;
+    background: rgba($blue,.08);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  &:hover {
+    background: rgba($blue,.22);
+    border-color: rgba($blue,.8);
+    color: $white;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba($blue,.3);
+
+    .btn-glow { opacity: 1; }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  FILTER BAR
+// ══════════════════════════════════════════════════
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2.5rem;
+  animation: fade-rise .6s ease .12s both;
+
+  @media (max-width: 600px) { flex-direction: column; }
+}
+
+.search-input-wrapper {
+  flex: 2;
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1rem;
+    opacity: .4;
+  }
+}
+
+.neo-input {
+  width: 100%;
+  padding: 13px 18px 13px 46px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid $border2;
+  border-radius: 14px;
+  color: $text;
+  font-family: 'Outfit', sans-serif;
+  font-size: .9rem;
+  font-weight: 500;
+  outline: none;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+
+  &::placeholder { color: $muted; }
+
+  &:focus {
+    border-color: rgba($blue,.5);
+    box-shadow: 0 0 0 3px rgba($blue,.1);
+  }
+}
+
+.filter-select-wrapper { flex: 1; }
+
+.neo-select {
+  width: 100%;
+  padding: 13px 40px 13px 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid $border2;
+  border-radius: 14px;
+  color: $text;
+  font-family: 'Outfit', sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  backdrop-filter: blur(12px);
+  transition: border-color .2s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233B82F6' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+
+  option { background: $surface2; color: $text; }
+  &:focus { border-color: rgba($blue,.5); }
+}
+
+// ══════════════════════════════════════════════════
+//  TALENT GRID
+// ══════════════════════════════════════════════════
+.talent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+// ══════════════════════════════════════════════════
+//  TALENT CARD
+// ══════════════════════════════════════════════════
+
+// Card accent colors — cycle through blue/green/violet/rose/amber
+$card-colors: $blue, $green, $violet, $rose, $amber;
+
+.talent-card {
+  animation: card-in .5s cubic-bezier(.34,1.3,.64,1) both;
+
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) { animation-delay: #{$i * 55}ms; }
+  }
+}
+
+.card-inner {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1),
+  border-color .3s,
+  box-shadow .3s,
+  background .3s;
+
+  // Glow blob (color set per card below)
+  &::before {
+    content: '';
+    position: absolute;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0;
+    top: -40px; right: -40px;
+    transition: opacity .4s;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-12px) scale(1.025);
+    &::before { opacity: .35; }
+  }
+}
+
+// ── Exp Chip ─────────────────────────────────────
+.exp-chip {
+  position: absolute;
+  top: 16px; right: 14px;
+  z-index: 3;
+  border: 1px solid $border2;
+  border-radius: 10px;
+  padding: 6px 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(8px);
+
+  .exp-val {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -.04em;
+    line-height: 1;
+  }
+
+  .exp-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: .45rem;
+    letter-spacing: .1em;
+    opacity: .5;
+    text-transform: uppercase;
+  }
+}
+
+// ── Avatar ───────────────────────────────────────
+.avatar-wrapper {
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  position: relative;
+  background: $surface2;
+  flex-shrink: 0;
+
+  // Dark fade bottom
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 90px;
+    background: linear-gradient(to top, $surface 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  opacity: .85;
+  filter: contrast(1.05);
+  transition: opacity .3s, transform .4s ease, filter .3s;
+
+  .card-inner:hover & {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: contrast(1.1);
+  }
+}
+
+// ── Accent line ──────────────────────────────────
+.accent-line {
+  height: 2px;
+  width: 44px;
+  border-radius: 99px;
+  margin: 0 20px;
+  transition: width .35s ease;
+  flex-shrink: 0;
+
+  .card-inner:hover & { width: 90px; }
+}
+
+// ── Card Top ─────────────────────────────────────
+.card-top { padding: 14px 20px 0; position: relative; z-index: 2; }
+
+.user-base { display: flex; flex-direction: column; gap: 3px; }
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: $white;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-mail {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  color: $muted;
+  letter-spacing: .04em;
+}
+
+.user-domain {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 11px;
+  border: 1px solid;
+  border-radius: 99px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.user-post {
+  font-size: .82rem;
+  color: $sub;
+  margin: 3px 0 0;
+  font-weight: 300;
+
+  strong { font-weight: 700; color: rgba($white,.7); }
+}
+
+.card-top div:last-child {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  color: $muted;
+  margin-top: 4px;
+}
+
+// ── Card Mid ─────────────────────────────────────
+.card-mid {
+  padding: 12px 20px;
+  border-top: 1px solid $border;
+  margin-top: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-line {
+  font-size: .82rem;
+  font-weight: 500;
+  color: $sub;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.links-box { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3.5s ease-in-out infinite;
+  }
+}
+
+.social-row { display: flex; gap: 8px; }
+
+.social-item {
+  padding: 5px 14px;
+  border-radius: 99px;
+  font-size: .72rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .2s;
+
+  &:first-child {
+    background: rgba($white,.06);
+    color: rgba($white,.6);
+    border: 1px solid $border2;
+
+    &:hover { background: rgba($white,.14); color: $white; transform: translateY(-2px); }
+  }
+
+  &:last-child {
+    background: rgba($blue,.08);
+    color: rgba($blue,.8);
+    border: 1px solid rgba($blue,.2);
+
+    &:hover { background: rgba($blue,.2); color: $blue; transform: translateY(-2px); box-shadow: 0 6px 16px rgba($blue,.2); }
+  }
+}
+
+// ── Skills ───────────────────────────────────────
+.card-skills {
+  padding: 10px 20px 0;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.skills-title {
+  font-family: 'DM Mono', monospace;
+  font-size: .56rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: $muted;
+  margin: 0 0 8px;
+  font-weight: 400;
+}
+
+.skills-wrapper { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 99px;
+  font-size: .67rem;
+  font-weight: 500;
+  border: 1px solid;
+  cursor: default;
+  transition: transform .15s;
+  animation: skill-in .3s cubic-bezier(.34,1.5,.64,1) both;
+
+  @for $i from 1 through 16 {
+    &:nth-child(#{$i}) { animation-delay: #{$i * 35 + 180}ms; }
+  }
+
+  &:hover { transform: scale(1.08); }
+
+  // Default
+  background: rgba($white,.05);
+  color: rgba($white,.55);
+  border-color: $border;
+
+  // SOFT — green
+  &[data-type="SOFT"] {
+    background: rgba($green,.08);
+    color: rgba($green,.85);
+    border-color: rgba($green,.2);
+  }
+
+  // OUTIL — amber
+  &[data-type="OUTIL"] {
+    background: rgba($amber,.08);
+    color: rgba($amber,.85);
+    border-color: rgba($amber,.2);
+  }
+}
+
+.skill-level {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .4;
+  flex-shrink: 0;
+
+  &.expert         { opacity: 1;  box-shadow: 0 0 5px currentColor; }
+  &.avancé         { opacity: .8; }
+  &.intermédiaire  { opacity: .5; }
+  &.débutant       { opacity: .25; }
+}
+
+// ── Card Bottom ──────────────────────────────────
+.card-bottom {
+  padding: 14px 20px 18px;
+  border-top: 1px solid $border;
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all .25s cubic-bezier(.34,1.3,.64,1);
+
+  &:hover  { transform: translateY(-3px); }
+  &:active { transform: scale(.97); }
+
+  &.delete {
+    background: rgba($rose,.08);
+    border-color: rgba($rose,.25);
+    color: $rose;
+
+    &:hover {
+      background: $rose;
+      border-color: $rose;
+      color: white;
+      box-shadow: 0 8px 22px rgba($rose,.4);
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PAGINATION
+// ══════════════════════════════════════════════════
+.pagination-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 3rem;
+  padding: 1.25rem 2rem;
+  background: rgba($white,.04);
+  border: 1px solid $border2;
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+}
+
+.page-btn {
+  padding: 10px 24px;
+  background: rgba($white,.06);
+  border: 1px solid $border2;
+  border-radius: 10px;
+  color: rgba($white,.7);
+  font-family: 'Outfit', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.34,1.3,.64,1);
+
+  &:hover:not(:disabled) {
+    background: rgba($blue,.18);
+    border-color: rgba($blue,.5);
+    color: $blue;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba($blue,.2);
+  }
+
+  &:disabled { opacity: .25; cursor: not-allowed; }
+}
+
+.page-info {
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  color: $muted;
+  letter-spacing: .08em;
+
+  strong { color: $blue; }
+}
+
+// ══════════════════════════════════════════════════
+//  LOADER
+// ══════════════════════════════════════════════════
+.cosmic-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  gap: 1.5rem;
+
+  .spinner {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 3px solid rgba($blue,.15);
+    border-top-color: $blue;
+    border-right-color: $violet;
+    animation: spin 1.1s linear infinite;
+    box-shadow: 0 0 24px rgba($blue,.2);
+  }
+
+  p {
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: $muted;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: $blue;
+      animation: dot-pulse 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  EMPTY STATE
+// ══════════════════════════════════════════════════
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 5rem 2rem;
+  text-align: center;
+
+  .empty-icon { font-size: 3.5rem; opacity: .4; }
+
+  p {
+    font-size: .9rem;
+    font-weight: 300;
+    color: $sub;
+    max-width: 260px;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  RESPONSIVE
+// ══════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .content-container { padding: 2rem 1rem 4rem; }
+  .talent-grid { grid-template-columns: 1fr; }
+  .hero-header { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,569 @@
+/* =============================================
+   DASHBOARD - VERSION ÉPIQUE 2025/2026
+   Glassmorphism + Néon + Depth + Micro-animations
+============================================= */
+
+:root {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #131324;
+  --glass-bg: rgba(20, 20, 40, 0.45);
+  --glass-border: rgba(0, 0, 0, 0.18);
+  --accent: #090808;
+  --accent-glow: rgba(0, 0, 0, 0.2);
+  --accent-dark: #0099cc;
+  --text-primary: #e0f0ff;
+  --text-secondary: #161719;
+  --success: #00ff9d;
+  --warning: #ffcc00;
+  --danger: #ff3366;
+  --card-radius: 20px;
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #c5d1ec 0%, #9b9bf3 100%);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Fond animé subtil */
+.dashboard-container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 40%),
+  radial-gradient(circle at 85% 75%, rgba(0, 255, 157, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -2;
+  animation: pulse-bg 18s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-bg {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0.9; transform: scale(1.05); }
+}
+
+/* Loader - version premium */
+.dashboard-loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: var(--accent);
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.dashboard-loading::after {
+  content: '';
+  width: 80px;
+  height: 80px;
+  border: 5px solid var(--accent);
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 1.1s linear infinite;
+  margin-top: 2rem;
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Tabs - style cyberpunk premium */
+.dashboard-tabs {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 0 0 24px 24px;
+  margin: 0 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.dashboard-tabs button {
+  padding: 0.9rem 1.8rem;
+  background: transparent;
+  border: 1px solid rgba(35, 37, 37, 0.3);
+  border-radius: 50px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-tabs button:hover {
+  color: #200808;
+  border-color: var(--accent);
+  box-shadow: 0 0 25px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.dashboard-tabs button.active {
+  background: linear-gradient(135deg, #a0a0cf, rgba(48, 36, 36, 0.93));
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 0 35px var(--accent-glow), inset 0 0 15px rgba(0,212,255,0.2);
+}
+
+/* Grille des cartes */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.8rem;
+  padding: 2.5rem 2rem;
+  max-width: 100%;
+}
+
+/* Carte individuelle - style glass + depth */
+.chart-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--card-radius);
+  padding: 2rem 2rem;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.35),
+    inset 0 0 20px rgba(255,255,255,0.03);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  height: 540px;
+  width: 580px;
+}
+
+.chart-card::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at 30% 20%, rgba(0,212,255,0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.chart-card:hover::before {
+  opacity: 1;
+}
+
+.chart-card:hover {
+  transform: translateY(-12px) scale(1.015);
+  box-shadow:
+    0 25px 60px rgba(200, 200, 200, 0.25),
+    0 0 60px rgba(0, 212, 255, 0.15);
+  border-color: rgba(12, 1, 1, 0.5);
+}
+
+.chart-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 1.4rem;
+  text-align: center;
+  background: linear-gradient(90deg, #00070c, #521273);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.chart-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.chart-card:hover h3::after {
+  width: 100%;
+}
+
+/* Canvas Chart (Chart.js) */
+canvas {
+  max-height: 380px !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+/* Grille des cartes - FORCE 3 par ligne sur grand écran */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);       /* ← 3 colonnes fixes */
+  gap: 2rem;                                   /* plus d'espace entre cartes */
+  padding: 2.5rem 2rem;
+  max-width: 100%;
+}
+
+/* Responsive : on passe à 2 colonnes puis 1 */
+@media (max-width: 1200px) {
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* Amélioration visuelle des cartes pour qu'elles remplissent bien la ligne */
+.chart-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--card-radius);
+  padding: 1.8rem 2rem;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.35),
+    inset 0 0 20px rgba(255,255,255,0.03);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;               /* hauteur minimale cohérente */
+}
+
+.chart-card canvas {
+  flex: 1;                         /* le canvas prend tout l'espace restant */
+  max-height: none !important;     /* enlève la contrainte height forcée */
+  width: 100% !important;
+}
+
+/* Pour que les canvas Chart.js remplissent bien leur parent */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 320px;               /* hauteur minimale visible */
+}
+.chart-card {
+  /* ... tes styles actuels ... */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chart-card:hover {
+  /* Plus de translateY ni scale global */
+  box-shadow:
+    0 25px 60px rgba(0, 212, 255, 0.35),
+    0 0 80px rgba(0, 212, 255, 0.22);
+  border-color: rgba(0, 18, 41, 0.06);
+  background: rgba(253, 169, 169, 0.55); /* léger brighten au hover */
+}
+
+/* Option : léger lift sans casser le tooltip */
+.chart-card:hover {
+  transform: perspective(1000px) translateZ(20px);  /* effet 3D subtil, tooltip reste OK */
+}
+.icon-card {
+  text-align: center;
+  color: #333;
+  transition: transform 0.2s ease;
+}
+
+.icon-card:hover {
+  transform: scale(1.05);
+  color: #007bff;
+}
+.icon-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 200px;
+}
+
+.icon-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 15px;
+}
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.nav-link {
+  color: white !important;
+  transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffcc00 !important;
+}
+.capgemini-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem 3rem;
+  background: linear-gradient(90deg, #561e00, #df9a39);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  transition: background 0.4s ease;
+}
+
+.capgemini-navbar:hover {
+  background: linear-gradient(90deg, #813e18, #ffa80c);
+}
+
+.capgemini-navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.capgemini-navbar .logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s ease;
+}
+
+.logo-img:hover {
+  transform: rotate(-10deg) scale(1.1);
+}
+/* =============================================
+   HEADER + TABS - VERSION ÉPIQUE & EXTRAORDINAIRE
+   Glass + Néon Glow + Depth + Animations subtiles
+============================================= */
+
+:root {
+  --accent: #000000;
+  --accent-glow: rgba(0, 0, 0, 0.4);
+  --accent-dark: #0099cc;
+  --glass-bg: rgba(20, 20, 45, 0.48);
+  --glass-border: rgba(0, 212, 255, 0.22);
+  --text-glow: rgba(224, 240, 255, 0.9);
+  --transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dashboard-header {
+  position: relative;
+  padding: 2.5rem 3rem 1.5rem;
+  text-align: center;
+}
+
+.dashboard-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #030609, var(--accent), #a3bffa, var(--accent));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: title-shine 8s linear infinite;
+  text-shadow:
+    0 0 20px var(--accent-glow),
+    0 0 40px rgba(16, 16, 16, 0.3),
+    0 0 80px rgba(14, 14, 14, 0.15);
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  color: black;
+}
+
+
+@keyframes title-shine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes pulse-glow {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.8; transform: scale(1.15); }
+}
+
+/* Tabs container */
+.dashboard-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 1.2rem 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 60px;                   /* ultra rounded pour effet premium */
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 212, 255, 0.08);
+  margin: 0 auto 2.5rem;
+  max-width: 90%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Effet de fond néon subtil sous les tabs */
+.dashboard-tabs::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  opacity: 0.7;
+  pointer-events: none;
+  animation: slow-rotate 25s linear infinite;
+}
+
+@keyframes slow-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Bouton individuel */
+.tab-button {
+  padding: 1rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000000;
+  background: transparent;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+
+
+/* Active */
+.tab-button.active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.89), rgba(255, 255, 255, 0.18));
+  color: #000000;
+  border-color: var(--accent);
+  box-shadow:
+    0 0 45px var(--accent-glow),
+    inset 0 0 25px rgba(27, 26, 26, 0.25);
+  transform: translateY(-4px) scale(1.05);
+}
+
+/* Petit glow line sous le tab actif */
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 20px var(--accent);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(0.9); }
+  50%      { opacity: 1;   transform: translateX(-50%) scaleX(1.1); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .dashboard-tabs {
+    flex-wrap: wrap;
+    padding: 1rem;
+    border-radius: 40px;
+  }
+
+  .tab-button {
+    padding: 0.9rem 1.6rem;
+    font-size: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 2.6rem;
+  }
+}
+.dashboard-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+
+  /* Bleu néon principal + gradient subtil */
+  background: linear-gradient(90deg, #680000, #1b1414, #808375, #1c1c1c);
+  background-clip: text;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+/* Animation de shine adaptée au bleu */
+@keyframes title-shine-blue {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 200% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glow pulsant en bleu */
+.dashboard-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: pulse-glow-blue 5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow-blue {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.85; transform: scale(1.12); }
+}

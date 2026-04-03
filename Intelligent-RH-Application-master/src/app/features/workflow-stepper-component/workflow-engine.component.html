@@ -1,0 +1,71 @@
+<div class="workflow-wrapper">
+
+  <div class="workflow-title-section">
+    <div class="title-badge">Système de Recrutement Intelligent</div>
+    <h3 class="main-title"><span class="highlight">Workflow des Candidateurs</span></h3>
+    <p class="subtitle">Suivez et gérez chaque étape du processus en temps réel</p>
+  </div>
+
+  <div class="pipeline-header">
+    <div class="step" [class.active]="currentStep >= 1" (click)="goToStep(1)">
+      <div class="circle">
+        <span class="step-num">1</span>
+        <i class="bi bi-person-plus"></i>
+      </div>
+      <span>Postulation</span>
+    </div>
+    <div class="line" [class.filled]="currentStep >= 2"></div>
+
+    <div class="step" [class.active]="currentStep >= 2" (click)="goToStep(2)">
+      <div class="circle">
+        <span class="step-num">2</span>
+        <i class="bi bi-gear"></i>
+      </div>
+      <span>Statut</span>
+    </div>
+    <div class="line" [class.filled]="currentStep >= 3"></div>
+
+    <div class="step" [class.active]="currentStep >= 3" (click)="goToStep(3)">
+      <div class="circle">
+        <span class="step-num">3</span>
+        <i class="bi bi-calendar-date"></i>
+      </div>
+      <span>Entretien</span>
+    </div>
+    <div class="line" [class.filled]="currentStep >= 4"></div>
+
+    <div class="step" [class.active]="currentStep >= 4" (click)="goToStep(4)">
+      <div class="circle">
+        <span class="step-num">4</span>
+        <i class="bi bi-check-all"></i>
+      </div>
+      <span>Décision</span>
+    </div>
+  </div>
+
+  <div class="component-container">
+    <app-postulation
+      *ngIf="currentStep === 1"
+      (onSuccess)="handlePostulationSuccess($event)">
+    </app-postulation>
+
+    <app-statut-manager
+      *ngIf="currentStep === 2 && candidatureId"
+      [candidatureId]="candidatureId"
+      [etatActuel]="statutActuel"
+      (statutChange)="onStatutUpdated($event)">
+    </app-statut-manager>
+
+    <app-entretien-planif
+      *ngIf="currentStep === 3 && candidatureId"
+      [candidatureId]="candidatureId">
+    </app-entretien-planif>
+
+    <app-statut-manager
+      *ngIf="currentStep === 4 && candidatureId"
+      [candidatureId]="candidatureId"
+      [etatActuel]="statutActuel"
+      (statutChange)="onStatutUpdated($event)">
+    </app-statut-manager>
+  </div>
+</div>

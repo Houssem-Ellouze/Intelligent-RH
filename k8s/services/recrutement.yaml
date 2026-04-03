@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: recrutement-service
+  namespace: intelligent-rh
+spec:
+  ports:
+    - port: 8082
+  selector:
+    app: recrutement-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recrutement-service
+  namespace: intelligent-rh
+spec:
+  selector:
+    matchLabels:
+      app: recrutement-service
+  template:
+    metadata:
+      labels:
+        app: recrutement-service
+    spec:
+      containers:
+        - name: recrutement-service
+          image: houssem80356/intelligent-app2-recrutement-service:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-db:3306/recrutement_db?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: ""
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://discovery:8761/eureka/"

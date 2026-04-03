@@ -1,0 +1,1007 @@
+
+// ══════════════════════════════════════════════════
+//  TOKENS — Sunny Playful Editorial (Comme le premier)
+// ══════════════════════════════════════════════════
+$bg:        #f7f4ee;
+$bg2:       #fffcf5;
+$surface:   #ffffff;
+$coral:     #ff6b5b;
+$coral2:    #ff9a8d;
+$sun:       #ffd166;
+$sun2:      #ffe8a0;
+$mint:      #06d6a0;
+$mint2:     #b7f7e4;
+$sky:       #4cc9f0;
+$sky2:      #caf0ff;
+$plum:      #7b2d8b;
+$ink:       #1a1825;
+$ink2:      #2e2b3d;
+$muted:     #a09eb8;
+$border:    rgba(26,24,37,0.08);
+$text:      #2e2b3d;
+$sub:       #9896aa;
+
+// ══════════════════════════════════════════════════
+//  KEYFRAMES — Fun & Bouncy
+// ══════════════════════════════════════════════════
+@keyframes float-blob {
+  0%,100% { transform: translate(0,0) scale(1) rotate(0deg); }
+  33%      { transform: translate(30px,-20px) scale(1.05) rotate(3deg); }
+  66%      { transform: translate(-20px,15px) scale(.97) rotate(-2deg); }
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce-in {
+  0%   { opacity: 0; transform: translateY(40px) rotate(-1deg) scale(.95); }
+  65%  { transform: translateY(-8px) rotate(.5deg) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-4deg); }
+  75%      { transform: rotate(4deg); }
+}
+
+@keyframes shimmer {
+  0%   { left: -80%; }
+  100% { left: 130%; }
+}
+
+@keyframes dot-bounce {
+  0%,80%,100% { transform: translateY(0); }
+  40%          { transform: translateY(-6px); }
+}
+
+@keyframes stripe-move {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+
+@keyframes circle-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes line-grow {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+// ══════════════════════════════════════════════════
+//  HOST & BACKGROUND
+// ══════════════════════════════════════════════════
+:host {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  background: $bg;
+  color: $text;
+  min-height: 100vh;
+}
+
+.workflow-wrapper {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+
+  // Animated background blobs
+  &::before {
+    content: '';
+    position: fixed;
+    top: -10%; left: -8%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba($coral,.12) 0%, transparent 65%);
+    border-radius: 50%;
+    animation: float-blob 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    bottom: -15%; right: -10%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba($sun,.18) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float-blob 22s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  TITLE SECTION
+// ══════════════════════════════════════════════════
+.workflow-title-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fade-rise .6s ease both;
+  position: relative;
+  z-index: 1;
+}
+
+.title-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: $surface;
+  border-radius: 50px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $coral;
+  margin-bottom: 1rem;
+  border: 2px solid rgba($coral,.2);
+  box-shadow: 0 4px 12px rgba($ink,.06);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($coral,.2), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+.main-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 1rem;
+  color: $ink;
+  position: relative;
+
+  .highlight {
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; left: 0;
+      width: 100%; height: 6px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6'%3E%3Cpath d='M0 3 Q10 0 20 3 Q30 6 40 3' stroke='%23ff6b5b' stroke-width='2.5' fill='none'/%3E%3C/svg%3E") repeat-x;
+      background-size: 40px 6px;
+    }
+  }
+}
+
+.subtitle {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $muted;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+
+  &::before,
+  &::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $sun;
+    font-size: 1rem;
+  }
+
+  &::before {
+    left: -20px;
+  }
+
+  &::after {
+    right: -20px;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PIPELINE HEADER
+// ══════════════════════════════════════════════════
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem;
+  background: $surface;
+  border-radius: 60px;
+  box-shadow: 0 4px 20px rgba($ink,.08);
+  position: relative;
+  z-index: 1;
+  animation: fade-rise .6s ease .1s both;
+
+  // Fun dotted background
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba($coral,.1) 1px, transparent 1px);
+    background-size: 12px 12px;
+    border-radius: 60px;
+    pointer-events: none;
+  }
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  &:hover {
+    transform: translateY(-5px);
+
+    .circle {
+      border-color: $coral;
+      box-shadow: 0 6px 16px rgba($coral,.2);
+
+      i {
+        opacity: 0.8;
+      }
+    }
+
+    span {
+      color: $coral;
+    }
+  }
+
+  &.active {
+    .circle {
+      background: $coral;
+      border-color: $coral;
+      animation: circle-pop 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+      .step-num {
+        opacity: 0;
+      }
+
+      i {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: rgba($coral,.2);
+        z-index: -1;
+        animation: spin-slow 3s linear infinite;
+      }
+    }
+
+    span {
+      color: $coral;
+      font-weight: 800;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: $coral;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  span {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: $muted;
+    transition: all 0.3s;
+  }
+}
+
+.circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: $bg2;
+  border: 3px solid rgba($coral,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  .step-num {
+    position: absolute;
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: $muted;
+    transition: all 0.3s;
+  }
+
+  i {
+    font-size: 1.8rem;
+    color: white;
+    opacity: 0;
+    transition: all 0.3s;
+  }
+}
+
+.line {
+  width: 60px;
+  height: 4px;
+  background: rgba($muted,.2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  animation: line-grow 0.4s ease;
+
+  &.filled {
+    background: $coral;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,.3);
+      animation: shimmer 2s ease-in-out infinite;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  COMPONENT CONTAINER
+// ══════════════════════════════════════════════════
+.component-container {
+  background: $surface;
+  border-radius: 30px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba($ink,.08);
+  position: relative;
+  z-index: 1;
+  animation: bounce-in .55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  overflow: hidden;
+
+  // Colorful top stripe
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, $coral, $sun, $mint, $sky);
+    background-size: 300% 100%;
+    animation: stripe-move 3s linear infinite;
+  }
+
+  // Dotted pattern
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba($coral,.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  // Style pour les composants enfants
+  ::ng-deep {
+    * {
+      position: relative;
+      z-index: 1;
+    }
+
+    // Animation pour chaque composant qui apparaît
+    app-postulation,
+    app-statut-manager,
+    app-entretien-planif {
+      display: block;
+      animation: fade-rise 0.5s ease;
+
+      // Titres
+      h1, h2, h3 {
+        font-family: 'Fraunces', serif;
+        color: $ink;
+        position: relative;
+        margin-bottom: 1.5rem;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(90deg, $coral, $sun);
+          border-radius: 3px;
+        }
+      }
+
+      // Boutons principaux
+      .btn-primary, button[type="submit"] {
+        background: $coral;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 28px;
+        color: white;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.34, 1.3, 0.64, 1);
+        box-shadow: 0 6px 20px rgba($coral,.3);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0; left: -80%;
+          width: 50%; height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+          transform: skewX(-20deg);
+          animation: shimmer 3s ease-in-out infinite;
+        }
+
+        &:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 12px 30px rgba($coral,.4);
+        }
+
+        &:active {
+          transform: translateY(0) scale(0.98);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          transform: none;
+          box-shadow: none;
+        }
+      }
+
+      // Boutons secondaires
+      .btn-secondary {
+        background: $bg2;
+        border: 2px solid rgba($coral,.2);
+        border-radius: 50px;
+        padding: 10px 24px;
+        color: $coral;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: $coral;
+          color: white;
+          border-color: $coral;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba($coral,.2);
+        }
+      }
+
+      // Champs de formulaire
+      input, select, textarea {
+        width: 100%;
+        padding: 12px 16px;
+        background: $bg2;
+        border: 2px solid rgba($ink,.08);
+        border-radius: 16px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.9rem;
+        color: $ink;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: $coral;
+          box-shadow: 0 0 0 4px rgba($coral,.1);
+        }
+
+        &::placeholder {
+          color: $muted;
+        }
+      }
+
+      // Cartes internes
+      .card {
+        background: $bg2;
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+
+        &:hover {
+          border-color: rgba($coral,.2);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba($ink,.1);
+        }
+      }
+
+      // Badges de statut
+      .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-family: 'DM Mono', monospace;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+
+        &.success {
+          background: greenyellow;
+          color: greenyellow;
+          border: 1.5px solid greenyellow;
+        }
+
+        &.warning {
+          background: yellow;
+          color: yellow;
+          border: 1.5px solid yellow;
+        }
+
+        &.info {
+          background: deepskyblue;
+          color: deepskyblue;
+          border: 1.5px solid rgba($sky,.3);
+        }
+
+        &.error {
+          background: indianred;
+          color: indianred;
+          border: 1.5px solid indianred;
+        }
+      }
+
+      // Liste d'éléments
+      .item-list {
+        .item {
+          background: $surface;
+          border-radius: 16px;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+          border: 2px solid rgba($ink,.04);
+          transition: all 0.2s;
+
+          &:hover {
+            border-color: rgba($coral,.2);
+            transform: translateX(5px);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  RESPONSIVE
+// ══════════════════════════════════════════════════
+@media (max-width: 768px) {
+  .workflow-wrapper {
+    padding: 1rem;
+  }
+
+  .pipeline-header {
+    border-radius: 30px;
+    padding: 1rem;
+  }
+
+  .circle {
+    width: 50px;
+    height: 50px;
+
+    i {
+      font-size: 1.3rem;
+    }
+
+    .step-num {
+      font-size: 1.2rem;
+    }
+  }
+
+  .line {
+    width: 30px;
+  }
+
+  .component-container {
+    padding: 1.5rem;
+  }
+
+  .subtitle::before,
+  .subtitle::after {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .pipeline-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .line {
+    width: 4px;
+    height: 20px;
+  }
+
+  .step {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  LOADER (si nécessaire)
+// ══════════════════════════════════════════════════
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 2rem;
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $coral;
+    animation: dot-bounce 0.9s ease-in-out infinite;
+
+    &:nth-child(2) { animation-delay: 0.2s; background: $sun; }
+    &:nth-child(3) { animation-delay: 0.4s; background: $mint; }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  EMPTY STATE
+// ══════════════════════════════════════════════════
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+
+  p {
+    color: $muted;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  SCROLLBAR
+// ══════════════════════════════════════════════════
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg2;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $coral2;
+  border-radius: 5px;
+  border: 2px solid $bg2;
+
+  &:hover {
+    background: $coral;
+  }
+}
+// ══════════════════════════════════════════════════
+//  COMPONENT CONTAINER — Version centrée
+// ══════════════════════════════════════════════════
+.component-container {
+  background: $surface;
+  border-radius: 30px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba($ink,.08);
+  position: relative;
+  z-index: 1;
+  animation: bounce-in .55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  overflow: hidden;
+
+  // Centrage du contenu
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px; // Hauteur minimum pour un bon centrage
+
+  // Pour centrer spécifiquement app-statut-manager
+  ::ng-deep {
+    app-postulation,
+    app-statut-manager,
+    app-entretien-planif {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 600px; // Largeur max pour les composants
+      margin: 0 auto; // Centrage horizontal
+
+      animation: fade-rise 0.5s ease;
+
+      // Centrer tout le contenu interne
+      form, div, .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      // Centrer les titres
+      h1, h2, h3 {
+        text-align: center;
+        width: 100%;
+
+        &::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+
+      // Centrer les boutons
+      .btn-primary, .btn-secondary, button {
+        margin: 0 auto;
+      }
+
+      // Centrer les cartes
+      .card {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      // Centrer les champs de formulaire
+      input, select, textarea {
+        width: 100%;
+        max-width: 400px; // Largeur raisonnable pour les inputs
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      // Centrer les groupes de formulaire
+      .form-group, .field {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        label {
+          text-align: center;
+          width: 100%;
+        }
+      }
+
+      // Centrer les rangées
+      .row {
+        justify-content: center;
+        width: 100%;
+      }
+
+      // Centrer les listes
+      .item-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .item {
+          width: 100%;
+          max-width: 500px;
+        }
+      }
+
+      // Centrer les badges
+      .status-badge {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  // Colorful top stripe
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, $coral, $sun, $mint, $sky);
+    background-size: 300% 100%;
+    animation: stripe-move 3s linear infinite;
+  }
+
+  // Dotted pattern
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba($coral,.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  STYLE SPÉCIFIQUE POUR APP-STATUT-MANAGER
+// ══════════════════════════════════════════════════
+// Si vous voulez un centrage encore plus précis uniquement pour app-statut-manager
+::ng-deep app-statut-manager {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 300px;
+  width: 100%;
+
+  // Centrer tout le contenu
+  & > * {
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  // Style spécifique pour le statut manager
+  .statut-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      color: $ink;
+      margin-bottom: 0.5rem;
+
+      &::after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+      }
+    }
+
+    // Style pour le selecteur de statut
+    .statut-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+
+      select {
+        width: 100%;
+        max-width: 300px;
+        padding: 12px 16px;
+        background: $bg2;
+        border: 2px solid rgba($coral,.2);
+        border-radius: 50px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 1rem;
+        color: $ink;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+
+        &:hover {
+          border-color: $coral;
+          box-shadow: 0 4px 12px rgba($coral,.1);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $coral;
+          box-shadow: 0 0 0 4px rgba($coral,.1);
+        }
+      }
+    }
+
+    // Style pour afficher le statut actuel
+    .statut-actuel {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      color: $muted;
+      margin: 0.5rem 0;
+
+      strong {
+        color: $coral;
+        font-weight: 800;
+        margin-left: 0.5rem;
+      }
+    }
+
+    // Style pour le message de confirmation
+    .confirmation-message {
+      background: rgba($mint,.1);
+      border: 2px solid rgba($mint,.3);
+      border-radius: 50px;
+      padding: 0.8rem 1.5rem;
+      color: green;
+      font-weight: 600;
+      animation: bounce-in 0.4s ease;
+      margin-top: 1rem;
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  VERSION ALTERNATIVE : Centrage avec flexbox sur le conteneur principal
+// ══════════════════════════════════════════════════
+.workflow-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  .workflow-title-section {
+    flex-shrink: 0; // Empêche le titre de rétrécir
+  }
+
+  .pipeline-header {
+    flex-shrink: 0; // Empêche le header de rétrécir
+  }
+
+  .component-container {
+    flex: 1; // Prend tout l'espace disponible
+    display: flex;
+    align-items: center; // Centre verticalement
+    justify-content: center; // Centre horizontalement
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 800px; // Largeur max pour le conteneur
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  ANIMATION SUPPLÉMENTAIRE POUR LE CENTRAGE
+// ══════════════════════════════════════════════════
+@keyframes center-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+::ng-deep app-statut-manager {
+  animation: center-pop 0.5s cubic-bezier(0.34, 1.3, 0.64, 1) !important;
+}

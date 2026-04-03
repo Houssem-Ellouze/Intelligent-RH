@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: admin-contract-onboarding-service
+  datasource:
+    # Utilisation de variables d'environnement pour la compatibilité Docker/Local
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql-db:3306/db_admin_onboarding?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC}
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  cloud:
+    config:
+      # Activé car vous utilisez un Config Server sur le port 8888
+      enabled: true
+  config:
+    import: optional:config-server:http://config-server:8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://discovery:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+app:
+  services:
+    url: ${TALENT_SERVICE_URL:http://talent-management-service:9002}

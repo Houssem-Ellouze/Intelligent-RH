@@ -1,0 +1,41 @@
+<h2>Historique des comparaisons</h2>
+
+<input
+  type="number"
+  placeholder="ID Talent"
+  [(ngModel)]="talentId"
+/>
+
+<button (click)="loadHistory()">Afficher historique</button>
+
+<div *ngIf="loading">Chargement...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<table *ngIf="comparisons.length > 0" border="1" cellpadding="8">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Talent A</th>
+    <th>Talent B</th>
+    <th>Score A</th>
+    <th>Score B</th>
+    <th>Winner</th>
+    <th>Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let c of comparisons">
+    <td>{{ c.id }}</td>
+    <td>{{ c.talentAId }}</td>
+    <td>{{ c.talentBId }}</td>
+    <td>{{ c.scoreA }}</td>
+    <td>{{ c.scoreB }}</td>
+    <td>{{ c.winnerId }}</td>
+    <td>{{ c.createdAt | date:'short' }}</td>
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="comparisons.length === 0 && !loading">
+  Aucun historique disponible
+</div>

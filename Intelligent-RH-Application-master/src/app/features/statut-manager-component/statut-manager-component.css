@@ -1,0 +1,122 @@
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --border-color: #e5e7eb;
+  --success: #10b981;
+}
+
+.workflow-container {
+  max-width: 500px;
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+  font-family: 'Inter', sans-serif;
+}
+
+.status-info {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.highlight {
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  padding: 2px 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+/* Alignement du Select et du Bouton */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.neo-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #d9ddff;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.neo-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.btn-neo-add {
+  background-color: var(--primary);
+  color: #171a1c;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-neo-add:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-neo-add:disabled {
+  background-color: #a1c6ff;
+  cursor: not-allowed;
+}
+
+/* Feedback & Loader */
+.feedback-area {
+  margin-top: 1rem;
+  padding: 10px;
+  background-color: #ecfdf5;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.feedback {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.loader-line {
+  height: 4px;
+  width: 100%;
+  background-color: #aedcff;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-line::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  height: 100%;
+  width: 50%;
+  background-color: var(--primary);
+  animation: loading 1.5s infinite linear;
+}
+
+@keyframes loading {
+  from { left: -50%; }
+  to { left: 100%; }
+}
+
+.mini-text {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 8px;
+  text-align: center;
+}

@@ -1,0 +1,101 @@
+<!-- src/app/features/podium/podium.component.html -->
+<div class="podium-scene" *ngIf="top3.length === 3">
+
+  <!-- Ambient particles -->
+  <div class="ambient-particles">
+    <span class="p" *ngFor="let p of particles" [style]="p"></span>
+  </div>
+
+  <!-- Header -->
+  <div class="scene-header">
+    <div class="eyebrow">✦ Capgemini Engineering ✦</div>
+    <h2 class="scene-title">Hall of Champions</h2>
+    <div class="season-tag">2026 · ÉLITE</div>
+  </div>
+
+  <!-- Podium stage : ordre visuel 2 - 1 - 3 -->
+  <div class="stage">
+
+    <!-- ── 2ème place ── -->
+    <div class="slot slot-2">
+      <div class="avatar-zone">
+        <div class="avatar silver">
+          <span>{{ getInitials(top3[1]) }}</span>
+          <div class="ring"></div>
+        </div>
+        <span class="medal-badge">🥈</span>
+      </div>
+      <div class="nameplate">
+        <div class="full-name">{{ top3[1].prenom }} {{ top3[1].nom }}</div>
+        <div class="pts">{{ top3[1].scoreGlobal | number:'1.0-1' }} pts</div>
+        <span class="chip" [ngClass]="chipClass(top3[1].potentiel)">{{ top3[1].potentiel }}</span>
+      </div>
+      <div class="block block-2">
+        <span>2</span>
+        <div class="block-shine"></div>
+      </div>
+    </div>
+
+    <!-- ── 1ère place ── -->
+    <div class="slot slot-1">
+      <div class="confetti-ring">
+        <span class="cr" *ngFor="let c of confetti" [style]="c"></span>
+      </div>
+      <div class="crown-float">👑</div>
+      <div class="avatar-zone">
+        <div class="avatar gold">
+          <span>{{ getInitials(top3[0]) }}</span>
+          <div class="ring"></div>
+          <div class="orbit"></div>
+        </div>
+        <span class="medal-badge gold-badge">1</span>
+      </div>
+      <div class="nameplate champion-plate">
+        <div class="full-name">{{ top3[0].prenom }} {{ top3[0].nom }}</div>
+        <div class="pts gold-pts">{{ top3[0].scoreGlobal | number:'1.0-1' }} pts</div>
+        <span class="chip" [ngClass]="chipClass(top3[0].potentiel)">{{ top3[0].potentiel }}</span>
+      </div>
+      <div class="block block-1">
+        <span>1</span>
+        <div class="block-shine"></div>
+        <div class="block-glow"></div>
+      </div>
+    </div>
+
+    <!-- ── 3ème place ── -->
+    <div class="slot slot-3">
+      <div class="avatar-zone">
+        <div class="avatar bronze">
+          <span>{{ getInitials(top3[2]) }}</span>
+          <div class="ring"></div>
+        </div>
+        <span class="medal-badge">🥉</span>
+      </div>
+      <div class="nameplate">
+        <div class="full-name">{{ top3[2].prenom }} {{ top3[2].nom }}</div>
+        <div class="pts">{{ top3[2].scoreGlobal | number:'1.0-1' }} pts</div>
+        <span class="chip" [ngClass]="chipClass(top3[2].potentiel)">{{ top3[2].potentiel }}</span>
+      </div>
+      <div class="block block-3">
+        <span>3</span>
+        <div class="block-shine"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Score bars -->
+  <div class="score-bars">
+    <div class="bar-row" *ngFor="let t of top3; let i = index">
+      <span class="bar-rank rank-{{ i+1 }}">{{ i + 1 }}</span>
+      <span class="bar-name">{{ t.prenom }} {{ t.nom }}</span>
+      <div class="bar-track">
+        <div class="bar-fill fill-{{ i+1 }}" [style.width]="barWidth(t.scoreGlobal) + '%'">
+          <div class="bar-shimmer"></div>
+        </div>
+      </div>
+      <span class="bar-score">{{ t.scoreGlobal | number:'1.0-1' }}</span>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,20 @@
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Board/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Discovery/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Scoutisme/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Recruitment/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/ConfigServer/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Talent-Management/pom.xml" />
+        <option value="$PROJECT_DIR$/Intelligent_Rh_Application-master/Admin_Onboarding_Service/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17 (10)" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

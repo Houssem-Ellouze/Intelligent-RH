@@ -1,0 +1,47 @@
+<app-toast />
+
+<div class="score-wrapper">
+
+  <h2>Analyse de Score</h2>
+
+  <div class="search-group">
+    <input type="text" placeholder="Prénom" [(ngModel)]="prenom" />
+    <input type="text" placeholder="Nom" [(ngModel)]="nom" />
+    <button (click)="loadScore()" [disabled]="loading">
+      {{ loading ? '...' : 'Rechercher' }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="info-msg">
+    Chargement des données analytiques...
+  </div>
+
+  <div *ngIf="scoreData" class="score-card" #resultCard>
+    <div class="score-main">
+      <span class="score-label">Score Global de Talent</span>
+      <span class="score-value">{{ scoreData.scoreGlobal }}%</span>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-item">
+        <span>Candidat</span>
+        <strong>{{ scoreData.prenom }} {{ scoreData.nom }}</strong>
+      </div>
+      <div class="data-item">
+        <span>Performance</span>
+        <strong class="highlight-text" [ngClass]="getPerformanceClass(scoreData.potentiel)">
+          {{ scoreData.potentiel }}
+        </strong>
+      </div>
+      <div class="data-item" style="grid-column: span 2;">
+        <span>Statut de l'analyse</span>
+        <strong style="color: #059669;">Vérifié par Scouting AI</strong>
+      </div>
+    </div>
+
+    <div class="score-actions">
+      <button class="btn-reset" (click)="resetForm()">Réinitialiser</button>
+    </div>
+  </div>
+
+</div>

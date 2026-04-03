@@ -1,0 +1,24 @@
+<div class="dashboard-container">
+  <h2>📊 Dashboard Collaborateurs</h2>
+
+    <p><strong>Total Collaborateurs :</strong> {{ stats.totalCollaborateurs }}</p>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h5>📅 Collaborateurs par Mois</h5>
+        <canvas id="collaborateursParMoisChart"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h5>📈 Moyenne des Tâches par Mois</h5>
+        <canvas id="moyenneTachesParMoisChart"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h5>📊 Répartition par Taille de Tâches</h5>
+        <canvas id="collaborateursParTailleChart"></canvas>
+      </div>
+    </div>
+
+
+</div>

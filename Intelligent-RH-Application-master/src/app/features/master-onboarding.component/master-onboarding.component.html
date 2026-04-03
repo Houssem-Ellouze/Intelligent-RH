@@ -1,0 +1,569 @@
+<div class="master-onboarding-container">
+  <header class="workflow-header">
+    <div class="header-content text-center mb-4">
+      <h1 class="display-5 fw-bold text-primary">Onboarding Hub</h1>
+      <p class="lead text-muted">Gérez la transition des candidats vers leur rôle de collaborateur</p>
+    </div>
+
+    <div class="stepper-wrapper">
+      <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1" (click)="goToStep(1)">
+        <div class="step-circle">1</div>
+        <span>Transfert</span>
+      </div>
+      <div class="step-connector" [class.filled]="currentStep > 1"></div>
+
+      <div class="step step-suivi" [class.active]="currentStep === 2" [class.completed]="currentStep > 2" (click)="goToStep(2)">
+        <div class="step-circle">2</div>
+        <span>Suivi</span>
+      </div>
+      <div class="step-connector" [class.filled]="currentStep > 2"></div>
+
+      <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3" (click)="goToStep(3)">
+        <div class="step-circle">3</div>
+        <span>Signature</span>
+      </div>
+
+      <div class="step-connector" [class.filled]="currentStep > 3"></div>
+
+      <div class="step" [class.active]="currentStep === 4" [class.completed]="currentStep > 4" (click)="goToStep(4)">
+        <div class="step-circle">4</div>
+        <span>Clôture</span>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="content-area mt-5">
+    <!-- Étape 1 -->
+    <section *ngIf="currentStep === 1" class="step-1-container">
+      <!-- Animation de fond -->
+      <div class="background-animation"></div>
+
+      <div class="center-wrapper">
+        <div class="form-card-container">
+          <!-- Icône décorative animée -->
+          <div class="form-icon">
+            <svg class="floating-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- En-tête du formulaire -->
+          <div class="form-header text-center mb-5">
+            <!-- Particules flottantes -->
+            <div class="particles">
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+            </div>
+
+            <h2>
+              Workflow de Collaborateur
+            </h2>
+            <br>
+            <p class="form-subtitle">
+              Sélectionnez un candidat et son futur métier pour initier son intégration
+            </p>
+          </div>
+          <!-- Carte du formulaire -->
+          <div class="form-card glass-card">
+            <div class="card-glow"></div>
+
+            <form [formGroup]="onBoardingForm" class="form-body">
+              <!-- Champ Candidat -->
+              <div class="form-group">
+                <div class="form-label-wrapper">
+                  <i class="bi bi-person-circle input-icon"></i>
+                  <label class="form-label">Candidat</label>
+                  <span class="badge-count">{{candidatures.length}} disponibles</span>
+                </div>
+
+                <div class="select-wrapper">
+                  <select formControlName="id" class="form-select-enhanced">
+                    <option [ngValue]="null" class="placeholder-option">👤 -- Choisir un candidat --</option>
+                    <option *ngFor="let c of candidatures; let i = index" [ngValue]="c" class="candidate-option">
+                      <div class="option-content">
+                        <span class="candidate-index">{{i + 1}}</span>
+                        <span class="candidate-name">
+                          {{ c.infos_candidat?.prenom }} {{ c.infos_candidat?.nom }}
+                        </span>
+                      </div>
+                    </option>
+                  </select>
+                  <div class="select-arrow">▼</div>
+                </div>
+
+                <!-- Validation visuelle -->
+                <div *ngIf="onBoardingForm.get('id')?.value" class="selected-preview">
+                  <div class="preview-badge">
+                    <i class="bi bi-check-circle"></i>
+                    Candidat sélectionné
+                  </div>
+                </div>
+              </div>
+
+              <!-- Champ Métier -->
+              <div class="form-group">
+                <div class="form-label-wrapper">
+                  <i class="bi bi-briefcase input-icon"></i>
+                  <label class="form-label">Métier</label>
+                </div>
+
+                <div class="select-wrapper">
+                  <select formControlName="metier" class="form-select-enhanced">
+                    <option value="" class="placeholder-option">💼 -- Choisir un métier --</option>
+                    <option *ngFor="let m of metiers" [value]="m.value" class="metier-option">
+                      <div class="option-content">
+                        <span class="metier-label">{{ m.label }}</span>
+                      </div>
+                    </option>
+                  </select>
+                  <div class="select-arrow">▼</div>
+                </div>
+              </div>
+
+              <!-- Indicateur de progression -->
+              <div class="form-progress" *ngIf="onBoardingForm.valid">
+                <div class="progress-indicator">
+                  <div class="progress-bar active"></div>
+                  <div class="progress-bar"></div>
+                  <div class="progress-bar"></div>
+                </div>
+                <p class="progress-text">Formulaire complet • Prêt pour l'intégration</p>
+              </div>
+
+              <!-- Bouton d'action -->
+              <div class="form-actions">
+                <button
+                  (click)="onTransformSubmit()"
+                  [disabled]="onBoardingForm.invalid || isSubmitting"
+                  class="submit-btn glow-btn">
+                  <div class="btn-content">
+                    <span class="btn-icon">
+                      <i class="bi" [class]="isSubmitting ? 'bi-arrow-repeat spin' : 'bi-rocket-takeoff'"></i>
+                    </span>
+                    <span class="btn-text">
+                      {{ isSubmitting ? 'Lancement en cours...' : 'Lancer l\'intégration 🚀' }}
+                    </span>
+                  </div>
+                  <!-- Effet de particules -->
+                  <div class="btn-particles" *ngIf="!isSubmitting && onBoardingForm.valid"></div>
+                </button>
+
+                <!-- Message d'état -->
+                <div *ngIf="onBoardingForm.invalid" class="form-state">
+                  <i class="bi bi-info-circle"></i>
+                  Veuillez sélectionner un candidat et un métier
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Conseils -->
+          <div class="tips-card glass-card">
+            <div class="tips-header">
+              <i class="bi bi-lightbulb"></i>
+              <h4>Conseil d'intégration</h4>
+            </div>
+            <p class="tips-content">
+              L'intégration commence automatiquement après validation.
+              Un email de bienvenue sera envoyé au nouveau collaborateur.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Étape 2 -->
+    <section *ngIf="currentStep === 2" class="step-2-container">
+      <!-- Animation de fond dynamique -->
+      <div class="step2-background">
+        <div class="floating-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+          <div class="shape shape-4"></div>
+        </div>
+      </div>
+
+      <!-- En-tête de l'étape 2 -->
+      <div class="step2-header text-center mb-5">
+        <div class="header-icon-wrapper">
+        </div>
+        <p class="step2-subtitle">
+          Suivez la progression des intégrations en temps réel
+          <span class="badge-total">{{collaborateurStatsList.length}} collaborateur(s)</span>
+        </p>
+
+        <!-- Filtres et statistiques -->
+        <div class="stats-bar glass-card">
+          <div class="stats-container">
+            <div class="stat-item">
+              <div class="stat-icon">📊</div>
+              <div class="stat-content">
+                <div class="stat-value">{{getCompletedCount()}}</div>
+                <div class="stat-label">Complétés</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-content">
+                <div class="stat-value">{{getInProgressCount()}}</div>
+                <div class="stat-label">En cours</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🚀</div>
+              <div class="stat-content">
+                <div class="stat-value">{{getAvgProgress()}}%</div>
+                <div class="stat-label">Moyenne</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-content">
+                <div class="stat-value">{{getFastestProgress()}}%</div>
+                <div class="stat-label">Plus rapide</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille des collaborateurs -->
+      <div class="dashboard-grid">
+        <!-- État vide -->
+        <div *ngIf="collaborateurStatsList.length === 0" class="empty-state glass-card">
+          <div class="empty-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3>Aucun collaborateur en cours</h3>
+          <p>Tous les intégrations sont finalisées ou aucun transfert n'a été initié.</p>
+          <button class="btn-back" (click)="goToStep(1)">
+            <i class="bi bi-arrow-left"></i>
+            Retour au transfert
+          </button>
+        </div>
+
+        <!-- Cartes collaborateur -->
+        <div *ngFor="let stats of collaborateurStatsList; let i = index"
+             class="collab-card-wrapper"
+             [style.animation-delay]="i * 0.1 + 's'">
+          <div class="collab-card glass-card" [class.highlight]="stats.isHighlighted">
+            <!-- En-tête de la carte -->
+            <div class="card-header">
+              <div class="avatar-wrapper">
+                <div class="avatar" [style.background]="stats.avatarColor">
+
+                </div>
+                <div class="status-indicator" [class]="stats.statusClass"></div>
+              </div>
+
+              <div class="collab-info">
+                <h3 class="collab-name">
+                  {{stats.collaborateur.prenom}} {{stats.collaborateur.nom}}
+                </h3>
+                <p class="collab-id">
+                  <i class="bi bi-person-badge"></i>
+                  ID: {{stats.collaborateur.id}}
+                </p>
+              </div>
+
+              <div class="card-actions">
+                <button class="action-btn" [title]="stats.daysInProgress + ' jours en cours'">
+                  <i class="bi bi-clock-history"></i>
+                </button>
+                <button class="action-btn" title="Voir les détails" (click)="viewDetails(stats.id)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Progression -->
+            <div class="progress-section">
+              <div class="progress-header">
+                <span class="progress-label">Progression d'intégration</span>
+                <span class="progress-value">{{stats.progressPercentage}}%</span>
+              </div>
+
+              <!-- Barre de progression -->
+              <div class="advanced-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" [style.width]="stats.progressPercentage + '%'">
+                    <div class="progress-glow"></div>
+                    <div class="progress-particles">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+
+                  <!-- Étapes de progression -->
+                  <div class="progress-steps">
+                    <div class="step-marker" [class.active]="stats.progressPercentage >= 25">
+                      <span class="step-dot"></span>
+                      <span class="step-label">Paperasse</span>
+                    </div>
+                    <div class="step-marker" [class.active]="stats.progressPercentage >= 50">
+                      <span class="step-dot"></span>
+                      <span class="step-label">Formation</span>
+                    </div>
+                    <div class="step-marker" [class.active]="stats.progressPercentage >= 75">
+                      <span class="step-dot"></span>
+                      <span class="step-label">Équipement</span>
+                    </div>
+                    <div class="step-marker" [class.active]="stats.progressPercentage >= 100">
+                      <span class="step-dot"></span>
+                      <span class="step-label">Final</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Métriques -->
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <div class="metric-icon">📅</div>
+                <div class="metric-content">
+                  <div class="metric-value">{{stats.startDate}}</div>
+                  <div class="metric-label">Début</div>
+                </div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-content">
+                  <div class="metric-value">{{stats.daysLeft}}</div>
+                  <div class="metric-label">Jours restants</div>
+                </div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-icon">📈</div>
+                <div class="metric-content">
+                  <div class="metric-value">{{stats.speed}}%</div>
+                  <div class="metric-label">/semaine</div>
+                </div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-icon">⭐</div>
+                <div class="metric-content">
+                  <div class="metric-value">{{stats.score}}</div>
+                  <div class="metric-label">Score</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="card-footer">
+              <div class="action-buttons">
+                <button class="btn-quick-action" (click)="sendReminder(stats.id)" title="Envoyer un rappel">
+                  <i class="bi bi-bell"></i>
+                  Rappel
+                </button>
+
+                <button class="btn-quick-action" (click)="viewDetails(stats.id)" title="Voir les détails">
+                  <i class="bi bi-list-ul"></i>
+                  Détails
+                </button>
+
+                <!-- Version 1 : Cliquable à partir de 80% -->
+                <button class="btn-finalize glow-btn"
+                        (click)="finaliser(stats.collaborateur.id)"
+                        [disabled]="!canFinalize(stats.collaborateur)"
+                        [title]="canFinalize(stats.collaborateur) ? 'Finaliser l\'intégration' : 'Déjà finalisé'">
+                  <div class="btn-content">
+                    <i class="bi" [class]="canFinalize(stats.collaborateur) ? 'bi-check-circle' : 'bi-check-circle-fill'"></i>
+                    <span>{{getStatusText(stats.collaborateur) === 'Terminé' ? 'Finalisé ✓' : 'Finaliser'}}</span>
+                  </div>
+                  <div class="btn-pulse" *ngIf="canFinalize(stats.collaborateur)"></div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Étape 3 -->
+    <section *ngIf="currentStep === 4" class="step-3-container">
+      <!-- Animation de fond de célébration -->
+      <div class="celebration-background">
+        <div class="confetti-container">
+          <div class="confetti" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"></div>
+        </div>
+        <div class="sparkle" *ngFor="let i of [1,2,3,4,5,6,7,8]"></div>
+      </div>
+
+      <div class="success-center-wrapper">
+        <!-- Panneau de succès principal -->
+        <div class="success-panel glass-card celebration-card">
+          <!-- Éclat lumineux autour -->
+          <div class="success-glow"></div>
+
+          <!-- Icône animée de succès -->
+          <div class="success-icon-animation">
+            <div class="icon-circle pulse-circle">
+              <i class="bi bi-check-circle-fill success-icon"></i>
+            </div>
+            <div class="success-rings">
+              <div class="ring ring-1"></div>
+              <div class="ring ring-2"></div>
+              <div class="ring ring-3"></div>
+            </div>
+          </div>
+
+          <!-- Contenu du succès -->
+          <div class="success-content">
+            <h4 class="success-title">
+              🎉 Intégration Réussie !
+            </h4>
+
+            <div class="success-message">
+              <p class="lead-text">
+                Félicitations ! Le candidat est maintenant officiellement un collaborateur actif.
+              </p>
+              <p class="sub-text">
+                L'intégration a été complétée avec succès et toutes les étapes ont été validées.
+              </p>
+            </div>
+
+            <!-- Badges de succès -->
+            <div class="success-badges">
+              <div class="badge-item">
+                <div class="badge-icon">✅</div>
+                <div class="badge-text">Contrat signé</div>
+              </div>
+              <div class="badge-item">
+                <div class="badge-icon">🔄</div>
+                <div class="badge-text">Systèmes activés</div>
+              </div>
+              <div class="badge-item">
+                <div class="badge-icon">📧</div>
+                <div class="badge-text">Email envoyé</div>
+              </div>
+              <div class="badge-item">
+                <div class="badge-icon">👥</div>
+                <div class="badge-text">Équipe informée</div>
+              </div>
+            </div>
+
+            <!-- Statistiques de l'intégration -->
+            <div class="success-stats glass-card">
+              <h4 class="stats-title">Récapitulatif</h4>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">✓</div>
+                  <div class="stat-label">Processus terminé</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">{{getIntegrationTime()}}</div>
+                  <div class="stat-label">Temps total</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">100%</div>
+                  <div class="stat-label">Taux de réussite</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="success-actions">
+              <div class="action-buttons">
+                <button class="btn-primary-action glow-btn" (click)="goToStep(1)">
+                  <div class="btn-icon-wrapper">
+                    <i class="bi bi-person-plus-fill"></i>
+                  </div>
+                  <div class="btn-text-content">
+                    <span class="btn-title">Nouveau Transfert</span>
+                    <span class="btn-subtitle">Commencer une autre intégration</span>
+                  </div>
+                  <div class="btn-arrow">→</div>
+                </button>
+
+                <button class="btn-secondary-action" routerLink="/OnBoarding-list">
+                  <i class="bi bi-people-fill me-2"></i>
+                  Voir tous les collaborateurs
+                </button>
+
+                <!-- Bouton qui DÉCLENCHE le rapport -->
+                <button class="btn-tertiary-action" (click)="generateReport()">
+                  <i class="bi bi-file-earmark-text me-2"></i>
+                  Télécharger le rapport
+                </button>
+              </div>
+            </div>
+
+            <!-- Modale rapport — EN DEHORS des boutons, à la fin de la section ou du composant -->
+            <app-rapport-onboarding
+              *ngIf="showRapport"
+              [collaborateur]="currentCollaborateur"
+              [signatureBase64]="signatureBase64"
+              [metierValue]="onBoardingForm.get('metier')?.value"
+              (close)="showRapport = false">
+            </app-rapport-onboarding>
+
+            <!-- Message d'inspiration -->
+            <div class="inspiration-message">
+              <i class="bi bi-quote"></i>
+              <p class="inspiration-text">
+                "Chaque nouvelle intégration renforce notre équipe et contribue à notre succès collectif."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panneau latéral pour les prochaines étapes -->
+        <div class="next-steps-panel glass-card">
+          <h3 class="next-steps-title">📋 Prochaines étapes recommandées</h3>
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-checkbox">✓</div>
+              <div class="step-content">
+                <div class="step-title">Présentation à l'équipe</div>
+                <div class="step-description">Organiser une réunion de bienvenue</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-checkbox">○</div>
+              <div class="step-content">
+                <div class="step-title">Formation onboarding</div>
+                <div class="step-description">Programmer les sessions de formation</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-checkbox">○</div>
+              <div class="step-content">
+                <div class="step-title">Feedback à 30 jours</div>
+                <div class="step-description">Planifier le suivi mensuel</div>
+              </div>
+            </li>
+          </ul>
+
+          <button class="btn-schedule" (click)="scheduleFollowUp()">
+            <i class="bi bi-calendar-plus me-2"></i>
+            Planifier le suivi
+          </button>
+        </div>
+      </div>
+
+      <!-- Timer de célébration -->
+      <div class="celebration-timer">
+        <div class="timer-text">Célébration en cours...</div>
+        <div class="timer-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </section>
+    <section *ngIf="currentStep === 3" class="step-3-signature">
+      <app-signature-qr
+        (goNext)="goToStep(4)"
+        (signatureSaved)="onSignatureSaved($event)"
+        (qrGenerated)="onQRGenerated($event)">
+
+      </app-signature-qr>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-prediction
+  namespace: intelligent-rh
+spec:
+  type: NodePort # Ajouté pour l'accès externe
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30500 # Ton Frontend appellera http://localhost:30500
+  selector:
+    app: job-prediction
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-prediction
+  namespace: intelligent-rh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-prediction
+  template:
+    metadata:
+      labels:
+        app: job-prediction
+    spec:
+      containers:
+        - name: job-prediction
+          image: houssem80356/intelligent-app2-job-prediction:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PYTHONUNBUFFERED

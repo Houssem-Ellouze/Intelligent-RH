@@ -1,0 +1,43 @@
+<div class="workflow-container">
+  <header class="workflow-header">
+    <p class="status-info">
+      Statut actuel : <span class="highlight" [attr.data-status]="etatActuel">{{ etatActuel }}</span>
+    </p>
+  </header>
+
+  <div class="selection-box" *ngIf="!isProcessing; else loading">
+    <div class="input-group">
+      <select
+        [(ngModel)]="tempEtat"
+        (change)="onStatutChange()"
+        class="neo-select"
+        [disabled]="etatActuel === 'ACCEPTEE' || etatActuel === 'REFUSEE'">
+        <option value="NOUVELLE">NOUVELLE</option>
+        <option value="ENTRETIEN_EN_COURS">ENTRETIEN EN COURS</option>
+        <option value="OFFRE_EMISE">OFFRE ÉMISE</option>
+        <option value="ACCEPTEE">ACCEPTEE (Clôture l'offre)</option>
+        <option value="REFUSEE">REFUSEE</option>
+      </select>
+
+      <button
+        (click)="confirmerChangement()"
+        class="btn-neo-add"
+        [disabled]="etatActuel === tempEtat || etatActuel === 'ACCEPTEE'">
+        Valider la décision
+      </button>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="loader-container">
+      <div class="loader-line"></div>
+      <p class="mini-text">Synchronisation avec le service recrutement...</p>
+    </div>
+  </ng-template>
+
+  <div class="feedback-area" *ngIf="etatActuel === 'ACCEPTEE'">
+    <small class="feedback">
+      ✨ Mission clôturée et profil mis à jour
+    </small>
+  </div>
+</div>
