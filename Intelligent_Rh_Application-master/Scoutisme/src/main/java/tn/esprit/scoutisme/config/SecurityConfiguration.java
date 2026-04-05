@@ -15,19 +15,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
-
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .logout(logout -> logout.disable());
-
+                        .requestMatchers("/actuator/**").permitAll() // ✅ Autorise Prometheus à lire les métriques
+                        .anyRequest().authenticated()
+                );
         return http.build();
     }
 }

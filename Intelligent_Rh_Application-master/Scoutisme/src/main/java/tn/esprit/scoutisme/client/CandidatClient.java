@@ -7,7 +7,7 @@ import tn.esprit.scoutisme.DTO.CandidatDTO;
 
 import java.util.List;
 
-@FeignClient(name = "talent-management-service", url = "${app.services.url}")
+@FeignClient(name = "talent-management-service", url = "http://talent-management-service:9002")
 public interface CandidatClient {
 
     @GetMapping("/api/candidats/{id}")

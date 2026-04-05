@@ -1,0 +1,46 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+  external_labels:
+    cluster: 'intelligent-rh-docker'
+    environment: 'production'
+
+scrape_configs:
+  - job_name: 'eureka-discovery'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['discovery:8761']
+        labels:
+          application: 'discovery'
+  - job_name: 'config-server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['config-server:8888']
+  - job_name: 'gateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['gateway:8222']
+  - job_name: 'talent-management'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['talent-management-service:9002']
+  - job_name: 'recruitment'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['recrutement-service:8082']
+  - job_name: 'scoutisme'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['scoutisme-service:9009']
+  - job_name: 'kanban-board'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['kanban-backend:8088']
+  - job_name: 'admin-onboarding'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['admin-contract-onboarding-service:8083']
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

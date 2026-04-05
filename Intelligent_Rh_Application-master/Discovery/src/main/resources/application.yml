@@ -13,3 +13,26 @@ eureka:
 logging:
   level:
     org.springframework.web.servlet.handler.HandlerMappingIntrospector: ERROR
+    org.springframework.web: INFO
+    tn.esprit: DEBUG
+
+# --- Configuration Actuator & Prometheus ---
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+          - metrics
+      base-path: /actuator
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+  # Pas besoin de management.metrics.export.prometheus.enabled
+  # Prometheus s'active automatiquement avec la dépendance micrometer-registry-prometheus

@@ -99,4 +99,4 @@ application:
       expiration: 8640000
     mailing:
       frontend:
-        activation-url: ${FRONTEND_URL:http://http://intelligent-rh:4200/activate-account}
+        activation-url: ${FRONTEND_URL:http://intelligent-rh:4200/activate-account}
