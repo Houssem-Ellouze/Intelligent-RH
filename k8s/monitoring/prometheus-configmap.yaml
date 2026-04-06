@@ -107,17 +107,7 @@ data:
           - source_labels: [__address__]
             target_label: instance
             replacement: 'onboarding'
-
-      # Job Prediction Service
-      - job_name: 'job-prediction'
-        metrics_path: '/actuator/prometheus'
-        static_configs:
-          - targets: ['job-prediction:5000']
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: instance
-            replacement: 'job-prediction'
-
+            
       # Kubernetes Pods (optionnel - si vous avez les permissions)
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:

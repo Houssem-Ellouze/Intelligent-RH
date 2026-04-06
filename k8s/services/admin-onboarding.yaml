@@ -3,9 +3,13 @@ kind: Service
 metadata:
   name: admin-contract-onboarding-service
   namespace: intelligent-rh
+  labels:
+    app: admin-onboarding
 spec:
   ports:
     - port: 8083
+      targetPort: 8083
+      protocol: TCP
   selector:
     app: admin-onboarding
 ---
@@ -15,6 +19,7 @@ metadata:
   name: admin-contract-onboarding-service
   namespace: intelligent-rh
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: admin-onboarding
@@ -26,12 +31,37 @@ spec:
       containers:
         - name: admin-onboarding
           image: houssem80356/intelligent-app2-admin-contract-onboarding-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8083
           env:
+            # ✅ FIX: Correction pour l'erreur "Malformed / Missing configserver entry"
+            - name: SPRING_CONFIG_IMPORT
+              value: "optional:configserver:http://config-server:8888"
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "true"
+
+            # ✅ FIX: Sécurité MySQL (SSL désactivé et compatibilité Docker)
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mysql://mysql-db:3306/db_admin_onboarding?createDatabaseIfNotExist=true"
+              value: "jdbc:mysql://mysql-db:3306/db_admin_onboarding?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
             - name: SPRING_DATASOURCE_USERNAME
               value: "root"
+
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: "http://discovery:8761/eureka/"
+            - name: SPRING_APPLICATION_NAME
+              value: "admin-contract-onboarding-service"
+
+          # ✅ Probes : On augmente un peu le délai initial pour laisser le temps au Config Server de répondre
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 60
+            periodSeconds: 20

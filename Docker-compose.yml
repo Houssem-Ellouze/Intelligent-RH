@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # --- DATABASE ---
   mysql-db:
@@ -82,6 +84,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8761/ || exit 1"]
       interval: 10s
+      timeout: 10s
       retries: 10
 
   config-server:
@@ -95,6 +98,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1"]
       interval: 10s
+      timeout: 10s
       retries: 10
 
   gateway:
@@ -110,6 +114,11 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8222/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   # --- BUSINESS SERVICES ---
   talent-management-service:
@@ -133,6 +142,11 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9002/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   recrutement-service:
     build: ./Intelligent_Rh_Application-master/Recruitment
@@ -154,6 +168,11 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   scoutisme-service:
     build: ./Intelligent_Rh_Application-master/Scoutisme
@@ -175,6 +194,11 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9009/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   kanban-backend:
     build: ./Intelligent_Rh_Application-master/Board
@@ -196,6 +220,11 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8088/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
   admin-contract-onboarding-service:
     build: ./Intelligent_Rh_Application-master/Admin_Onboarding_Service
@@ -217,8 +246,13 @@ services:
         condition: service_healthy
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
-  # ==================== FRONTEND ====================
+  # --- FRONTEND ---
   frontend:
     build:
       context: ./Intelligent-RH-Application-master
@@ -234,7 +268,7 @@ services:
       - microservices-network
     restart: unless-stopped
 
-  # ==================== JOB PREDICTION ====================
+  # --- JOB PREDICTION ---
   job-prediction:
     build:
       context: ./Intelligent_Rh_Application-master/JobPrediction
@@ -249,12 +283,65 @@ services:
       - microservices-network
     restart: unless-stopped
 
+  # --- MONITORING STACK ---
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus-docker.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - microservices-network
+    depends_on:
+      - discovery
+      - config-server
+      - gateway
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - microservices-network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 networks:
   microservices-network:
-    external: true
+    driver: bridge
 
 volumes:
   mysql-data:
   postgresql_data:
   sonarqube_data:
   sonarqube_extensions:
+  prometheus-data:
+  grafana-data:

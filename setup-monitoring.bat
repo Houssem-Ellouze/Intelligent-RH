@@ -47,7 +47,7 @@ echo     cluster: 'intelligent-rh-docker'
 echo     environment: 'production'
 echo.
 echo scrape_configs:
-echo   - job_name: 'eureka-discovery'
+echo   - job_name: 'discovery'
 echo     metrics_path: '/actuator/prometheus'
 echo     static_configs:
 echo       - targets: ['discovery:8761']
@@ -126,6 +126,7 @@ echo ========================================
 echo   [OK] INSTALLATION TERMINEE !
 echo ========================================
 echo Acceder a Prometheus: http://localhost:9090
+
 echo Acceder a Grafana:    http://localhost:3000
 echo ========================================
 pause

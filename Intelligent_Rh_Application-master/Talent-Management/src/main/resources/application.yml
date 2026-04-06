@@ -100,3 +100,22 @@ application:
     mailing:
       frontend:
         activation-url: ${FRONTEND_URL:http://intelligent-rh:4200/activate-account}
+
+# --- Configuration Actuator & Prometheus ---
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+          - metrics
+      base-path: /actuator
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+    metrics:
+      enabled: true

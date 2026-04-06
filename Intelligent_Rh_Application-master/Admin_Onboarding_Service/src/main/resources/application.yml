@@ -42,3 +42,27 @@ eureka:
 app:
   services:
     url: ${TALENT_SERVICE_URL:http://talent-management-service:9002}
+
+
+# --- Configuration Actuator & Prometheus ---
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+          - metrics
+      base-path: /actuator
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true

@@ -34,5 +34,7 @@ management:
       show-details: always
     metrics:
       enabled: true
-  # Pas besoin de management.metrics.export.prometheus.enabled
-  # Prometheus s'active automatiquement avec la dépendance micrometer-registry-prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
