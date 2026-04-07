@@ -20,7 +20,7 @@
         <spring-cloud.version>2023.0.3</spring-cloud.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_bef121ff6f81c9c764b97e4ea2e6b9664351e23d</sonar.token>
+        <sonar.token>sqp_9d20a149995d1ddbdd860aceee5a0bdef00556f7</sonar.token>
         <sonar.exclusions>**/DiscoveryApplication.java</sonar.exclusions>
     </properties>
 

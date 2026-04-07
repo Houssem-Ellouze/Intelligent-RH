@@ -26,7 +26,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_cf8b74c5498afd79898e2ece3fbc8122960a958f</sonar.token>
+        <sonar.token>sqp_2808f086ca12a6abb28ed43718fe8d5868e84f38</sonar.token>
         <sonar.exclusions>
             **/entity/**, **/dto/**, **/config/**, **/RhChatbotApplication.java
         </sonar.exclusions>

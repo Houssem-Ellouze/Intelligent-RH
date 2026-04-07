@@ -18,14 +18,14 @@ pipeline {
         SONAR_HOST_URL = 'http://host.docker.internal:30009'
 
         // Nouveaux Tokens SonarQube fournis
-        TOKEN_Discovery    = 'sqp_bef121ff6f81c9c764b97e4ea2e6b9664351e23d'
-        TOKEN_Gateway      = 'sqp_35e9db93c0293454c81dfd373fb6a76d22ed717c'
-        TOKEN_ConfigServer = 'sqp_21453bac15d59d3c68d3945ebcbb1ff58cffa3a2'
-        TOKEN_Talent       = 'sqp_3849788c4b6e0454658ca8b256c4582ae5d937eb'
-        TOKEN_Recruitment  = 'sqp_28573b3b694333cc398cb009ff380999d43dd13a'
-        TOKEN_Onboarding   = 'sqp_d98b70fa114c8cf628aca141e11ffa123f5d1a57'
-        TOKEN_Board        = 'sqp_cf8b74c5498afd79898e2ece3fbc8122960a958f'
-        TOKEN_Scoutisme    = 'sqp_b7f598dd0a0175ffcb3a3f816390fb00f28abad7'
+        TOKEN_Discovery    = 'sqp_9d20a149995d1ddbdd860aceee5a0bdef00556f7'
+        TOKEN_Gateway      = 'sqp_abd165531f1bd114f99770227188c77762826126'
+        TOKEN_ConfigServer = 'sqp_cf555333b6f0d943af9177783016f1bb27215a18'
+        TOKEN_Talent       = 'sqp_be61835d8185ec3881d0014ed940f668a0d09237'
+        TOKEN_Recruitment  = 'sqp_3f6d309eeb44556114e7086d79dfa0cd8df2f8bc'
+        TOKEN_Onboarding   = 'sqp_b68f2b8bf5e06e76246b20489b36500d67012aab'
+        TOKEN_Board        = 'sqp_2808f086ca12a6abb28ed43718fe8d5868e84f38'
+        TOKEN_Scoutisme    = 'sqp_7fe364c40b9a2286db6065407648c54a23aa3e95'
 
         // --- Kubernetes ---
         K8S_NAMESPACE = 'intelligent-rh'

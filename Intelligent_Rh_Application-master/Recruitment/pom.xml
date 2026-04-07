@@ -22,7 +22,7 @@
         <springdoc.version>2.3.0</springdoc.version>
 
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_28573b3b694333cc398cb009ff380999d43dd13a</sonar.token>
+        <sonar.token>sqp_3f6d309eeb44556114e7086d79dfa0cd8df2f8bc</sonar.token>
         <sonar.exclusions>
             **/entity/**, **/service/**, **/client/**, **/config/**, **/controller/**,
             **/RecrutementApplication.java, **/repository/**

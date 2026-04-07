@@ -28,7 +28,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_3849788c4b6e0454658ca8b256c4582ae5d937eb</sonar.token>
+        <sonar.token>sqp_be61835d8185ec3881d0014ed940f668a0d09237</sonar.token>
         <sonar.exclusions>
             **/entity/**, **/auth/**, **/config/**, **/EmployeeApplication.java
         </sonar.exclusions>

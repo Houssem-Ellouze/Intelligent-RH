@@ -26,7 +26,7 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_d98b70fa114c8cf628aca141e11ffa123f5d1a57</sonar.token>
+        <sonar.token>sqp_b68f2b8bf5e06e76246b20489b36500d67012aab</sonar.token>
         <sonar.projectKey>Admin_Onboarding_Service</sonar.projectKey>
         <sonar.exclusions>
             **/entity/**, **/DTO/**, **/config/**, **/AdminOnboardingServiceApplication.java

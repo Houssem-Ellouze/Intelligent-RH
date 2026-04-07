@@ -24,7 +24,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<sonar.host.url>http://localhost:30009</sonar.host.url>
-		<sonar.token>sqp_21453bac15d59d3c68d3945ebcbb1ff58cffa3a2</sonar.token>
+		<sonar.token>sqp_cf555333b6f0d943af9177783016f1bb27215a18</sonar.token>
 		<sonar.exclusions>**/ConfigServerApplication.java</sonar.exclusions>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>

@@ -24,7 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_b7f598dd0a0175ffcb3a3f816390fb00f28abad7</sonar.token>
+        <sonar.token>sqp_7fe364c40b9a2286db6065407648c54a23aa3e95</sonar.token>
         <sonar.exclusions>**/entity/**, **/dto/**, **/config/**, **/ScoutismeApplication.java</sonar.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>

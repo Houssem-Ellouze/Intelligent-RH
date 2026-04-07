@@ -22,7 +22,7 @@
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version> <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.host.url>http://localhost:30009</sonar.host.url>
-        <sonar.token>sqp_35e9db93c0293454c81dfd373fb6a76d22ed717c</sonar.token>
+        <sonar.token>sqp_abd165531f1bd114f99770227188c77762826126</sonar.token>
         <sonar.exclusions>
             **/GatewayApplication.java,
             **/CorsConfig.java,
