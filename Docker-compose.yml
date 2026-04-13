@@ -120,6 +120,7 @@ services:
       timeout: 10s
       retries: 5
 
+
   # --- BUSINESS SERVICES ---
   talent-management-service:
     build: ./Intelligent_Rh_Application-master/Talent-Management
