@@ -339,8 +339,8 @@ pipeline {
                         echo ========================================
                         echo   ACCES AUX INTERFACES MONITORING
                         echo ========================================
-                        echo Prometheus : http://localhost:30090
-                        echo Grafana    : http://localhost:3000
+                        echo Prometheus : http://intelligent-rh:30090
+                        echo Grafana    : http://intelligent-rh:30030
                         echo ========================================
                     """
                 }

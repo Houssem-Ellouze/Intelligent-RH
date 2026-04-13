@@ -4,19 +4,15 @@ metadata:
   name: intelligent-rh-ingress
   namespace: intelligent-rh
   annotations:
-    # Configuration CORS complète (sans snippets)
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "http://intelligent-rh, http://intelligent-rh:32000, http://intelligent-rh:30222, https://intelligent-rh"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://intelligent-rh:8088, http://intelligent-rh:32000, http://intelligent-rh:30222, http://intelligent-rh , http://intelligent-rh:30090 , http://intelligent-rh:30030"
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,Accept"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-max-age: "1728000"
-
-    # Désactiver SSL redirect temporairement
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-
-    # Taille maximale des uploads
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    # LE SNIPPET A ÉTÉ SUPPRIMÉ ICI POUR ÉVITER L'ERREUR 400
 
 spec:
   ingressClassName: nginx
@@ -24,8 +20,47 @@ spec:
     - host: intelligent-rh
       http:
         paths:
-          # Routes API (ordre important : plus spécifique en premier)
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: 9090
+
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
+
+          - path: /sonarqube
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarqube
+                port:
+                  number: 9000
+
           - path: /auth
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+
+          - path: /api
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8222
+
+          - path: /kanban
             pathType: Prefix
             backend:
               service:
@@ -57,15 +92,6 @@ spec:
                 port:
                   number: 8222
 
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: gateway
-                port:
-                  number: 8222
-
-          # Route Frontend (en dernier)
           - path: /
             pathType: Prefix
             backend:
