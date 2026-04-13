@@ -17,7 +17,7 @@ pipeline {
         // --- SonarQube ---
         SONAR_HOST_URL = 'http://host.docker.internal:30009'
 
-        // Nouveaux Tokens SonarQube fournis
+        // Tokens SonarQube
         TOKEN_Discovery    = 'sqp_9d20a149995d1ddbdd860aceee5a0bdef00556f7'
         TOKEN_Gateway      = 'sqp_abd165531f1bd114f99770227188c77762826126'
         TOKEN_ConfigServer = 'sqp_cf555333b6f0d943af9177783016f1bb27215a18'
@@ -28,10 +28,10 @@ pipeline {
         TOKEN_Scoutisme    = 'sqp_7fe364c40b9a2286db6065407648c54a23aa3e95'
 
         // --- Kubernetes ---
-        K8S_NAMESPACE = 'intelligent-rh'
-        K8S_DIR       = 'k8s'
+        K8S_NAMESPACE  = 'intelligent-rh'
+        K8S_DIR        = 'k8s'
         MONITORING_DIR = 'k8s\\monitoring'
-        IMAGE_TAG     = "${BUILD_NUMBER}"
+        IMAGE_TAG      = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -93,8 +93,7 @@ pipeline {
                             'intelligent-app2-scoutisme-service': "${JAVA_BASE}/Scoutisme",
                             'intelligent-app2-kanban-backend': "${JAVA_BASE}/Board",
                             'intelligent-app2-admin-contract-onboarding-service': "${JAVA_BASE}/Admin_Onboarding_Service",
-                            'intelligent-app2-frontend': "${FRONT_BASE}",
-                            'intelligent-app2-job-prediction': "${JAVA_BASE}/JobPrediction"
+                            'intelligent-app2-frontend': "${FRONT_BASE}"
                         ]
 
                         dockerMap.each { imgName, buildPath ->
@@ -167,7 +166,6 @@ pipeline {
                         kubectl apply -f "${K8S_DIR}\\mysql.yaml" -n ${K8S_NAMESPACE}
                         kubectl apply -f "${K8S_DIR}\\sonardb-deployment.yaml" -n ${K8S_NAMESPACE}
 
-                        :: Remplacement du timeout par ping pour eviter l'erreur redirection
                         ping 127.0.0.1 -n 15 > nul
 
                         echo [STEP 3] Services...
@@ -178,13 +176,14 @@ pipeline {
                         kubectl apply -f "${K8S_DIR}\\frontend.yaml" -n ${K8S_NAMESPACE}
                         kubectl apply -f "${K8S_DIR}\\ingress.yaml" -n ${K8S_NAMESPACE}
 
-                        echo [STEP 4] Mise a jour Images...
+                        echo [STEP 4] Mise a jour Images Build ${IMAGE_TAG}...
                         kubectl set image deployment/discovery discovery=${DOCKER_USER}/intelligent-app2-discovery:${IMAGE_TAG} -n ${K8S_NAMESPACE}
-                        :: ... (ajoute les autres set image ici)
+                        kubectl set image deployment/gateway gateway=${DOCKER_USER}/intelligent-app2-gateway:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+                        kubectl set image deployment/config-server config-server=${DOCKER_USER}/intelligent-app2-config-server:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+                        kubectl set image deployment/frontend frontend=${DOCKER_USER}/intelligent-app2-frontend:${IMAGE_TAG} -n ${K8S_NAMESPACE}
                     """
 
-                    // On utilise le sleep natif de Jenkins ici
-                    echo "Stabilisation du cluster..."
+                    echo "⏳ Stabilisation du cluster..."
                     sleep 45
 
                     bat """
@@ -202,9 +201,6 @@ pipeline {
                     bat """
                         @echo off
                         echo [MONITORING] Application des ressources...
-                        :: On force la suppression du PVC si erreur de taille (Optionnel mais radical)
-                        :: kubectl delete pvc prometheus-pvc -n ${K8S_NAMESPACE} --ignore-not-found
-
                         kubectl apply -f "${MONITORING_DIR}\\monitoring-pvc.yaml" -n ${K8S_NAMESPACE}
                         kubectl apply -f "${K8S_DIR}\\prometheus-pvc.yaml" -n ${K8S_NAMESPACE}
                         kubectl apply -f "${MONITORING_DIR}\\prometheus-configmap.yaml" -n ${K8S_NAMESPACE}
@@ -215,6 +211,7 @@ pipeline {
                 }
             }
         }
+    }
 
     post {
         success {
