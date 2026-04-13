@@ -285,63 +285,58 @@ pipeline {
                         setlocal enabledelayedexpansion
 
                         echo.
-                        echo ========================================
-                        echo   DEPLOIEMENT MONITORING KUBERNETES
-                        echo   Structure : ${MONITORING_DIR}
-                        echo ========================================
+                        echo ============================================================
+                        echo   Deployment Monitoring (Full) - Intelligent RH
+                        echo ============================================================
+                        echo.
 
-                        set NAMESPACE=${K8S_NAMESPACE}
-                        set MONITORING_DIR=${MONITORING_DIR}
+                        set "NAMESPACE=${K8S_NAMESPACE}"
+                        set "K8S_DIR=${K8S_DIR}"
+                        set "MONITORING_DIR=${MONITORING_DIR}"
 
-                        :: 1. Vérification du dossier monitoring
-                        if not exist "!MONITORING_DIR!" (
-                            echo [WARNING] Le dossier !MONITORING_DIR! est introuvable.
-                            echo Le monitoring ne sera pas deploye.
-                            exit /b 0
+                        :: Vérification de la connexion
+                        kubectl cluster-info >nul 2>&1
+                        if !ERRORLEVEL! NEQ 0 (
+                            echo [ERROR] Impossible de se connecter au cluster Kubernetes.
+                            exit /b 1
                         )
 
-                        echo [OK] Dossier de monitoring trouve.
+                        echo [STEP 1/6] Preparation du namespace...
+                        kubectl apply -f "!K8S_DIR!\\namespace.yaml"
 
-                        :: 2. Application du stockage (PVC)
-                        echo.
-                        echo [STEP 1/4] Deploiement du stockage...
-                        kubectl apply -f !MONITORING_DIR!\\monitoring-pvc.yaml -n !NAMESPACE! 2>nul
-                        kubectl apply -f ${K8S_DIR}\\prometheus-pvc.yaml -n !NAMESPACE! 2>nul
+                        echo [STEP 2/6] Application des PVC...
+                        kubectl apply -f "!MONITORING_DIR!\\monitoring-pvc.yaml" -n !NAMESPACE!
+                        kubectl apply -f "!K8S_DIR!\\prometheus-pvc.yaml" -n !NAMESPACE!
+                        kubectl apply -f "!K8S_DIR!\\sonarqube-pvc.yaml" -n !NAMESPACE!
 
-                        :: 3. Application des ConfigMaps
-                        echo.
-                        echo [STEP 2/4] Configuration de Prometheus et Grafana...
-                        kubectl apply -f !MONITORING_DIR!\\prometheus-configmap.yaml -n !NAMESPACE! 2>nul
-                        kubectl apply -f !MONITORING_DIR!\\grafana-configmap.yaml -n !NAMESPACE! 2>nul
+                        echo [STEP 3/6] Deploiement de Prometheus...
+                        kubectl apply -f "!MONITORING_DIR!\\prometheus-configmap.yaml" -n !NAMESPACE!
+                        kubectl apply -f "!MONITORING_DIR!\\prometheus-deployment.yaml" -n !NAMESPACE!
 
-                        :: 4. Déploiement des applications
-                        echo.
-                        echo [STEP 3/4] Lancement des Pods Monitoring...
-                        kubectl apply -f !MONITORING_DIR!\\prometheus-deployment.yaml -n !NAMESPACE! 2>nul
-                        kubectl apply -f !MONITORING_DIR!\\grafana-deployment.yaml -n !NAMESPACE! 2>nul
+                        echo [STEP 4/6] Deploiement de Grafana...
+                        kubectl apply -f "!MONITORING_DIR!\\grafana-configmap.yaml" -n !NAMESPACE!
+                        kubectl apply -f "!MONITORING_DIR!\\grafana-deployment.yaml" -n !NAMESPACE!
 
-                        :: 5. Nettoyage Docker (pour libérer les ports 9090 et 3000)
-                        echo.
-                        echo [STEP 4/4] Nettoyage des anciens conteneurs Docker...
-                        docker stop prometheus grafana 2>nul
-                        docker rm prometheus grafana 2>nul
+                        echo [STEP 5/6] Deploiement de SonarQube...
+                        kubectl apply -f "!K8S_DIR!\\sonarqube.yaml" -n !NAMESPACE!
+                        kubectl apply -f "!K8S_DIR!\\sonarqube-deployment.yaml" -n !NAMESPACE!
 
-                        echo.
-                        echo [INFO] Stabilisation du monitoring (20 secondes)...
-                        timeout /t 20 /nobreak >nul
+                        echo [STEP 6/6] Configuration Ingress...
+                        kubectl apply -f "!K8S_DIR!\\ingress.yaml" -n !NAMESPACE!
+
+                        echo [INFO] Activation du Port-Forward Kanban (8088)...
+                        for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8088') do taskkill /f /pid %%a 2>nul
+                        start /b kubectl port-forward svc/kanban-backend 8088:8088 -n !NAMESPACE! >nul 2>&1
 
                         echo.
-                        echo [INFO] Etat des services de monitoring :
-                        kubectl get pods -n !NAMESPACE! | findstr "prometheus grafana"
-                        kubectl get svc -n !NAMESPACE! | findstr "prometheus grafana"
-
-                        echo.
-                        echo ========================================
-                        echo   ACCES AUX INTERFACES MONITORING
-                        echo ========================================
-                        echo Prometheus : http://intelligent-rh:30090
-                        echo Grafana    : http://intelligent-rh:30030
-                        echo ========================================
+                        echo ============================================================
+                        echo   ACCES VIA : http://intelligent-rh/
+                        echo ============================================================
+                        echo Prometheus : /prometheus
+                        echo Grafana    : /grafana
+                        echo SonarQube  : /sonarqube
+                        echo Kanban     : http://localhost:8088
+                        echo ============================================================
                     """
                 }
             }
