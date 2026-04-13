@@ -160,118 +160,37 @@ pipeline {
                 script {
                     bat """
                         @echo off
-                        setlocal enabledelayedexpansion
+                        echo [STEP 1] Namespace...
+                        kubectl apply -f "${K8S_DIR}\\namespace.yaml"
 
-                        echo.
-                        echo ==========================================================
-                        echo    INTELLIGENT RH - KUBERNETES AUTOMATED DEPLOYMENT
-                        echo ==========================================================
-                        echo.
+                        echo [STEP 2] Bases de donnees...
+                        kubectl apply -f "${K8S_DIR}\\mysql.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\sonardb-deployment.yaml" -n ${K8S_NAMESPACE}
 
-                        set NAMESPACE=${K8S_NAMESPACE}
-                        set K8S_DIR=${K8S_DIR}
+                        :: Remplacement du timeout par ping pour eviter l'erreur redirection
+                        ping 127.0.0.1 -n 15 > nul
 
-                        :: 1. Vérification de la connexion au cluster
-                        kubectl cluster-info >nul 2>&1
-                        if !ERRORLEVEL! NEQ 0 (
-                            echo [ERROR] Impossible de se connecter au cluster Kubernetes.
-                            echo Verifiez si Docker Desktop ou Minikube est lance.
-                            exit /b 1
-                        )
+                        echo [STEP 3] Services...
+                        kubectl apply -f "${K8S_DIR}\\discovery.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\config-server.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\gateway.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\services" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\frontend.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\ingress.yaml" -n ${K8S_NAMESPACE}
 
-                        echo [INFO] Connexion au cluster Kubernetes : OK.
-                        echo.
+                        echo [STEP 4] Mise a jour Images...
+                        kubectl set image deployment/discovery discovery=${DOCKER_USER}/intelligent-app2-discovery:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+                        :: ... (ajoute les autres set image ici)
+                    """
 
-                        :: 2. Namespace
-                        echo [STEP 1/9] Configuration du Namespace...
-                        kubectl apply -f !K8S_DIR!\\namespace.yaml
-                        echo [OK] Namespace !NAMESPACE! pret.
-                        echo.
+                    // On utilise le sleep natif de Jenkins ici
+                    echo "Stabilisation du cluster..."
+                    sleep 45
 
-                        :: 3. Certificats SSL (Indispensable pour l'Ingress HTTPS)
-                        echo [STEP 2/9] Configuration de la Securite TLS...
-                        kubectl get secret talentflow-tls-secret -n !NAMESPACE! >nul 2>&1
-                        if !ERRORLEVEL! NEQ 0 (
-                            echo [WARNING] Secret TLS manquant. Verifiez votre configuration SSL.
-                        ) else (
-                            echo [OK] Certificats SSL detectes.
-                        )
-                        echo.
-
-                        :: 4. Stockage (PVC)
-                        echo [STEP 3/9] Configuration du Stockage Persistant (PVC)...
-                        kubectl apply -f !K8S_DIR!\\sonarqube-pvc.yaml -n !NAMESPACE!
-                        echo [OK] Volumes persistants (PV/PVC) crees.
-                        echo.
-
-                        :: 5. Bases de données
-                        echo [STEP 4/9] Deploiement des Bases de donnees (MySQL/Postgres)...
-                        kubectl apply -f !K8S_DIR!\\mysql.yaml -n !NAMESPACE!
-                        kubectl apply -f !K8S_DIR!\\sonardb-deployment.yaml -n !NAMESPACE!
-                        echo [INFO] Initialisation des bases de donnees (15s)...
-                        timeout /t 15 /nobreak >nul
-                        echo [OK] Databases operationnelles.
-                        echo.
-
-                        :: 6. Infrastructure & Outils
-                        echo [STEP 5/9] Deploiement Infrastructure Java (Eureka/Config)...
-                        kubectl apply -f !K8S_DIR!\\discovery.yaml -n !NAMESPACE!
-                        kubectl apply -f !K8S_DIR!\\config-server.yaml -n !NAMESPACE!
-                        kubectl apply -f !K8S_DIR!\\gateway.yaml -n !NAMESPACE!
-                        kubectl apply -f !K8S_DIR!\\admin-user.yaml -n !NAMESPACE!
-                        echo [OK] Coeur du systeme lance.
-                        echo.
-
-                        :: 7. Microservices Métiers
-                        echo [STEP 6/9] Deploiement des Microservices (Talent, Recruit, etc.)...
-                        kubectl apply -f !K8S_DIR!\\services -n !NAMESPACE!
-                        echo [OK] Services metiers synchronises.
-                        echo.
-
-                        :: 8. Frontend & Outils DevOps
-                        echo [STEP 7/9] Deploiement Frontend et Analyse Qualite...
-                        kubectl apply -f !K8S_DIR!\\frontend.yaml -n !NAMESPACE!
-                        kubectl apply -f !K8S_DIR!\\sonarqube-deployment.yaml -n !NAMESPACE! 2>nul
-                        kubectl apply -f !K8S_DIR!\\maildev.yaml -n !NAMESPACE!
-                        echo [OK] Frontend et Outils lances.
-                        echo.
-
-                        :: 9. Ingress (Le point d'entrée unique)
-                        echo [STEP 8/9] Configuration de l'Ingress (Routage Intelligent)...
-                        kubectl apply -f !K8S_DIR!\\ingress.yaml -n !NAMESPACE!
-                        echo [OK] Ingress configure.
-                        echo.
-
-                        :: 10. Mise à jour des images avec le nouveau tag BUILD
-                        echo [STEP 9/9] Mise a jour des images Docker (Build ${IMAGE_TAG})...
-                        kubectl set image deployment/discovery discovery=${DOCKER_USER}/intelligent-app2-discovery:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/gateway gateway=${DOCKER_USER}/intelligent-app2-gateway:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/config-server config-server=${DOCKER_USER}/intelligent-app2-config-server:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/talent-management-service talent-management-service=${DOCKER_USER}/intelligent-app2-talent-management-service:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/recrutement-service recrutement-service=${DOCKER_USER}/intelligent-app2-recrutement-service:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/scoutisme-service scoutisme-service=${DOCKER_USER}/intelligent-app2-scoutisme-service:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/kanban-backend kanban-backend=${DOCKER_USER}/intelligent-app2-kanban-backend:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/admin-contract-onboarding-service admin-contract-onboarding-service=${DOCKER_USER}/intelligent-app2-admin-contract-onboarding-service:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/job-prediction job-prediction=${DOCKER_USER}/intelligent-app2-job-prediction:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        kubectl set image deployment/frontend frontend=${DOCKER_USER}/intelligent-app2-frontend:${IMAGE_TAG} -n !NAMESPACE! 2>nul
-                        echo [OK] Images mises a jour.
-                        echo.
-
-                        echo [INFO] Stabilisation du cluster (45s)...
-                        timeout /t 45 /nobreak >nul
-
-                        echo ==========================================================
-                        echo    ETAT DU NAMESPACE : !NAMESPACE!
-                        echo ==========================================================
-                        kubectl get pods -n !NAMESPACE!
-                        echo.
-                        echo ==========================================================
-                        echo    ACCES APPLICATIF (PRODUCTION)
-                        echo ==========================================================
-                        kubectl get ingress -n !NAMESPACE!
-                        echo.
-                        echo [SUCCESS] Deploiement Kubernetes termine avec succes !
-                        echo ==========================================================
+                    bat """
+                        echo [STEP 5] Port-Forward...
+                        for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8088') do taskkill /f /pid %%a 2>nul
+                        start /b kubectl port-forward svc/kanban-backend 8088:8088 -n ${K8S_NAMESPACE}
                     """
                 }
             }
@@ -282,66 +201,20 @@ pipeline {
                 script {
                     bat """
                         @echo off
-                        setlocal enabledelayedexpansion
+                        echo [MONITORING] Application des ressources...
+                        :: On force la suppression du PVC si erreur de taille (Optionnel mais radical)
+                        :: kubectl delete pvc prometheus-pvc -n ${K8S_NAMESPACE} --ignore-not-found
 
-                        echo.
-                        echo ============================================================
-                        echo   Deployment Monitoring (Full) - Intelligent RH
-                        echo ============================================================
-                        echo.
-
-                        set "NAMESPACE=${K8S_NAMESPACE}"
-                        set "K8S_DIR=${K8S_DIR}"
-                        set "MONITORING_DIR=${MONITORING_DIR}"
-
-                        :: Vérification de la connexion
-                        kubectl cluster-info >nul 2>&1
-                        if !ERRORLEVEL! NEQ 0 (
-                            echo [ERROR] Impossible de se connecter au cluster Kubernetes.
-                            exit /b 1
-                        )
-
-                        echo [STEP 1/6] Preparation du namespace...
-                        kubectl apply -f "!K8S_DIR!\\namespace.yaml"
-
-                        echo [STEP 2/6] Application des PVC...
-                        kubectl apply -f "!MONITORING_DIR!\\monitoring-pvc.yaml" -n !NAMESPACE!
-                        kubectl apply -f "!K8S_DIR!\\prometheus-pvc.yaml" -n !NAMESPACE!
-                        kubectl apply -f "!K8S_DIR!\\sonarqube-pvc.yaml" -n !NAMESPACE!
-
-                        echo [STEP 3/6] Deploiement de Prometheus...
-                        kubectl apply -f "!MONITORING_DIR!\\prometheus-configmap.yaml" -n !NAMESPACE!
-                        kubectl apply -f "!MONITORING_DIR!\\prometheus-deployment.yaml" -n !NAMESPACE!
-
-                        echo [STEP 4/6] Deploiement de Grafana...
-                        kubectl apply -f "!MONITORING_DIR!\\grafana-configmap.yaml" -n !NAMESPACE!
-                        kubectl apply -f "!MONITORING_DIR!\\grafana-deployment.yaml" -n !NAMESPACE!
-
-                        echo [STEP 5/6] Deploiement de SonarQube...
-                        kubectl apply -f "!K8S_DIR!\\sonarqube.yaml" -n !NAMESPACE!
-                        kubectl apply -f "!K8S_DIR!\\sonarqube-deployment.yaml" -n !NAMESPACE!
-
-                        echo [STEP 6/6] Configuration Ingress...
-                        kubectl apply -f "!K8S_DIR!\\ingress.yaml" -n !NAMESPACE!
-
-                        echo [INFO] Activation du Port-Forward Kanban (8088)...
-                        for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8088') do taskkill /f /pid %%a 2>nul
-                        start /b kubectl port-forward svc/kanban-backend 8088:8088 -n !NAMESPACE! >nul 2>&1
-
-                        echo.
-                        echo ============================================================
-                        echo   ACCES VIA : http://intelligent-rh/
-                        echo ============================================================
-                        echo Prometheus : /prometheus
-                        echo Grafana    : /grafana
-                        echo SonarQube  : /sonarqube
-                        echo Kanban     : http://localhost:8088
-                        echo ============================================================
+                        kubectl apply -f "${MONITORING_DIR}\\monitoring-pvc.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${K8S_DIR}\\prometheus-pvc.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${MONITORING_DIR}\\prometheus-configmap.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${MONITORING_DIR}\\prometheus-deployment.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${MONITORING_DIR}\\grafana-configmap.yaml" -n ${K8S_NAMESPACE}
+                        kubectl apply -f "${MONITORING_DIR}\\grafana-deployment.yaml" -n ${K8S_NAMESPACE}
                     """
                 }
             }
         }
-    }
 
     post {
         success {
